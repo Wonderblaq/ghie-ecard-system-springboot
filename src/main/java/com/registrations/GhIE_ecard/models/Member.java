@@ -163,6 +163,15 @@ public class Member{
 
     }
 
+    @Column(name = "EMAIL SENT")
+    public boolean emailSent;
+    public boolean getemailSent(){
+        return this.emailSent;
+    }
+    public void setEmailSent( boolean emailSent){
+        this.emailSent = emailSent;
+    }
+
 
 
 }

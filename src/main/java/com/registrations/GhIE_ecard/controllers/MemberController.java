@@ -65,6 +65,11 @@ public class MemberController {
 
     }
 
+    // Put Request for member to make updates
+
+
+    // Get Request for member to view ID card
+
 
 
 }
