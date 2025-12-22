@@ -5,7 +5,7 @@ import com.registrations.GhIE_ecard.enums.Regions;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "MEMBER INFO")
+@Table(name = "\"Member Info\"")
 public class Member{
 
     // ID Column with a getter and setter
@@ -22,7 +22,7 @@ public class Member{
 
 
     // Full Name Column with a getter and setter
-    @Column(name = "FULL NAME")
+    @Column(name = "\"FULL NAME\"")
     public String fullName;
 
     public String getFullName() {
@@ -109,7 +109,7 @@ public class Member{
 
 
     // Column with getter and setter
-    @Column(name = "PROGRAMME")
+    @Column(name = "\"PROGRAMME\"")
     public String program;
     public String getProgram(){
         return this.program;
@@ -123,7 +123,7 @@ public class Member{
 
 
     // Column with getter and setter
-    @Column(name = "PHOTO PATH")
+    @Column(name = "\"PHOTO PATH\"")
     public String photo_url;
     public String getPhoto (){
         return this.photo_url;
@@ -137,7 +137,7 @@ public class Member{
 
 
     // Column with getter and setter
-    @Column(name = "STUDENT ID")
+    @Column(name = "\"STUDENT ID\"")
     public String studentNumber;
     public String getStudentNumber (){
         return this.studentNumber;
@@ -151,7 +151,7 @@ public class Member{
 
 
     // Column with getter and setter
-    @Column(name = "ADMISSION YEAR")
+    @Column(name = "\"ADMISSION YEAR\"")
     public int year;
     public int getYear (){
         return this.year;
@@ -163,8 +163,9 @@ public class Member{
 
     }
 
-    @Column(name = "EMAIL SENT")
-    public boolean emailSent;
+    @Column(name = "\"EMAIL SENT\"", nullable = false)
+    @org.hibernate.annotations.ColumnDefault("false")
+    public Boolean emailSent = false;
     public boolean getemailSent(){
         return this.emailSent;
     }
@@ -180,4 +181,9 @@ public class Member{
 E.G curl http://localhost:8080/ ,
 and add base paths(endpoint) name
  with appropriate request method
+
+ // NOTE : PROJECT GENERATES AN ERROR UPON RUNNING WITH SPRING-BOOT:RUN,
+          this is not a logic,syntax or runtime error, postgres database password
+          is embedded in the OS at the application.java file,
+          Ask Developer to grant you password
  */

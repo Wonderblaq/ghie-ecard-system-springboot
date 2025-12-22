@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+/**
+ * AdminController handles HTTP requests related to admin responsibilities.
+ * It is marked as a REST controller to process web requests.
+ */
 public class AdminController {
+
 }
