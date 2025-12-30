@@ -1,8 +1,11 @@
 package com.registrations.GhIE_ecard.controllers;
 
 // Import necessary Spring annotations for REST controllers
+import com.registrations.GhIE_ecard.enums.Institution;
+import com.registrations.GhIE_ecard.enums.Regions;
 import com.registrations.GhIE_ecard.models.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.registrations.GhIE_ecard.services.GenerateID;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -21,7 +26,7 @@ import java.util.List;
  * It is marked as a REST controller to process web requests.
  */
 @RestController
-// Maps all requests starting with /member_registration to this controller
+// Maps all requests starting with /registration to this controller
 @RequestMapping("/registration")
 public class MemberController {
 
@@ -33,7 +38,8 @@ public class MemberController {
     @Autowired
     private GenerateID generateID;
 
-    // Repository interface for accessing Admin data in the database.
+    // Repository interface for accessing member data in the database.
+
     private final MemberRepository memberRepository;
 
 
@@ -64,8 +70,19 @@ public class MemberController {
         return newMember.getFullName() + " " + "saved successfully";
 
     }
+    // Display List of Institution
+    @GetMapping("/institutions")
+    public List<Institution> getAllInstitutions(){
+        return Arrays.asList(Institution.values());
+    }
 
-    // Put Request for member to make updates
+    // Display List of Regions
+    @GetMapping("/regions")
+    public List<Regions> getAllRegions(){
+        return Arrays.asList(Regions.values());
+    }
+
+
 
 
     // Get Request for member to view ID card
