@@ -1,25 +1,16 @@
 package com.registrations.GhIE_ecard.controllers;
 
 import java.lang.Iterable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Arrays;
 import java.util.Optional;
 
 import com.registrations.GhIE_ecard.models.Member;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.PatchMapping;
+import com.registrations.GhIE_ecard.services.MemberUpdateDTO;
 
 /**
  * AdminController handles HTTP requests related to admin responsibilities.
@@ -59,27 +50,46 @@ public class AdminController {
 
     // Delete a member from the database
     @DeleteMapping("/members/{id}")
-    public Member deleteMember(@PathVariable("id") Long id) {
+    public ResponseEntity<Member> deleteMember(@PathVariable("id") Long id) {
         Optional<Member> memberToDelete = memberRepository.findById(id);
         if (memberToDelete.isPresent()) {
             Member foundMember = memberToDelete.get();
             memberRepository.deleteById(id);
-            return foundMember;
+            return ResponseEntity.ok(foundMember);
         }
-        return null;
+        return ResponseEntity.notFound().build();
     }
 
-    // Put request for member data updates
-    @PutMapping("/members/{id}/email")
-    public Member updateEmail(@PathVariable("id") Long id) {
-        Optional<Member> memberOptional = memberRepository.findById(id);
-        if (memberOptional.isPresent()) {
-            Member updatedMember = memberOptional.get();
-            updatedMember.setEmail(updatedMember.getEmail());
-            memberRepository.save(updatedMember);
+    // Patch request for member data updates (email and contact)
+    @PatchMapping("/members/{id}/email")
+    public ResponseEntity<?> updateMemberInfo(@RequestBody (required = false) MemberUpdateDTO updates
+    , @PathVariable ("id") Long id){
+        /* find the member
+        * check if member exits or present and retrieve member
+        * check if entries for email and contact to be updated are non-null
+        * update email and contact
+        * Save updates in Database
+        *  Show response of success and failure
+        * */
+        Optional<Member> updatedMember = memberRepository.findById(id);
+
+
+        if(updatedMember.isPresent()) {
+            Member foundMember = updatedMember.get();
+            if(updates.newContact != null){
+                foundMember.setContact(updates.newContact);
+            }
+            if(updates.newEmail != null){
+                foundMember.setEmail(updates.newEmail);
+            }
+            memberRepository.save(foundMember);
+            return ResponseEntity.ok(foundMember);
 
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("member not found");
 
     }
+
+
+
 }

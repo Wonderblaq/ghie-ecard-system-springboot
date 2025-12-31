@@ -11,8 +11,8 @@ public class Member{
     // ID Column with a getter and setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long documentId;
-    public long getId(){
+    public Long documentId;
+    public Long getId(){
         return this.documentId;  // getter for Document id
     }
 
@@ -86,9 +86,9 @@ public class Member{
 
     // contact Column with a getter and setter
     @Column(name = "CONTACT")
-    public long contact;
+    public Long contact;
 
-    public long getContact() {
+    public Long getContact() {
         return this.contact;  // getter for contact
     }
     public void setContact(long contact) {
@@ -152,13 +152,13 @@ public class Member{
 
     // Column with getter and setter
     @Column(name = "\"ADMISSION YEAR\"")
-    public int year;
-    public int getYear (){
+    public Integer year;
+    public Integer getYear (){
         return this.year;
 
     }
 
-    public void setYear (int year){
+    public void setYear (Integer year){
         this.year = year;
 
     }
