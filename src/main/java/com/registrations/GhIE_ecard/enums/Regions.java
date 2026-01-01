@@ -3,7 +3,7 @@ package com.registrations.GhIE_ecard.enums;
 public enum Regions{
     // Region enums
     Ahafo("Ahafo Region"),
-    AR("Ashanti Region"),
+    Ashanti("Ashanti Region"),
     Bono("Bono Region"),
     BonoEast("Bono East Region"),
     Central("Central Region"),
@@ -30,10 +30,5 @@ public enum Regions{
         return this.regionName;
     }
 
-    @Override
-    public String toString() {
-        return "Regions{" +
-                "regionName='" + regionName + '\'' +
-                '}';
-    }
+
 }

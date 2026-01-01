@@ -50,11 +50,5 @@ public enum Institution {
         return this.displayName;
     }
 
-    //  Override toString() for default behavior
-    @Override
-    public String toString() {
-        return this.displayName;
-    }
-
 
 }

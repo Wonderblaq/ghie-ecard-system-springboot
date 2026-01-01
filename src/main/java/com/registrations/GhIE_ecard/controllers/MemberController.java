@@ -6,6 +6,7 @@ import com.registrations.GhIE_ecard.enums.Regions;
 import com.registrations.GhIE_ecard.models.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,18 +59,18 @@ public class MemberController {
     }
 
 
-    // Post request to register a new member with a unique ID
     @PostMapping("/register")
-    public String member(@RequestBody Member student){
-        // generate ID for each student that gets saved into the database
+    public ResponseEntity<Member> registerMember(@RequestBody Member student) {
+        // Generate a unique ID for the member
         student.setMemberId(generateID.generateMemberId());
 
-        Member newMember;
-        newMember = memberRepository.save(student);
+        // Save the member
+        Member savedMember = memberRepository.save(student);
 
-        return newMember.getFullName() + " " + "saved successfully";
-
+        // Return the saved entity with HTTP 200 OK
+        return ResponseEntity.ok(savedMember);
     }
+
     // Display List of Institution
     @GetMapping("/institutions")
     public List<Institution> getAllInstitutions(){

@@ -5,177 +5,85 @@ import com.registrations.GhIE_ecard.enums.Regions;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "\"Member Info\"")
-public class Member{
+@Table(name = "member_info")
+public class Member {
 
-    // ID Column with a getter and setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long documentId;
-    public Long getId(){
-        return this.documentId;  // getter for Document id
-    }
+    private Long documentId;
 
-    public void setId(){
-        this.documentId= documentId;  // setter for Document id
-    }
+    @Column(name = "full_name")
+    private String fullName;
 
+    @Column(name = "member_id", unique = true)
+    private String memberId;
 
-    // Full Name Column with a getter and setter
-    @Column(name = "\"FULL NAME\"")
-    public String fullName;
-
-    public String getFullName() {
-        return fullName;  // getter for full name
-    }
-    public void setFullName(String fullName) {
-        this.fullName = fullName;  // setter for full name;
-    }
-
-
-    // Unique ID column with a getter and setter
-    @Column(unique = true)
-    public String memberId;
-
-    public String getMemberId(){
-        return this.memberId; // getter for unique ID
-    }
-    public void setMemberId(String memberId){
-        this.memberId = memberId; // setter for member ID
-    }
-
-
-    // Institution column with a getter and setter
     @Enumerated(EnumType.STRING)
-    @Column(name = "INSTITUTION")
-    public Institution institution;
+    private Institution institution;
 
-    public Institution getInstitution(){
-        return this.institution;
-    }
-    public void setInstitution( Institution institution){
-        this.institution = institution;
-    }
+    private String gender;
 
-
-    // Gender Column
-    @Column(name = "GENDER")
-    public String gender;
-
-    public String getGender(){
-        return this.gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-
-    // Regions Column
     @Enumerated(EnumType.STRING)
-    @Column(name = "REGION")
-    public Regions region;
+    private Regions region;
 
-    public Regions getRegion() {
-        return this.region;
+    private Long contact;
+    private String email;
+    private String program;
+    private String photoUrl;
+    private String studentNumber;
+    private Integer year;
+
+    private Boolean emailSent = false;
+
+    public Member() {} // REQUIRED BY JPA
+
+    // --- getters & setters
+
+    public Long getDocumentId() {
+        return documentId;
     }
-    public void setRegion(Regions region){
-        this.region = region;
-    }
-
-
-    // contact Column with a getter and setter
-    @Column(name = "CONTACT")
-    public Long contact;
-
-    public Long getContact() {
-        return this.contact;  // getter for contact
-    }
-    public void setContact(long contact) {
-        this.contact = contact;  // setter ;
-    }
-
-
-    // Email Column with getter and setter
-    @Column(name = "EMAILS")
-    public String email;
-    public String getEmail(){
-        return this.email;
+    public void setDocumentId(Long documentId) {
+        this.documentId = documentId;
     }
 
-    public void setEmail (String email){
-        this.email = email;
-    }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
 
+    public String getMemberId() { return memberId; }
+    public void setMemberId(String memberId) { this.memberId = memberId; }
 
-    // Column with getter and setter
-    @Column(name = "\"PROGRAMME\"")
-    public String program;
-    public String getProgram(){
-        return this.program;
+    public Institution getInstitution() { return institution; }
+    public void setInstitution(Institution institution) { this.institution = institution; }
 
-    }
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
 
-    public void setProgram(String program){
-        this.program = program;
+    public Regions getRegion() { return region; }
+    public void setRegion(Regions region) { this.region = region; }
 
-    }
+    public Long getContact() { return contact; }
+    public void setContact(Long contact) { this.contact = contact; }
 
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    // Column with getter and setter
-    @Column(name = "\"PHOTO PATH\"")
-    public String photo_url;
-    public String getPhoto (){
-        return this.photo_url;
+    public String getProgram() { return program; }
+    public void setProgram(String program) { this.program = program; }
 
-    }
+    public String getPhotoUrl() { return photoUrl; }
+    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
 
-    public void set (String photo_url){
-        this.photo_url = photo_url;
+    public String getStudentNumber() { return studentNumber; }
+    public void setStudentNumber(String studentNumber) { this.studentNumber = studentNumber; }
 
-    }
+    public Integer getYear() { return year; }
+    public void setYear(Integer year) { this.year = year; }
 
-
-    // Column with getter and setter
-    @Column(name = "\"STUDENT ID\"")
-    public String studentNumber;
-    public String getStudentNumber (){
-        return this.studentNumber;
-
-    }
-
-    public void setStudentNumber (String studentNumber){
-        this.studentNumber = studentNumber;
-
-    }
-
-
-    // Column with getter and setter
-    @Column(name = "\"ADMISSION YEAR\"")
-    public Integer year;
-    public Integer getYear (){
-        return this.year;
-
-    }
-
-    public void setYear (Integer year){
-        this.year = year;
-
-    }
-
-    @Column(name = "\"EMAIL SENT\"", nullable = false)
-    @org.hibernate.annotations.ColumnDefault("false")
-    public Boolean emailSent = false;
-    public boolean getemailSent(){
-        return this.emailSent;
-    }
-    public void setEmailSent( boolean emailSent){
-        this.emailSent = emailSent;
-    }
-
-
-
+    public Boolean getEmailSent() { return emailSent; }
+    public void setEmailSent(Boolean emailSent) { this.emailSent = emailSent; }
 }
+
+
 
 /* RUN THIS PROJECT WITH THE PORT NUMBER 8080:
 E.G curl http://localhost:8080/ ,
