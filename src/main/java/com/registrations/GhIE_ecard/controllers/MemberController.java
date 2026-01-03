@@ -6,6 +6,7 @@ import com.registrations.GhIE_ecard.enums.Regions;
 import com.registrations.GhIE_ecard.models.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +56,9 @@ public class MemberController {
     // Get all members
     @GetMapping("/all")
     public List<Member> getAllMembers(){
-        return (List<Member>) memberRepository.findAll();
+        return (List<Member>) memberRepository.findAll(
+                Sort.by(Sort.Direction.ASC, "memberId")
+        );
     }
 
 

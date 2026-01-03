@@ -4,6 +4,9 @@ import com.registrations.GhIE_ecard.enums.Institution;
 import com.registrations.GhIE_ecard.enums.Regions;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
+
 @Entity
 @Table(name = "member_info")
 public class Member {
@@ -25,6 +28,9 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     private Regions region;
+
+    @Column(name = "emailSentAt")
+    private LocalDateTime emailSentAt;
 
     private Long contact;
     private String email;
@@ -81,6 +87,10 @@ public class Member {
 
     public Boolean getEmailSent() { return emailSent; }
     public void setEmailSent(Boolean emailSent) { this.emailSent = emailSent; }
+
+    public LocalDateTime getEmailSentAt(){
+        return emailSentAt;
+    }
 }
 
 

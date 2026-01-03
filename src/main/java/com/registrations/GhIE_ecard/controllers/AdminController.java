@@ -1,10 +1,13 @@
 package com.registrations.GhIE_ecard.controllers;
 
 import java.lang.Iterable;
+import java.util.List;
 import java.util.Optional;
 
 import com.registrations.GhIE_ecard.models.Member;
+import com.registrations.GhIE_ecard.repositories.AdminRepository;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +26,12 @@ public class AdminController {
 
     // Repository interface for accessing Admin data in the database.
     public final MemberRepository memberRepository;
+    public final AdminRepository adminRepository;
 
 
-    public AdminController(MemberRepository memberRepository) {
+    public AdminController(MemberRepository memberRepository, AdminRepository adminRepository) {
         this.memberRepository = memberRepository;
+        this.adminRepository = adminRepository;
     }
 
     // This is where methods for handling specific HTTP requests (GET, POST, etc.) would be added.
@@ -34,7 +39,7 @@ public class AdminController {
     // Get request for admin to view all registered members
     @GetMapping("/members")
     public Iterable<Member> getAllMembers() {
-        return memberRepository.findAll();
+        return memberRepository.findAll(Sort.by(Sort.Direction.ASC, "memberId"));
     }
 
     // Get request for admin to find specific members
@@ -87,8 +92,20 @@ public class AdminController {
 
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("member not found");
+    }
+
+    // View members yet to receive cards
+    @GetMapping("/members/pending-cards")
+    public ResponseEntity<List<Member>> viewPendingCards(){
+        List<Member> pendingMembers = adminRepository.findByEmailSentFalseOrderByMemberIdAsc();
+        if (!pendingMembers.isEmpty()){
+            return ResponseEntity.ok(pendingMembers);
+
+        }
+        return ResponseEntity.noContent().build();
 
     }
+
 
 
 
