@@ -1,11 +1,11 @@
 package com.registrations.GhIE_ecard.controllers;
 
 // Import necessary Spring annotations for REST controllers
+import com.registrations.GhIE_ecard.enums.EnrollmentYear;
 import com.registrations.GhIE_ecard.enums.Institution;
 import com.registrations.GhIE_ecard.enums.Regions;
 import com.registrations.GhIE_ecard.models.Member;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 // Import repositories and services needed by this controller
 import com.registrations.GhIE_ecard.services.GenerateID;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
+import com.registrations.GhIE_ecard.services.MemberRegistrationService;
+import com.registrations.GhIE_ecard.enums.EnrollmentYear;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,18 +40,19 @@ public class MemberController {
      * @Autowired annotation injects the implementation of GenerateID.
      */
     @Autowired
-    private GenerateID generateID;
+    private final GenerateID generateID;
+    private final MemberRegistrationService registrationService;
 
     // Repository interface for accessing member data in the database.
-
     private final MemberRepository memberRepository;
 
 
     //Constructor for MemberController.
-    public MemberController(MemberRepository memberRepository, GenerateID generateID){
+    public MemberController(MemberRepository memberRepository, GenerateID generateID, MemberRegistrationService registrationService){
         this.memberRepository = memberRepository;
         this.generateID = generateID;
 
+        this.registrationService = registrationService;
     }
     // This is where methods for handling specific HTTP requests (GET, POST, etc.) would be added.
 
@@ -66,6 +69,8 @@ public class MemberController {
     public ResponseEntity<Member> registerMember(@RequestBody Member student) {
         // Generate a unique ID for the member
         student.setMemberId(generateID.generateMemberId());
+        student.setRegistrationDate(LocalDateTime.now());
+        student.setExpiryDate(registrationService.calculateExpiryDate(student.getenrollmentYear()));
 
         // Save the member
         Member savedMember = memberRepository.save(student);
@@ -84,6 +89,11 @@ public class MemberController {
     @GetMapping("/regions")
     public List<Regions> getAllRegions(){
         return Arrays.asList(Regions.values());
+    }
+
+    @GetMapping("/enrollment")
+    public List<EnrollmentYear> getAllEnrollmentYears(){
+        return Arrays.asList((EnrollmentYear.values()));
     }
 
 

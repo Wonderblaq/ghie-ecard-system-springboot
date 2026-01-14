@@ -76,7 +76,7 @@ public class AdminController {
         * Save updates in Database
         *  Show response of success and failure
         * */
-        Optional<Member> updatedMember = memberRepository.findById(id);
+        Optional<Member> updatedMember = adminRepository.findById(id);
 
 
         if(updatedMember.isPresent()) {

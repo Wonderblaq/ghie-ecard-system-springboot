@@ -1,9 +1,11 @@
 package com.registrations.GhIE_ecard.models;
 
+import com.registrations.GhIE_ecard.enums.EnrollmentYear;
 import com.registrations.GhIE_ecard.enums.Institution;
 import com.registrations.GhIE_ecard.enums.Regions;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -24,6 +26,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Institution institution;
 
+    @Column(name = "gender")
     private String gender;
 
     @Enumerated(EnumType.STRING)
@@ -32,12 +35,16 @@ public class Member {
     @Column(name = "emailSentAt")
     private LocalDateTime emailSentAt;
 
+    @Enumerated(EnumType.STRING)
+    private EnrollmentYear enrollmentYear;
+
     private Long contact;
     private String email;
     private String program;
     private String photoUrl;
     private String studentNumber;
-    private Integer year;
+    private LocalDateTime registrationDate;
+    private LocalDate expiryDate;
 
     private Boolean emailSent = false;
 
@@ -82,14 +89,31 @@ public class Member {
     public String getStudentNumber() { return studentNumber; }
     public void setStudentNumber(String studentNumber) { this.studentNumber = studentNumber; }
 
-    public Integer getYear() { return year; }
-    public void setYear(Integer year) { this.year = year; }
 
     public Boolean getEmailSent() { return emailSent; }
     public void setEmailSent(Boolean emailSent) { this.emailSent = emailSent; }
 
     public LocalDateTime getEmailSentAt(){
         return emailSentAt;
+    }
+    public EnrollmentYear getenrollmentYear(){
+        return enrollmentYear;
+    }
+    public void setEnrollmentYear(EnrollmentYear enrollmentYear){
+        this.enrollmentYear = enrollmentYear;
+    }
+    public LocalDateTime getRegistrationDate(){
+        return this.registrationDate;
+    }
+    public void setRegistrationDate(LocalDateTime registrationDate){
+        this.registrationDate = registrationDate;
+    }
+
+    public LocalDate getExpiryDate(){
+        return expiryDate;
+    }
+    public void setExpiryDate(LocalDate expiryDate){
+        this.expiryDate = expiryDate;
     }
 }
 
