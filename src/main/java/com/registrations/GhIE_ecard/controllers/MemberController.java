@@ -7,6 +7,7 @@ import com.registrations.GhIE_ecard.enums.Regions;
 import com.registrations.GhIE_ecard.models.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.registrations.GhIE_ecard.services.GenerateID;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import com.registrations.GhIE_ecard.services.MemberRegistrationService;
-import com.registrations.GhIE_ecard.enums.EnrollmentYear;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -66,17 +66,25 @@ public class MemberController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Member> registerMember(@RequestBody Member student) {
-        // Generate a unique ID for the member
-        student.setMemberId(generateID.generateMemberId());
-        student.setRegistrationDate(LocalDateTime.now());
-        student.setExpiryDate(registrationService.calculateExpiryDate(student.getenrollmentYear()));
-
-        // Save the member
-        Member savedMember = memberRepository.save(student);
-
+    public ResponseEntity<?> registerMember(@RequestBody Member student) {
+        /* * Check for duplicate email,
+         * Generate a unique ID for the member
+         * Set Expiry and Registration Dates
+         * Save Registered Member
+        **/
+        if (!memberRepository.findByEmail(student.getEmail()).isPresent()){
+            student.setMemberId(generateID.generateMemberId());
+            student.setRegistrationDate(LocalDateTime.now());
+            student.setExpiryDate(registrationService.calculateExpiryDate(student.getenrollmentYear()));
+            // Save the member
+            Member savedMember = memberRepository.save(student);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).
+                    body("Email has already being registered");
+        }
         // Return the saved entity with HTTP 200 OK
-        return ResponseEntity.ok(savedMember);
+        return ResponseEntity.ok("Registered Successfully");
     }
 
     // Display List of Institution

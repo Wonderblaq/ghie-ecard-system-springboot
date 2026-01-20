@@ -29,7 +29,6 @@ public class MemberRegistrationService {
         return LocalDate.of(EXPIRY_YEAR,EXPIRY_MONTH,EXPIRY_DAY);
 
 
-
     }
 
 

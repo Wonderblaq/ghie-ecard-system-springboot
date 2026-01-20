@@ -39,7 +39,10 @@ public class Member {
     private EnrollmentYear enrollmentYear;
 
     private Long contact;
+
+    @Column(unique = true)
     private String email;
+
     private String program;
     private String photoUrl;
     private String studentNumber;
