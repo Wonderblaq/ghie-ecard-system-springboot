@@ -1,4 +1,4 @@
-package com.registrations.GhIE_ecard.services;
+package com.registrations.GhIE_ecard.DTO;
 
 import com.registrations.GhIE_ecard.enums.Institution;
 

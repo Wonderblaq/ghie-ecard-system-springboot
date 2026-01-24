@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.PatchMapping;
-import com.registrations.GhIE_ecard.services.MemberUpdateDTO;
+import com.registrations.GhIE_ecard.DTO.MemberUpdateDTO;
 
 /**
  * AdminController handles HTTP requests related to admin responsibilities.

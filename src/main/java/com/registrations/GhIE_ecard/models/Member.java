@@ -99,7 +99,7 @@ public class Member {
     public LocalDateTime getEmailSentAt(){
         return emailSentAt;
     }
-    public EnrollmentYear getenrollmentYear(){
+    public EnrollmentYear getEnrollmentYear(){
         return enrollmentYear;
     }
     public void setEnrollmentYear(EnrollmentYear enrollmentYear){

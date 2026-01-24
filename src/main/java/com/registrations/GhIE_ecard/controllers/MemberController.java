@@ -75,7 +75,7 @@ public class MemberController {
         if (!memberRepository.findByEmail(student.getEmail()).isPresent()){
             student.setMemberId(generateID.generateMemberId());
             student.setRegistrationDate(LocalDateTime.now());
-            student.setExpiryDate(registrationService.calculateExpiryDate(student.getenrollmentYear()));
+            student.setExpiryDate(registrationService.calculateExpiryDate(student.getEnrollmentYear()));
             // Save the member
             Member savedMember = memberRepository.save(student);
         }
