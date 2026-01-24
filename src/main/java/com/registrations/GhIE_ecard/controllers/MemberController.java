@@ -20,6 +20,7 @@ import com.registrations.GhIE_ecard.services.GenerateID;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import com.registrations.GhIE_ecard.services.MemberRegistrationService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -74,7 +75,7 @@ public class MemberController {
         **/
         if (!memberRepository.findByEmail(student.getEmail()).isPresent()){
             student.setMemberId(generateID.generateMemberId());
-            student.setRegistrationDate(LocalDateTime.now());
+            student.setRegistrationDate(LocalDate.now());
             student.setExpiryDate(registrationService.calculateExpiryDate(student.getEnrollmentYear()));
             // Save the member
             Member savedMember = memberRepository.save(student);

@@ -1,5 +1,6 @@
 package com.registrations.GhIE_ecard.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.registrations.GhIE_ecard.enums.EnrollmentYear;
 import com.registrations.GhIE_ecard.enums.Institution;
 import com.registrations.GhIE_ecard.enums.Regions;
@@ -17,10 +18,10 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long documentId;
 
-    @Column(name = "full_name")
+    @Column(name = "fullName")
     private String fullName;
 
-    @Column(name = "member_id", unique = true)
+    @Column(name = "memberId", unique = true)
     private String memberId;
 
     @Enumerated(EnumType.STRING)
@@ -46,7 +47,11 @@ public class Member {
     private String program;
     private String photoUrl;
     private String studentNumber;
-    private LocalDateTime registrationDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate registrationDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate expiryDate;
 
     private Boolean emailSent = false;
@@ -99,16 +104,19 @@ public class Member {
     public LocalDateTime getEmailSentAt(){
         return emailSentAt;
     }
+    public void setEmailSentAt(LocalDateTime emailSentAt){
+        this.emailSentAt = emailSentAt;
+    }
     public EnrollmentYear getEnrollmentYear(){
         return enrollmentYear;
     }
     public void setEnrollmentYear(EnrollmentYear enrollmentYear){
         this.enrollmentYear = enrollmentYear;
     }
-    public LocalDateTime getRegistrationDate(){
+    public LocalDate getRegistrationDate(){
         return this.registrationDate;
     }
-    public void setRegistrationDate(LocalDateTime registrationDate){
+    public void setRegistrationDate(LocalDate registrationDate){
         this.registrationDate = registrationDate;
     }
 

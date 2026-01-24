@@ -9,7 +9,7 @@ public class RestClientConfig {
     @Bean
     public RestClient fastApiConfig(){
         return RestClient.builder()
-                .baseUrl("http://127.0.0.1:8000")  // set where to fastapi port runs
+                .baseUrl("http://localhost:8000")  // set where to fastapi port runs
                 .build();
 
     }

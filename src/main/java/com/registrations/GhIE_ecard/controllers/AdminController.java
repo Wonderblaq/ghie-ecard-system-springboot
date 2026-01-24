@@ -4,9 +4,11 @@ import java.lang.Iterable;
 import java.util.List;
 import java.util.Optional;
 
+import com.registrations.GhIE_ecard.models.CardProcessingResult;
 import com.registrations.GhIE_ecard.models.Member;
 import com.registrations.GhIE_ecard.repositories.AdminRepository;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
+import com.registrations.GhIE_ecard.services.CardDispatchService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +29,14 @@ public class AdminController {
     // Repository interface for accessing Admin data in the database.
     public final MemberRepository memberRepository;
     public final AdminRepository adminRepository;
+    private CardDispatchService cardDispatchService;
 
 
-    public AdminController(MemberRepository memberRepository, AdminRepository adminRepository) {
+    public AdminController(MemberRepository memberRepository, AdminRepository adminRepository,
+                           CardDispatchService cardDispatchService) {
         this.memberRepository = memberRepository;
         this.adminRepository = adminRepository;
+        this.cardDispatchService = cardDispatchService;
     }
 
     // This is where methods for handling specific HTTP requests (GET, POST, etc.) would be added.
@@ -96,14 +101,20 @@ public class AdminController {
 
     // View members yet to receive cards
     @GetMapping("/members/pending-cards")
-    public ResponseEntity<List<Member>> viewPendingCards(){
-        List<Member> pendingMembers = adminRepository.findByEmailSentFalseOrderByMemberIdAsc();
+    public ResponseEntity<?> viewPendingCards(){
+        List<Member> pendingMembers = adminRepository.findByEmailSentFalse();
         if (!pendingMembers.isEmpty()){
             return ResponseEntity.ok(pendingMembers);
 
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body("No Pending Members");
 
+    }
+    @PostMapping("/process-cards")
+    public ResponseEntity<CardProcessingResult> processCards() {
+        CardProcessingResult result =
+                cardDispatchService.processPendingCards();
+        return ResponseEntity.ok(result);
     }
 
 

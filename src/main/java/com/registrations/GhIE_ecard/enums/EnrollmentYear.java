@@ -1,8 +1,6 @@
 package com.registrations.GhIE_ecard.enums;
 
 
-import java.time.Year;
-
 public enum EnrollmentYear {
     Year_2021(2021),
     Year_2022(2022),
@@ -14,9 +12,10 @@ public enum EnrollmentYear {
 
     public final Integer enrollmentYear;
 
-    EnrollmentYear(Integer enrollmentYear){
-        this.enrollmentYear =  enrollmentYear;
+    EnrollmentYear(Integer enrollmentYear) {
+        this.enrollmentYear = enrollmentYear;
     }
+
 
     public Integer getEnrollmentYear() {
         return this.enrollmentYear;

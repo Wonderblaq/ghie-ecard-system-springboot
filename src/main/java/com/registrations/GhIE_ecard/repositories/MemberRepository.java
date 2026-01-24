@@ -13,5 +13,6 @@ public interface  MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findAll(Sort memberId);
     Optional<Member> findByEmail(String email);
+    List<Member> findByEmailSentFalse();
 
 }

@@ -2,6 +2,11 @@ package com.registrations.GhIE_ecard.DTO;
 
 import com.registrations.GhIE_ecard.enums.Institution;
 
+import com.registrations.GhIE_ecard.enums.Regions;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class IDCardRequestDTO {
 
 
@@ -9,10 +14,12 @@ public class IDCardRequestDTO {
     private String memberId;
     private Institution institution;
     private String gender;
+    public Regions region;
     private String email;
-    private String registrationDate;
-    private String expiryYear;
+    private LocalDate registrationDate;
+    private LocalDate expiryDate;
     private String photoUrl;
+    private LocalDateTime emailSentAt;
 
 
     public String getFullName() {
@@ -50,17 +57,17 @@ public class IDCardRequestDTO {
         this.email = email;
     }
 
-    public String getRegistrationDate() {
+    public LocalDate getRegistrationDate() {
         return registrationDate;
     }
-    public void setRegistrationDate(String registrationDate) {
+    public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
     }
-    public String getExpiryYear(){
-        return expiryYear;
+    public LocalDate getExpiryDate(){
+        return expiryDate;
     }
-    public void setExpiryYear(String expiryYear) {
-        this.expiryYear = expiryYear;
+    public void setExpiryDate(LocalDate expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
     public String getPhotoUrl() {
@@ -68,5 +75,11 @@ public class IDCardRequestDTO {
     }
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+    public LocalDateTime getEmailSentAt(){
+        return emailSentAt;
+    }
+    public void setEmailSentAt(LocalDateTime emailSentAt){
+        this.emailSentAt = emailSentAt;
     }
 }
