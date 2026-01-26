@@ -58,7 +58,7 @@ public class AdminController {
 
     }
 
-    // Delete a member from the database
+    // Delete a selected member from the database
     @DeleteMapping("/members/{id}")
     public ResponseEntity<Member> deleteMember(@PathVariable("id") Long id) {
         Optional<Member> memberToDelete = memberRepository.findById(id);
@@ -68,6 +68,14 @@ public class AdminController {
             return ResponseEntity.ok(foundMember);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    // Delete all selected members
+    @DeleteMapping("/members/bulk-delete")
+    public ResponseEntity<Void> deleteAllMembers(@RequestBody List<Long> ids){
+        memberRepository.deleteAllById(ids);
+        return ResponseEntity.ok().build();
+
     }
 
     // Patch request for member data updates (email and contact)
