@@ -39,6 +39,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private EnrollmentYear enrollmentYear;
 
+    @Column(unique = true)
     private Long contact;
 
     @Column(unique = true)

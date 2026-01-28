@@ -91,7 +91,6 @@ public class AdminController {
         * */
         Optional<Member> updatedMember = adminRepository.findById(id);
 
-
         if(updatedMember.isPresent()) {
             Member foundMember = updatedMember.get();
             if(updates.newContact != null){

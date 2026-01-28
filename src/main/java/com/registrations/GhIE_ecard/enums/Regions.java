@@ -1,5 +1,7 @@
 package com.registrations.GhIE_ecard.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Regions{
     // Region enums
     Ahafo("Ahafo Region"),
@@ -25,7 +27,7 @@ public enum Regions{
         this.regionName = regionName;
     }
 
-
+    @JsonValue
     public String getRegionName() {
         return this.regionName;
     }

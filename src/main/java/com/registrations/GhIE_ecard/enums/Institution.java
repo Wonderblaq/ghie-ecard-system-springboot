@@ -1,5 +1,7 @@
 package com.registrations.GhIE_ecard.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Institution {
     // University Enums
     KNUST("KNUST"),
@@ -46,6 +48,7 @@ public enum Institution {
     }
 
     // getter method to get names
+    @JsonValue
     public String getDisplayName() {
         return this.displayName;
     }

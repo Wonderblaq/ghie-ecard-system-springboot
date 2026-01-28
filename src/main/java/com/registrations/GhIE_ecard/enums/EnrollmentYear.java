@@ -1,6 +1,8 @@
 package com.registrations.GhIE_ecard.enums;
 
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum EnrollmentYear {
     Year_2021(2021),
     Year_2022(2022),
@@ -16,7 +18,7 @@ public enum EnrollmentYear {
         this.enrollmentYear = enrollmentYear;
     }
 
-
+    @JsonValue
     public Integer getEnrollmentYear() {
         return this.enrollmentYear;
     }

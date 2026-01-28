@@ -66,7 +66,7 @@ public class CardDispatchService {
         int success = 0;
         int failure = 0;
         for (Member member : pendingMembers) {
-            System.out.println("Calling FastApi for member" + member.getMemberId());
+            System.out.println("Calling FastApi for member" + " " + member.getMemberId());
             boolean sent = callFastApi(member);
             if (sent){
                 member.setEmailSent(true);

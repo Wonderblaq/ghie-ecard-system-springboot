@@ -73,19 +73,26 @@ public class MemberController {
          * Set Expiry and Registration Dates
          * Save Registered Member
         **/
-        if (!memberRepository.findByEmail(student.getEmail()).isPresent()){
+        boolean emailExists = memberRepository.existsByEmail(student.getEmail());
+        boolean contactExists = memberRepository.existsByContact(student.getContact());
+
+        if (emailExists || contactExists){
+            String message = emailExists ? "Email" : "Contact";
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(message + " has already been registered");
+        }
+        else {
             student.setMemberId(generateID.generateMemberId());
             student.setRegistrationDate(LocalDate.now());
             student.setExpiryDate(registrationService.calculateExpiryDate(student.getEnrollmentYear()));
             // Save the member
             Member savedMember = memberRepository.save(student);
+            // Return the saved entity with HTTP 200 OK
+            return ResponseEntity.ok("Registered Successfully");
+
         }
-        else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).
-                    body("Email has already being registered");
-        }
-        // Return the saved entity with HTTP 200 OK
-        return ResponseEntity.ok("Registered Successfully");
+
+
     }
 
     // Display List of Institution
