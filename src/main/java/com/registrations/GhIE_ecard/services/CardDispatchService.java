@@ -4,83 +4,70 @@ import com.registrations.GhIE_ecard.DTO.IDCardRequestDTO;
 import com.registrations.GhIE_ecard.models.CardProcessingResult;
 import com.registrations.GhIE_ecard.models.Member;
 import com.registrations.GhIE_ecard.repositories.AdminRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import static java.util.stream.Collectors.*;
+import com.registrations.GhIE_ecard.services.FastApiClientService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
+
+@Slf4j
 @Service
 public class CardDispatchService {
-    private final RestClient restClient;
+    private static final Logger log = LoggerFactory.getLogger(CardDispatchService.class);
     private final AdminRepository adminRepository;
 
-    public CardDispatchService(RestClient restClient, AdminRepository adminRepository) {
-        this.restClient = restClient;
+    @Autowired
+    private final FastApiClientService clientService;
+
+    public CardDispatchService(RestClient restClient, AdminRepository adminRepository,
+                               FastApiClientService clientService) {
         this.adminRepository = adminRepository;
+        this.clientService = clientService;
     }
-    public boolean callFastApi(Member member){
-        // Creating the DTO with required member data for card creation
-        IDCardRequestDTO data = new IDCardRequestDTO();
-        data.setFullName(member.getFullName());
-        data.setMemberId(member.getMemberId());
-        data.setEmail(member.getEmail() != null ? member.getEmail().toLowerCase(): null);
-        data.setGender(member.getGender());
-        data.setInstitution(member.getInstitution());
-        data.setRegistrationDate(LocalDate.parse(member.getRegistrationDate().toString()));
-        data.setExpiryDate(member.getExpiryDate() != null ? LocalDate.parse(member.getExpiryDate().toString()) : null);
-        data.setPhotoUrl(member.getPhotoUrl());
 
-        // Send POST request to FastAPI
-        try {
-            // 2. Perform the request and capture the response
-            String response = restClient.post()
-                    .uri("/create_and_send_card")
-                    .body(data)
-                    .retrieve()
-                    // NEW: This handler triggers if FastAPI sends a 422 or other 4xx error
-                    .onStatus(HttpStatusCode::is4xxClientError, (request, res) -> {
-                        // Extract the detailed validation message from FastAPI
-                        String errorBody = new String(res.getBody().readAllBytes());
-                        System.out.println("FastAPI Error Detail: " + errorBody);
 
-                        // Stop execution because the request was rejected
-                        throw new RuntimeException("FastAPI Validation Failed: " + errorBody);
-                    })
-                    .body(String.class);
-
-            return true; // Successful path
-
-        } catch (Exception e) {
-            // 3. Handle network failures or our custom RuntimeException above
-            e.printStackTrace();
-            return false;
-        }
-     // Getting responseBody as string
-
-    }
     public CardProcessingResult processPendingCards() {
+        // get list of pending members from database
         List<Member> pendingMembers = adminRepository.findByEmailSentFalse();
-        int success = 0;
-        int failure = 0;
-        for (Member member : pendingMembers) {
-            System.out.println("Calling FastApi for member" + " " + member.getMemberId());
-            boolean sent = callFastApi(member);
-            if (sent){
-                member.setEmailSent(true);
-                success++;
-                member.setEmailSentAt(LocalDateTime.now());
-                adminRepository.save(member);
-            }
-            else {
-                failure++;
-                System.out.println("Failed for " + member.getFullName());
-                member.setEmailSent(false);
-            }
 
-        }
-        return new CardProcessingResult(success, failure);
+        /* Implementing Multithreading to speed up card generation and automation Process */
+
+        // Start a stream
+        // call fastApi on each member to run in async to speed up
+        List<CompletableFuture<Boolean>> futures =
+                (List<CompletableFuture<Boolean>>) pendingMembers.stream().map(
+                member -> clientService.callFastApi(member).thenApply(
+                        success -> {
+                            if (success){
+                                member.setEmailSent(true);
+                                member.setEmailSentAt(LocalDateTime.now());
+                                adminRepository.save(member);
+                                return true;
+                            }
+                            return false;
+                        })).toList();
+        // Big Wait, this line below ensures all futures or all workers are finished
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        // counts how many true we have in our opened receipts or finished tasks
+        int successCounts = (int) futures.stream().map
+                        (CompletableFuture::join) // open receipts and gets the results (true/ false)
+                .filter(result -> result == true) // only keep the receipts that returned true
+                .count();
+
+        int failureCounts = pendingMembers.size() - successCounts;
+
+        return new CardProcessingResult(successCounts, failureCounts);
     }
 }

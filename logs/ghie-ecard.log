@@ -1,0 +1,100 @@
+2026-01-31T00:01:41.172Z  INFO 5999 --- [GhIE-ecard] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-01-31T00:01:41.212Z  INFO 5999 --- [GhIE-ecard] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-01-31T00:01:41.225Z  INFO 5999 --- [GhIE-ecard] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-31T00:01:41.237Z  INFO 5999 --- [GhIE-ecard] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-01-31T00:01:41.243Z  INFO 5999 --- [GhIE-ecard] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-01-31T09:38:13.928Z  INFO 7108 --- [GhIE-ecard] [main] c.r.GhIE_ecard.GhIeEcardApplication      : Starting GhIeEcardApplication using Java 24.0.1 with PID 7108 (/Users/sarfowonder/Downloads/GhIE-ecard/target/classes started by sarfowonder in /Users/sarfowonder/Downloads/GhIE-ecard)
+2026-01-31T09:38:13.936Z DEBUG 7108 --- [GhIE-ecard] [main] c.r.GhIE_ecard.GhIeEcardApplication      : Running with Spring Boot v4.0.0, Spring v7.0.1
+2026-01-31T09:38:13.940Z  INFO 7108 --- [GhIE-ecard] [main] c.r.GhIE_ecard.GhIeEcardApplication      : No active profile set, falling back to 1 default profile: "default"
+2026-01-31T09:38:17.500Z  INFO 7108 --- [GhIE-ecard] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-31T09:38:18.156Z  INFO 7108 --- [GhIE-ecard] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 624 ms. Found 2 JPA repository interfaces.
+2026-01-31T09:38:22.014Z  INFO 7108 --- [GhIE-ecard] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-01-31T09:38:22.157Z  INFO 7108 --- [GhIE-ecard] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-31T09:38:22.159Z  INFO 7108 --- [GhIE-ecard] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.14]
+2026-01-31T09:38:22.746Z  INFO 7108 --- [GhIE-ecard] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 8448 ms
+2026-01-31T09:38:23.542Z  INFO 7108 --- [GhIE-ecard] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-31T09:38:23.908Z  INFO 7108 --- [GhIE-ecard] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 7.1.8.Final
+2026-01-31T09:38:26.606Z  INFO 7108 --- [GhIE-ecard] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-31T09:38:26.850Z  INFO 7108 --- [GhIE-ecard] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-31T09:38:28.193Z  INFO 7108 --- [GhIE-ecard] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@681311a7
+2026-01-31T09:38:28.199Z  INFO 7108 --- [GhIE-ecard] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-31T09:38:29.003Z  INFO 7108 --- [GhIE-ecard] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/Members]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.1
+	Default catalog/schema: Members/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DatasourceConnectionProviderImpl
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-31T09:38:32.507Z  INFO 7108 --- [GhIE-ecard] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-31T09:38:32.686Z  INFO 7108 --- [GhIE-ecard] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-31T09:38:32.873Z  INFO 7108 --- [GhIE-ecard] [main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-31T09:38:33.677Z  WARN 7108 --- [GhIE-ecard] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-31T09:38:33.770Z  INFO 7108 --- [GhIE-ecard] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2026-01-31T09:38:34.436Z  INFO 7108 --- [GhIE-ecard] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-01-31T09:38:34.482Z  INFO 7108 --- [GhIE-ecard] [main] c.r.GhIE_ecard.GhIeEcardApplication      : Started GhIeEcardApplication in 21.906 seconds (process running for 22.944)
+2026-01-31T09:38:49.859Z  INFO 7108 --- [GhIE-ecard] [tomcat-handler-0] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-31T09:38:49.861Z  INFO 7108 --- [GhIE-ecard] [tomcat-handler-0] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-31T09:38:49.864Z  INFO 7108 --- [GhIE-ecard] [tomcat-handler-0] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-01-31T09:40:58.057Z  WARN 7108 --- [GhIE-ecard] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=29s745ms), soft-evicting connections from pool.
+2026-01-31T09:43:21.137Z  INFO 7108 --- [GhIE-ecard] [tomcat-handler-3] c.r.G.services.CardDispatchService       : Card successfully dispatched for : GhIE-20265F9F80
+2026-01-31T09:43:57.293Z  INFO 7108 --- [GhIE-ecard] [tomcat-handler-3] c.r.G.services.CardDispatchService       : Card successfully dispatched for : GhIE-2026831705
+2026-01-31T09:45:48.118Z  INFO 7108 --- [GhIE-ecard] [tomcat-handler-3] c.r.G.services.CardDispatchService       : Card successfully dispatched for : GhIE-20262B5CC6
+2026-01-31T09:46:18.015Z  INFO 7108 --- [GhIE-ecard] [tomcat-handler-3] c.r.G.services.CardDispatchService       : Card successfully dispatched for : GhIE-2026145161
+2026-01-31T10:04:27.605Z  WARN 7108 --- [GhIE-ecard] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=29s384ms), soft-evicting connections from pool.
+2026-01-31T10:24:38.325Z  INFO 7108 --- [GhIE-ecard] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-01-31T10:24:38.353Z  INFO 7108 --- [GhIE-ecard] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-01-31T10:24:38.375Z  INFO 7108 --- [GhIE-ecard] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-31T10:24:38.414Z  INFO 7108 --- [GhIE-ecard] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-01-31T10:24:38.428Z  INFO 7108 --- [GhIE-ecard] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-01-31T10:28:21.852Z  INFO 7810 --- [GhIE-ecard] [main] c.r.GhIE_ecard.GhIeEcardApplication      : Starting GhIeEcardApplication using Java 24.0.1 with PID 7810 (/Users/sarfowonder/Downloads/GhIE-ecard/target/classes started by sarfowonder in /Users/sarfowonder/Downloads/GhIE-ecard)
+2026-01-31T10:28:21.857Z DEBUG 7810 --- [GhIE-ecard] [main] c.r.GhIE_ecard.GhIeEcardApplication      : Running with Spring Boot v4.0.0, Spring v7.0.1
+2026-01-31T10:28:21.860Z  INFO 7810 --- [GhIE-ecard] [main] c.r.GhIE_ecard.GhIeEcardApplication      : No active profile set, falling back to 1 default profile: "default"
+2026-01-31T10:28:23.187Z  INFO 7810 --- [GhIE-ecard] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-31T10:28:23.285Z  INFO 7810 --- [GhIE-ecard] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 80 ms. Found 2 JPA repository interfaces.
+2026-01-31T10:28:24.489Z  INFO 7810 --- [GhIE-ecard] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-01-31T10:28:24.528Z  INFO 7810 --- [GhIE-ecard] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-31T10:28:24.528Z  INFO 7810 --- [GhIE-ecard] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.14]
+2026-01-31T10:28:24.707Z  INFO 7810 --- [GhIE-ecard] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2738 ms
+2026-01-31T10:28:25.128Z  INFO 7810 --- [GhIE-ecard] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-31T10:28:25.238Z  INFO 7810 --- [GhIE-ecard] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 7.1.8.Final
+2026-01-31T10:28:26.476Z  INFO 7810 --- [GhIE-ecard] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-31T10:28:26.570Z  INFO 7810 --- [GhIE-ecard] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-31T10:28:27.071Z  INFO 7810 --- [GhIE-ecard] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@e6e5da4
+2026-01-31T10:28:27.076Z  INFO 7810 --- [GhIE-ecard] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-31T10:28:27.183Z  INFO 7810 --- [GhIE-ecard] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/Members]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.1
+	Default catalog/schema: Members/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DatasourceConnectionProviderImpl
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-31T10:28:28.871Z  INFO 7810 --- [GhIE-ecard] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-31T10:28:28.953Z  INFO 7810 --- [GhIE-ecard] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-31T10:28:29.122Z  INFO 7810 --- [GhIE-ecard] [main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-31T10:28:30.086Z  WARN 7810 --- [GhIE-ecard] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-31T10:28:30.183Z  INFO 7810 --- [GhIE-ecard] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2026-01-31T10:28:30.896Z  INFO 7810 --- [GhIE-ecard] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-01-31T10:28:30.907Z  INFO 7810 --- [GhIE-ecard] [main] c.r.GhIE_ecard.GhIeEcardApplication      : Started GhIeEcardApplication in 9.867 seconds (process running for 10.588)
+2026-01-31T10:28:43.741Z  INFO 7810 --- [GhIE-ecard] [tomcat-handler-0] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-31T10:28:43.743Z  INFO 7810 --- [GhIE-ecard] [tomcat-handler-0] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-31T10:28:43.745Z  INFO 7810 --- [GhIE-ecard] [tomcat-handler-0] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-01-31T10:29:30.453Z  INFO 7810 --- [GhIE-ecard] [GhIE-Task-1] c.r.G.services.CardDispatchService       : Card successfully dispatched for : GhIE-2026831705
+2026-01-31T10:30:09.090Z  INFO 7810 --- [GhIE-ecard] [GhIE-Task-4] c.r.G.services.CardDispatchService       : Card successfully dispatched for : GhIE-2026145161
+2026-01-31T10:30:43.831Z  INFO 7810 --- [GhIE-ecard] [GhIE-Task-2] c.r.G.services.CardDispatchService       : Card successfully dispatched for : GhIE-20262B5CC6
+2026-01-31T10:31:21.257Z  INFO 7810 --- [GhIE-ecard] [GhIE-Task-3] c.r.G.services.CardDispatchService       : Card successfully dispatched for : GhIE-20262D9587
+2026-01-31T10:31:44.730Z  INFO 7810 --- [GhIE-ecard] [GhIE-Task-5] c.r.G.services.CardDispatchService       : Card successfully dispatched for : GhIE-2026875AE6
+2026-01-31T10:39:02.667Z  INFO 7810 --- [GhIE-ecard] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-01-31T10:39:02.690Z  INFO 7810 --- [GhIE-ecard] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-01-31T10:39:02.701Z  INFO 7810 --- [GhIE-ecard] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-31T10:39:02.710Z  INFO 7810 --- [GhIE-ecard] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-01-31T10:39:02.715Z  INFO 7810 --- [GhIE-ecard] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
