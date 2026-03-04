@@ -4,6 +4,7 @@ import com.registrations.GhIE_ecard.DTO.IDCardRequestDTO;
 import com.registrations.GhIE_ecard.models.CardProcessingResult;
 import com.registrations.GhIE_ecard.models.Member;
 import com.registrations.GhIE_ecard.repositories.AdminRepository;
+import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,31 +16,34 @@ import org.springframework.web.client.RestClient;
 import static java.util.stream.Collectors.*;
 import com.registrations.GhIE_ecard.services.FastApiClientService;
 
+import javax.sound.midi.MetaMessage;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 
-@Slf4j
+
 @Service
 public class CardDispatchService {
     private static final Logger log = LoggerFactory.getLogger(CardDispatchService.class);
     private final AdminRepository adminRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
     private final FastApiClientService clientService;
 
     public CardDispatchService(RestClient restClient, AdminRepository adminRepository,
-                               FastApiClientService clientService) {
+                               FastApiClientService clientService, MemberRepository memberRepository) {
         this.adminRepository = adminRepository;
         this.clientService = clientService;
+        this.memberRepository = memberRepository;
     }
 
 
     public CardProcessingResult processPendingCards() {
         // get list of pending members from database
-        List<Member> pendingMembers = adminRepository.findByEmailSentFalse();
+        List<Member> pendingMembers = memberRepository.findByEmailSentFalse();
 
         /* Implementing Multithreading to speed up card generation and automation Process */
 
@@ -52,7 +56,7 @@ public class CardDispatchService {
                             if (success){
                                 member.setEmailSent(true);
                                 member.setEmailSentAt(LocalDateTime.now());
-                                adminRepository.save(member);
+                                memberRepository.save(member);
                                 return true;
                             }
                             return false;

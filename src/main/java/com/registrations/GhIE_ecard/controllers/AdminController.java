@@ -89,7 +89,7 @@ public class AdminController {
         * Save updates in Database
         *  Show response of success and failure
         * */
-        Optional<Member> updatedMember = adminRepository.findById(id);
+        Optional<Member> updatedMember = memberRepository.findById(id);
 
         if(updatedMember.isPresent()) {
             Member foundMember = updatedMember.get();
@@ -109,7 +109,7 @@ public class AdminController {
     // View members yet to receive cards
     @GetMapping("/members/pending-cards")
     public ResponseEntity<?> viewPendingCards(){
-        List<Member> pendingMembers = adminRepository.findByEmailSentFalse();
+        List<Member> pendingMembers = memberRepository.findByEmailSentFalse();
         if (!pendingMembers.isEmpty()){
             return ResponseEntity.ok(pendingMembers);
 

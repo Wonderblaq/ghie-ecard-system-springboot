@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClient;
 import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;
 
-@Slf4j
+
 @Service
 public class FastApiClientService {
     private static final Logger log = LoggerFactory.getLogger(CardDispatchService.class);
