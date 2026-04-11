@@ -1,5 +1,5 @@
-# Use a lightweight Java 21 image
-FROM eclipse-temurin:21-jdk-alpine
+# Use a lightweight Java 21-> 24 image
+FROM eclipse-temurin:24-jdk-alpine
 
 # Set the directory inside the container
 WORKDIR /app
