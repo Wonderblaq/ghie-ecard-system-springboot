@@ -39,7 +39,8 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 
         // Allow the JWT header!
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(List.of("*")); // Allow all headers for now
+        configuration.setAllowCredentials(true);      // Often required for browser-to-cloud requests
 
         // Apply this to ALL endpoints
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -52,7 +53,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 // Disable CSRF for REST APIs (standard practice for JWT)
-                .cors(cors -> corsConfigurationSource())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
 
                 // Tell Spring NOT to create sessions (Standard for JWT)
@@ -61,6 +62,7 @@ public class SecurityConfig {
                 )
                 // Configure which endpoints are public and private
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/registration/**").permitAll() // public endpoint
                         .requestMatchers("/admin").authenticated() // grant access to only admins
                         .requestMatchers("/auth/**").permitAll() // public for now
