@@ -9,11 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 // Import repositories and services needed by this controller
 import com.registrations.GhIE_ecard.services.GenerateID;
@@ -33,6 +29,7 @@ import java.util.List;
 @RestController
 // Maps all requests starting with /registration to this controller
 @RequestMapping("/registration")
+@CrossOrigin(origins = "http://localhost:5173")
 public class MemberController {
 
     // Autowired fields for dependency injection
