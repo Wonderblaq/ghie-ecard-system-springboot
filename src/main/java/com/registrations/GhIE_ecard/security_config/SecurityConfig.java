@@ -33,7 +33,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Allow the React dev's local machine, port number can / must be changed
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("*"));
 
         // Allow standard HTTP actions
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
@@ -50,29 +50,29 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Disable CSRF for REST APIs (standard practice for JWT)
+                //  Enable CORS first!
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                //  Disable CSRF for your stateless API
                 .csrf(csrf -> csrf.disable())
 
-                // Tell Spring NOT to create sessions (Standard for JWT)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                // Configure which endpoints are public and private
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/registration/**").permitAll() // public endpoint
-                        .requestMatchers("/admin").authenticated() // grant access to only admins
-                        .requestMatchers("/auth/**").permitAll() // public for now
-                        .anyRequest().authenticated()  // Lock everything else
+                        // EXPLICITLY permit all OPTIONS requests
+                        .requestMatchers(org.springframework.web.bind.annotation.RequestMethod.OPTIONS.name(), "/**").permitAll()
+                        .requestMatchers("/registration/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
+                        .anyRequest().authenticated()
                 )
-                //  Put your bouncer (jwtFilter) at the door
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();  // This algorithm enables spring to encode
