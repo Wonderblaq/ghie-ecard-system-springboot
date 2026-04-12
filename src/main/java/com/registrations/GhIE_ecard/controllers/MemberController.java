@@ -55,6 +55,7 @@ public class MemberController {
     // This is where methods for handling specific HTTP requests (GET, POST, etc.) would be added.
 
     // Get all members
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/all")
     public List<Member> getAllMembers(){
         return (List<Member>) memberRepository.findAll(
@@ -62,7 +63,7 @@ public class MemberController {
         );
     }
 
-
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/register")
     public ResponseEntity<?> registerMember(@RequestBody Member student) {
         /* * Check for duplicate email,
