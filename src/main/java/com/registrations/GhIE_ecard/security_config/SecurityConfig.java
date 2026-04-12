@@ -34,7 +34,6 @@ public class SecurityConfig {
 
         // Allow the React dev's local machine, port number can / must be changed
         configuration.setAllowedOrigins(List.of("*"));
-
         // Allow standard HTTP actions
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 
