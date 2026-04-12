@@ -32,16 +32,13 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Allow the React dev's local machine, port number can / must be changed
-        configuration.setAllowedOrigins(List.of("*"));
-        // Allow standard HTTP actions
+        //  specify exact origins.
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "https://your-frontend-link.onrender.com"));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
 
-        // Allow the JWT header!
-        configuration.setAllowedHeaders(List.of("*")); // Allow all headers for now
-        configuration.setAllowCredentials(true);      // Often required for browser-to-cloud requests
-
-        // Apply this to ALL endpoints
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
@@ -61,7 +58,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         // Ensure the leading slash is present in the pattern string
-                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(org.springframework.web.bind.annotation.RequestMethod.OPTIONS.name(), "/**").permitAll()
                         .requestMatchers("/registration/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/admin").authenticated()
