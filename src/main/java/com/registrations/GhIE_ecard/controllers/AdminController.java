@@ -59,7 +59,7 @@ public class AdminController {
     }
 
     // Delete a selected member from the database
-    @DeleteMapping("/members/{id}")
+    @DeleteMapping("/delete-members/{id}")
     public ResponseEntity<Member> deleteMember(@PathVariable("id") Long id) {
         Optional<Member> memberToDelete = memberRepository.findById(id);
         if (memberToDelete.isPresent()) {
