@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 
 @Service
 public class JwtService {
@@ -25,14 +26,20 @@ public class JwtService {
     }
 
     // method to generate key for admins
-    public String generateToken(String username){
+    /*
+    overload generateToken so it accepts custom claim maps,
+    with this , we can now add other validation parameters for admins to sign in
+     */
+    public String generateToken(Map<String, Object> extraClaims, String username){
         return Jwts.builder()
+                .setClaims(extraClaims) // This loads the custom map (institution, etc.) into the payload
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10 ))// 10 hour expiration
                 .signWith(getSigninKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     // method to extract username from token
     public String extractUsername(String token){

@@ -4,7 +4,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import com.registrations.GhIE_ecard.enums.Institution;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,6 +26,17 @@ public class Admin implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "role")
+    private String role;
+
+
+    /* Added a new column named 'institution' to enable role-based access.
+   This ensures that campus coordinators can log in to the system
+   but will only be able to view data specific to their institution. */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "institution")
+    private Institution institution;
+
 // USER DETAILS METHOD
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -42,6 +53,9 @@ public class Admin implements UserDetails {
     public String getUsername() {
         return username;
     }
+
+
+
     @Override
     public boolean isAccountNonExpired() { // Account never expires for now
         return true;
@@ -74,6 +88,15 @@ public class Admin implements UserDetails {
         this.email = email;
     }
 
+    public Institution getInstitution() {
+        return institution;
+    }
 
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
 
+    public String getRole(){ return this.role; }
+
+    public void setRole(String role) { this.role = role; }
 }
