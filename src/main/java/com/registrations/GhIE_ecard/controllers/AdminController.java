@@ -4,6 +4,7 @@ import java.lang.Iterable;
 import java.util.List;
 import java.util.Optional;
 
+import com.registrations.GhIE_ecard.models.Admin;
 import com.registrations.GhIE_ecard.models.CardProcessingResult;
 import com.registrations.GhIE_ecard.models.Member;
 import com.registrations.GhIE_ecard.repositories.AdminRepository;
@@ -12,11 +13,13 @@ import com.registrations.GhIE_ecard.services.CardDispatchService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.PatchMapping;
 import com.registrations.GhIE_ecard.DTO.MemberUpdateDTO;
-
+import com.registrations.GhIE_ecard.services.MemberService;
 /**
  * AdminController handles HTTP requests related to admin responsibilities.
  * It is marked as a REST controller to process web requests.
@@ -30,35 +33,47 @@ public class AdminController {
     public final MemberRepository memberRepository;
     public final AdminRepository adminRepository;
     private CardDispatchService cardDispatchService;
+    public MemberService memberService;
 
 
     public AdminController(MemberRepository memberRepository, AdminRepository adminRepository,
+                           MemberService memberService,
                            CardDispatchService cardDispatchService) {
         this.memberRepository = memberRepository;
         this.adminRepository = adminRepository;
         this.cardDispatchService = cardDispatchService;
+        this.memberService = memberService;
     }
 
     // This is where methods for handling specific HTTP requests (GET, POST, etc.) would be added.
 
     // Get request for admin to view all registered members
+
     @GetMapping("/members")
-    public Iterable<Member> getAllMembers() {
-        return memberRepository.findAll(Sort.by(Sort.Direction.ASC, "memberId"));
+    public ResponseEntity<List<Member>> getAllMembers(
+            // this annotation enables spring injects the -
+            // fully loaded admin object/profile from jwt context
+            @AuthenticationPrincipal Admin loggedAdmin
+    ) {
+        List<Member> members = memberService.getMembersForLoggedInAdmin(loggedAdmin);
+
+        return ResponseEntity.ok(members);
     }
 
-    // Get request for admin to find specific members
+    // Get request for admins to find specific members
     @GetMapping("/members/{id}")
-    public Member findMember(@PathVariable("id") Long id) {
-        Optional<Member> memberToFind = memberRepository.findById(id);
+    public ResponseEntity<Optional<Member>> findMember(@PathVariable("id") Long id, @AuthenticationPrincipal Admin loggedAdmin) {
+        Optional<Member> memberToFind = Optional.ofNullable(memberService.getSingleMemberForLoggedInAdmin(id, loggedAdmin));
         if (memberToFind.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "member not found!");
         }
-        return memberToFind.get();
+        System.out.println("LOGGED IN USER AUTHORITIES: " + org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        return ResponseEntity.ok(memberToFind);
 
     }
-
-    // Delete a selected member from the database
+//
+    // Delete a selected member from the database, access granted to only 'SUPER_ADMIN'
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @DeleteMapping("/delete-members/{id}")
     public ResponseEntity<Member> deleteMember(@PathVariable("id") Long id) {
         Optional<Member> memberToDelete = memberRepository.findById(id);
@@ -70,7 +85,8 @@ public class AdminController {
         return ResponseEntity.notFound().build();
     }
 
-    // Delete all selected members
+    // Delete all selected members, access granted to only 'SUPER_ADMIN'
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @DeleteMapping("/members/bulk-delete")
     public ResponseEntity<Void> deleteAllMembers(@RequestBody List<Long> ids){
         memberRepository.deleteAllById(ids);
@@ -78,7 +94,8 @@ public class AdminController {
 
     }
 
-    // Patch request for member data updates (email and contact)
+    // Patch request for member data updates (email and contact), role: SUPER_ADMIN
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @PatchMapping("/members/{id}/email")
     public ResponseEntity<?> updateMemberInfo(@RequestBody (required = false) MemberUpdateDTO updates
     , @PathVariable ("id") Long id){
@@ -106,10 +123,10 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("member not found");
     }
 
-    // View members yet to receive cards
+    // View members yet to receive cards, role given to all admins
     @GetMapping("/members/pending-cards")
-    public ResponseEntity<?> viewPendingCards(){
-        List<Member> pendingMembers = memberRepository.findByEmailSentFalse();
+    public ResponseEntity<?> viewPendingCards(@AuthenticationPrincipal Admin loggedAdmin){
+        List<Member> pendingMembers = memberService.getMembersForLoggedInAdmin(loggedAdmin);
         if (!pendingMembers.isEmpty()){
             return ResponseEntity.ok(pendingMembers);
 
@@ -117,6 +134,9 @@ public class AdminController {
         return ResponseEntity.ok().body("No Pending Members");
 
     }
+
+    // Allow only 'SUPER_ADMIN', to process and send cards
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @PostMapping("/process-cards")
     public ResponseEntity<CardProcessingResult> processCards() {
         CardProcessingResult result =

@@ -40,8 +40,9 @@ public class Admin implements UserDetails {
 // USER DETAILS METHOD
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Ensure every Admin gets the "ROLE_ADMIN" authority
-        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        // Implements ROLE BASED ACCESS FOR admins
+        // Ensure every Admin gets the "ROLE_" authority plus their role
+        return List.of(new SimpleGrantedAuthority(this.role));
     }
 
     @Override
