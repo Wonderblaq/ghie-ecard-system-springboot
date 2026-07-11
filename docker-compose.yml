@@ -10,6 +10,8 @@ services:
       - POSTGRES_DB=${DB_NAME}
     ports:
       - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Added Volume
 
   app:
     build: .
@@ -24,9 +26,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DB_NAME}
       - SPRING_DATASOURCE_USERNAME=${DB_USER}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-
       - SECRET_KEY=${SECRET_KEY}
-
       - FASTAPI_URL=http://fastapi-service:8000
 
   fastapi-service:
@@ -36,3 +36,7 @@ services:
       - .env
     ports:
       - "8000:8000"
+
+# Root-level declaration tells Docker to initialize this named volume space
+volumes:
+  pgdata:

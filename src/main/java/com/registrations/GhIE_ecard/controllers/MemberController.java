@@ -54,13 +54,13 @@ public class MemberController {
     }
     // This is where methods for handling specific HTTP requests (GET, POST, etc.) would be added.
 
-    // Get all members
-    @GetMapping("/all")
-    public List<Member> getAllMembers(){
-        return (List<Member>) memberRepository.findAll(
-                Sort.by(Sort.Direction.ASC, "memberId")
-        );
-    }
+    // Get all members, For Testing Only
+//    @GetMapping("/all")
+//    public List<Member> getAllMembers(){
+//        return (List<Member>) memberRepository.findAll(
+//                Sort.by(Sort.Direction.ASC, "memberId")
+//        );
+//    }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerMember(@RequestBody Member student) {
@@ -92,21 +92,6 @@ public class MemberController {
     }
 
     // Display List of Institution
-    @GetMapping("/institutions")
-    public List<Institution> getAllInstitutions(){
-        return Arrays.asList(Institution.values());
-    }
-
-    // Display List of Regions
-    @GetMapping("/regions")
-    public List<Regions> getAllRegions(){
-        return Arrays.asList(Regions.values());
-    }
-
-    @GetMapping("/enrollment")
-    public List<EnrollmentYear> getAllEnrollmentYears(){
-        return Arrays.asList((EnrollmentYear.values()));
-    }
 
 
 
