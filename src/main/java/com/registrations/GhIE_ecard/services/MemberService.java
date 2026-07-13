@@ -62,5 +62,5 @@ public class MemberService {
         // Fallback security clause
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized role access.");
     }
-    // i
+    //
 }
