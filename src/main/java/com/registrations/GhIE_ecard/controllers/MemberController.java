@@ -55,11 +55,7 @@ public class MemberController {
     // This is where methods for handling specific HTTP requests (GET, POST, etc.) would be added.
 
     // Get all members, For Testing Only
-//    @GetMapping("/all")
-//    public List<Member> getAllMembers(){
-//        return (List<Member>) memberRepository.findAll(
-//                Sort.by(Sort.Direction.ASC, "memberId")
-//        );
+
 //    }
 
     @PostMapping("/register")
