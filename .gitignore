@@ -3,7 +3,7 @@
 *.iml
 
 # Build directories
-target/
+/target/
 
 # Local environment variables and secrets
 .env
