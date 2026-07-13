@@ -1,8 +1,9 @@
-404: Not Found
+# IDE and project files
 .idea/
 *.iml
-# target/
 
-.idea/
-*.iml
-# target/
+# Build directories
+target/
+
+# Local environment variables and secrets
+.env
