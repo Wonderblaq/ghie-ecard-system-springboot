@@ -50,7 +50,7 @@ public class FastApiClientService {
             // 2. Perform the request and capture the response
             String response = restClient.post()
                     .uri("/send_batch_cards")
-                    .body(data)
+                    .body(batchData)
                     .retrieve()
                     // NEW: This handler triggers if FastAPI sends a 422 or other 4xx error
                     .onStatus(HttpStatusCode::is4xxClientError, (request, res) -> {
