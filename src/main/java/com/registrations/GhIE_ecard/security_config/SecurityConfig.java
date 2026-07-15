@@ -39,7 +39,9 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         //  specify exact origins.
-        configuration.setAllowedOrigins(List.of("http://localhost:5173","https://yeghie.com/","https://your-frontend-link.onrender.com"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173",
+                "https://yeghie.com",
+                "https://ghieecard.vercel.app"));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
