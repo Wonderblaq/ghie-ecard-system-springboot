@@ -4,6 +4,8 @@ import com.registrations.GhIE_ecard.enums.Institution;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.registrations.GhIE_ecard.models.Member;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,5 +21,8 @@ public interface  MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByInstitution(Institution institution);
 
 
-   Optional<Member> findById(String memberId);
+   //Optional<Member> findById(String memberId);
+   // 💡 This @Query bypasses the automatic parser confusion!
+   @Query("SELECT m FROM Member m WHERE m.memberId = :memberId")
+   Optional<Member> findByMemberId(@Param("memberId") String memberId);
 }
