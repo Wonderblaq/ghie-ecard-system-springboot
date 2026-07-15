@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -30,6 +31,8 @@ public class FastApiClientService {
     public CompletableFuture<Boolean> callFastApi(Member member){
         // Creating the DTO with required member data for card creation
         IDCardRequestDTO data = new IDCardRequestDTO();
+
+
         data.setFullName(member.getFullName());
         data.setMemberId(member.getMemberId());
         data.setEmail(member.getEmail() != null ? member.getEmail().toLowerCase(): null);
@@ -39,11 +42,14 @@ public class FastApiClientService {
         data.setExpiryDate(member.getExpiryDate() != null ? LocalDate.parse(member.getExpiryDate().toString()) : null);
         data.setPhotoUrl(member.getPhotoUrl());
 
+        // Wrap the single 'data' object inside a List for sending of cards easily
+        List<IDCardRequestDTO> batchData = List.of(data);
+
         // Send POST request to FastAPI
         try {
             // 2. Perform the request and capture the response
             String response = restClient.post()
-                    .uri("/create_and_send_card")
+                    .uri("/send_batch_cards")
                     .body(data)
                     .retrieve()
                     // NEW: This handler triggers if FastAPI sends a 422 or other 4xx error
