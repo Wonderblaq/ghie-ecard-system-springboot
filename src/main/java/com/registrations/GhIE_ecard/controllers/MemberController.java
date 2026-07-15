@@ -86,13 +86,25 @@ public class MemberController {
 
 
     }
+    // Display Institutions
+    @GetMapping("/institutions")
+    public List<Institution> getAllInstitutions(){
+        return Arrays.asList(Institution.values());
+    }
 
-    // Display List of Institution
+    // Display List of Regions
+    @GetMapping("/regions")
+    public List<Regions> getAllRegions(){
+        return Arrays.asList(Regions.values());
+    }
+
+    @GetMapping("/enrollment")
+    public List<EnrollmentYear> getAllEnrollmentYears(){
+        return Arrays.asList((EnrollmentYear.values()));
+    }
 
 
 
-
-    // Get Request for member to view ID card
 
 
 

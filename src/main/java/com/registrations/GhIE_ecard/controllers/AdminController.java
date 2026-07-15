@@ -147,22 +147,6 @@ public class AdminController {
                 cardDispatchService.processPendingCards();
         return ResponseEntity.ok(result);
     }
-    // Display Institutions
-    @GetMapping("/institutions")
-    public List<Institution> getAllInstitutions(){
-        return Arrays.asList(Institution.values());
-    }
-
-    // Display List of Regions
-    @GetMapping("/regions")
-    public List<Regions> getAllRegions(){
-        return Arrays.asList(Regions.values());
-    }
-
-    @GetMapping("/enrollment")
-    public List<EnrollmentYear> getAllEnrollmentYears(){
-        return Arrays.asList((EnrollmentYear.values()));
-    }
 
 
 
