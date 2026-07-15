@@ -43,7 +43,7 @@ public class CardDispatchService {
 
     // Method handles sending cards for single members
     public boolean processSingleCard(String memberId){
-       Member member = memberRepository.findById(memberId).orElseThrow(()
+       Member member = memberRepository.findByMemberId(memberId).orElseThrow(()
                -> new RuntimeException("Member not found with ID: " + memberId));
        if(member.getEmailSent() == true){
            log.info("Card already sent for member: {}", memberId);
