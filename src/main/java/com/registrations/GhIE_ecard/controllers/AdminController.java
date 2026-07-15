@@ -146,7 +146,7 @@ public class AdminController {
 
     // This Endpoint process sending cards to single members
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
-    @PostMapping("/process-single-card")
+    @PostMapping("/process-single-card/{memberId}")
     public ResponseEntity<String> processSingleCard(@PathVariable String memberId){
         boolean success = cardDispatchService.processSingleCard(memberId);
         if (success) {
