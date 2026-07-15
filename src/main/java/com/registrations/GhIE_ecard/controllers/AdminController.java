@@ -1,20 +1,14 @@
 package com.registrations.GhIE_ecard.controllers;
 
-import java.lang.Iterable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.registrations.GhIE_ecard.enums.EnrollmentYear;
-import com.registrations.GhIE_ecard.enums.Institution;
-import com.registrations.GhIE_ecard.enums.Regions;
 import com.registrations.GhIE_ecard.models.Admin;
 import com.registrations.GhIE_ecard.models.CardProcessingResult;
 import com.registrations.GhIE_ecard.models.Member;
 import com.registrations.GhIE_ecard.repositories.AdminRepository;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import com.registrations.GhIE_ecard.services.CardDispatchService;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -139,13 +133,28 @@ public class AdminController {
 
     }
 
-    // Allow only 'SUPER_ADMIN', to process and send cards
+    // Allow only 'SUPER_ADMIN', to process and send cards for multiple members
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @PostMapping("/process-cards")
     public ResponseEntity<CardProcessingResult> processCards() {
         CardProcessingResult result =
-                cardDispatchService.processPendingCards();
+                cardDispatchService.processAllPendingCards();
         return ResponseEntity.ok(result);
+    }
+
+
+
+    // This Endpoint process sending cards to single members
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
+    @PostMapping("/process-single-card")
+    public ResponseEntity<String> processSingleCard(@PathVariable String memberId){
+        boolean success = cardDispatchService.processSingleCard(memberId);
+        if (success) {
+            return ResponseEntity.ok("Card successfully dispatched to member: " + memberId);
+        } else {
+            return ResponseEntity.internalServerError().body("Failed to dispatch card to member: " + memberId);
+        }
+
     }
 
 

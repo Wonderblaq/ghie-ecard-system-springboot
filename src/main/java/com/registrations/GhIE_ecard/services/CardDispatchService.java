@@ -17,6 +17,7 @@ import static java.util.stream.Collectors.*;
 import com.registrations.GhIE_ecard.services.FastApiClientService;
 
 import javax.sound.midi.MetaMessage;
+import java.nio.channels.ScatteringByteChannel;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,8 +41,34 @@ public class CardDispatchService {
         this.memberRepository = memberRepository;
     }
 
+    // Method handles sending cards for single members
+    public boolean processSingleCard(String memberId){
+       Member member = memberRepository.findById(memberId).orElseThrow(()
+               -> new RuntimeException("Member not found with ID: " + memberId));
+       if(member.getEmailSent() == true){
+           log.info("Card already sent for member: {}", memberId);
+           return true;
 
-    public CardProcessingResult processPendingCards() {
+       }
+       try {
+           // call fastapi on this single member and add to the thread
+          Boolean success = clientService.callFastApi(member).join();
+          if (success) {
+              member.setEmailSent(true);
+              member.setEmailSentAt(LocalDateTime.now());
+              memberRepository.save(member);
+              return true;
+          }
+
+       } catch (Exception e) {
+           log.error("Failed to process single card for {}: {}", memberId, e.getMessage());
+       }
+       return false;
+
+    }
+
+ // Method to handle sending cards for bulk members
+    public CardProcessingResult processAllPendingCards() {
         // get list of pending members from database
         List<Member> pendingMembers = memberRepository.findByEmailSentFalse();
 
