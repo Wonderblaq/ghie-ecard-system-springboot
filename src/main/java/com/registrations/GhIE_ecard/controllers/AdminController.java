@@ -153,7 +153,7 @@ public class AdminController {
             case "SUCCESS":
                 return ResponseEntity.ok("Card successfully dispatched to member: " + memberId);
 
-            case "ALREADY_SENT":
+            case "ALREADY SENT":
                 // Returning a 400 Bad Request or 200 with a specific message depending on preference.
                 // 400 is great because it tells the frontend "You shouldn't have requested this."
                 return ResponseEntity.badRequest().body("Card has already been sent to this member previously.");
