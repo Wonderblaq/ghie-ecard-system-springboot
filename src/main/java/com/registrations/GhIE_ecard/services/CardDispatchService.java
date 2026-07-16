@@ -42,12 +42,12 @@ public class CardDispatchService {
     }
 
     // Method handles sending cards for single members
-    public boolean processSingleCard(String memberId){
+    public String processSingleCard(String memberId){
        Member member = memberRepository.findByMemberId(memberId).orElseThrow(()
                -> new RuntimeException("Member not found with ID: " + memberId));
        if(member.getEmailSent() == true){
            log.info("Card already sent for member: {}", memberId);
-           return true;
+           return "ALREADY SENT";
 
        }
        try {
@@ -57,13 +57,13 @@ public class CardDispatchService {
               member.setEmailSent(true);
               member.setEmailSentAt(LocalDateTime.now());
               memberRepository.save(member);
-              return true;
+              return "SUCESS";
           }
 
        } catch (Exception e) {
            log.error("Failed to process single card for {}: {}", memberId, e.getMessage());
        }
-       return false;
+       return "FAILED";
 
     }
 

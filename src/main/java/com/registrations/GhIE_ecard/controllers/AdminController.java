@@ -1,5 +1,6 @@
 package com.registrations.GhIE_ecard.controllers;
 
+import java.lang.classfile.instruction.SwitchCase;
 import java.util.List;
 import java.util.Optional;
 
@@ -143,22 +144,28 @@ public class AdminController {
     }
 
 
-
     // This Endpoint process sending cards to single members
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @PostMapping("/process-single-card/{memberId}")
-    public ResponseEntity<String> processSingleCard(@PathVariable String memberId){
-        boolean success = cardDispatchService.processSingleCard(memberId);
-        if (success) {
-            return ResponseEntity.ok("Card successfully dispatched to member: " + memberId);
-        } else {
-            return ResponseEntity.internalServerError().body("Failed to dispatch card to member: " + memberId);
+    public ResponseEntity<String> processSingleCard(@PathVariable String memberId) {
+        String result = cardDispatchService.processSingleCard(memberId);
+        switch (result) {
+            case "SUCCESS":
+                return ResponseEntity.ok("Card successfully dispatched to member: " + memberId);
+
+            case "ALREADY_SENT":
+                // Returning a 400 Bad Request or 200 with a specific message depending on preference.
+                // 400 is great because it tells the frontend "You shouldn't have requested this."
+                return ResponseEntity.badRequest().body("Card has already been sent to this member previously.");
+
+            case "FAILED":
+            default:
+                return ResponseEntity.internalServerError().body("Failed to dispatch card to member: " + memberId);
+
+
         }
 
+
     }
-
-
-
-
 
 }
