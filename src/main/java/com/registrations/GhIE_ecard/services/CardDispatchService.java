@@ -57,7 +57,7 @@ public class CardDispatchService {
               member.setEmailSent(true);
               member.setEmailSentAt(LocalDateTime.now());
               memberRepository.save(member);
-              return "SUCESS";
+              return "SUCCESS";
           }
 
        } catch (Exception e) {
