@@ -12,7 +12,7 @@
 	<artifactId>GhIE-ecard</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>GhIE-ecard</name>
-	<description>E-card distributions for GhIE student members using The Spring
+	<description>E-card distributions for GhIE student studentMembers using The Spring
     framework</description>
 	<url/>
 	<licenses>
@@ -123,7 +123,9 @@
 							<artifactId>lombok</artifactId>
 						</path>
 					</annotationProcessorPaths>
-				</configuration>
+                    <source>25</source>
+                    <target>25</target>
+                </configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

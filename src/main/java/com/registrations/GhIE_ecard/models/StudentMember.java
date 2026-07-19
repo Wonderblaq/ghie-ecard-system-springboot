@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "member_info")
-public class Member {
+public class StudentMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,10 +39,10 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private EnrollmentYear enrollmentYear;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private Long contact;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     private String program;
@@ -57,7 +57,14 @@ public class Member {
 
     private Boolean emailSent = false;
 
-    public Member() {} // REQUIRED BY JPA
+    @PrePersist
+    protected void OnCreate(){
+        if (this.email != null){
+            this.email.toLowerCase().trim();
+        }
+    }
+
+    public StudentMember() {} // REQUIRED BY JPA
 
     // --- getters & setters
 

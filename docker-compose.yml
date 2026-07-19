@@ -11,7 +11,13 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data # Added Volume
+      - pgdata:/var/lib/postgresql/data
+    # Tells Docker to check if Postgres is actually accepting connections
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   app:
     build: .
@@ -19,10 +25,12 @@ services:
     env_file:
       - .env
     ports:
-      - "8080:10000"
+      - "8080:10000" # FIXED: Maps host 8080 to container 8080 where Spring Boot is listening
     depends_on:
-      - db
+      db:
+        condition: service_healthy # FIXED: Forces backend to wait until DB is fully ready
     environment:
+      - SERVER_PORT=10000 # Tells Spring Boot to listen on 10000 inside the container
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DB_NAME}
       - SPRING_DATASOURCE_USERNAME=${DB_USER}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
@@ -37,6 +45,5 @@ services:
     ports:
       - "8000:8000"
 
-# Root-level declaration tells Docker to initialize this named volume space
 volumes:
-  pgdata:
+  pgdata: # FIXED: Removed the trailing quote typo

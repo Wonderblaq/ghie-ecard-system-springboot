@@ -69,6 +69,7 @@ public class SecurityConfig {
                         // USE THIS EXACT LINE
                         .requestMatchers(pathPattern(HttpMethod.OPTIONS, "/**")).permitAll()
                         .requestMatchers("/registration/**").permitAll()
+                        .requestMatchers("/professionals/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/admin/**").authenticated()
                         .anyRequest().authenticated()

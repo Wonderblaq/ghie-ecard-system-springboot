@@ -1,9 +1,7 @@
 package com.registrations.GhIE_ecard.services;
 
 import com.registrations.GhIE_ecard.DTO.IDCardRequestDTO;
-import com.registrations.GhIE_ecard.models.Member;
-import com.registrations.GhIE_ecard.repositories.AdminRepository;
-import lombok.extern.slf4j.Slf4j;
+import com.registrations.GhIE_ecard.models.StudentMember;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatusCode;
@@ -28,19 +26,19 @@ public class FastApiClientService {
     }
 
     @Async("taskExecutor")  // tells Spring to use my specific pool of 5 threads
-    public CompletableFuture<Boolean> callFastApi(Member member){
+    public CompletableFuture<Boolean> callFastApi(StudentMember studentMember){
         // Creating the DTO with required member data for card creation
         IDCardRequestDTO data = new IDCardRequestDTO();
 
 
-        data.setFullName(member.getFullName());
-        data.setMemberId(member.getMemberId());
-        data.setEmail(member.getEmail() != null ? member.getEmail().toLowerCase(): null);
-        data.setGender(member.getGender());
-        data.setInstitution(member.getInstitution());
-        data.setRegistrationDate(LocalDate.parse(member.getRegistrationDate().toString()));
-        data.setExpiryDate(member.getExpiryDate() != null ? LocalDate.parse(member.getExpiryDate().toString()) : null);
-        data.setPhotoUrl(member.getPhotoUrl());
+        data.setFullName(studentMember.getFullName());
+        data.setMemberId(studentMember.getMemberId());
+        data.setEmail(studentMember.getEmail() != null ? studentMember.getEmail().toLowerCase(): null);
+        data.setGender(studentMember.getGender());
+        data.setInstitution(studentMember.getInstitution());
+        data.setRegistrationDate(LocalDate.parse(studentMember.getRegistrationDate().toString()));
+        data.setExpiryDate(studentMember.getExpiryDate() != null ? LocalDate.parse(studentMember.getExpiryDate().toString()) : null);
+        data.setPhotoUrl(studentMember.getPhotoUrl());
 
         // Wrap the single 'data' object inside a List for sending of cards easily
         List<IDCardRequestDTO> batchData = List.of(data);
@@ -64,7 +62,7 @@ public class FastApiClientService {
                     })
                     .body(String.class);
 
-            log.info("Card successfully dispatched for : {}", member.getMemberId());
+            log.info("Card successfully dispatched for : {}", studentMember.getMemberId());
             return CompletableFuture.completedFuture(true); // Successful path
 
         } catch (Exception e) {

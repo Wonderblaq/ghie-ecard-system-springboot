@@ -4,9 +4,8 @@ package com.registrations.GhIE_ecard.controllers;
 import com.registrations.GhIE_ecard.enums.EnrollmentYear;
 import com.registrations.GhIE_ecard.enums.Institution;
 import com.registrations.GhIE_ecard.enums.Regions;
-import com.registrations.GhIE_ecard.models.Member;
+import com.registrations.GhIE_ecard.models.StudentMember;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,6 @@ import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import com.registrations.GhIE_ecard.services.MemberRegistrationService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,7 +57,7 @@ public class MemberController {
 //    }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerMember(@RequestBody Member student) {
+    public ResponseEntity<?> registerMember(@RequestBody StudentMember student) {
         /* * Check for duplicate email,
          * Generate a unique ID for the member
          * Set Expiry and Registration Dates
@@ -78,7 +76,7 @@ public class MemberController {
             student.setRegistrationDate(LocalDate.now());
             student.setExpiryDate(registrationService.calculateExpiryDate(student.getEnrollmentYear()));
             // Save the member
-            Member savedMember = memberRepository.save(student);
+            StudentMember savedStudentMember = memberRepository.save(student);
             // Return the saved entity with HTTP 200 OK
             return ResponseEntity.ok("Registered Successfully");
 

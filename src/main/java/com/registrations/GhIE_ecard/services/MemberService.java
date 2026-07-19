@@ -1,6 +1,6 @@
 package com.registrations.GhIE_ecard.services;
 import com.registrations.GhIE_ecard.models.Admin;
-import com.registrations.GhIE_ecard.models.Member;
+import com.registrations.GhIE_ecard.models.StudentMember;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class MemberService {
     }
 
 
-    public List<Member> getMembersForLoggedInAdmin(Admin loggedAdmin){
+    public List<StudentMember> getMembersForLoggedInAdmin(Admin loggedAdmin){
         // GuardRailLogic, if logged in admin is 'SUPER_ADMIN',grant them access to everything
         if ("SUPER_ADMIN".equalsIgnoreCase(loggedAdmin.getRole())){
             return memberRepository.findAll();
@@ -38,21 +38,21 @@ public class MemberService {
         return Collections.emptyList();
 
     }
-    public Member getSingleMemberForLoggedInAdmin(Long id, Admin loggedAdmin) {
+    public StudentMember getSingleMemberForLoggedInAdmin(Long id, Admin loggedAdmin) {
         // 1. Fetch the member from the database first
-        Member member = memberRepository.findById(id)
+        StudentMember studentMember = memberRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found!"));
 
         // 2. Guardrail: If Super Admin, let them see any member profile across the country
         if ("SUPER_ADMIN".equalsIgnoreCase(loggedAdmin.getRole())) {
-            return member;
+            return studentMember;
         }
 
         // 3. Multi-Tenant Check: If Campus Admin, strictly verify institutional alignment
         if ("CAMPUS_ADMIN".equalsIgnoreCase(loggedAdmin.getRole())) {
             // Compare the Enum or String values of both institutions
-            if (member.getInstitution() == loggedAdmin.getInstitution()) {
-                return member;
+            if (studentMember.getInstitution() == loggedAdmin.getInstitution()) {
+                return studentMember;
             } else {
                 // Throw a 403 Forbidden if a coordinator tries to access another school's data
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied: This member belongs to another institution.");

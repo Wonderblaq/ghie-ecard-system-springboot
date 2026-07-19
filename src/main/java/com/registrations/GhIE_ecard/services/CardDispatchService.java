@@ -1,24 +1,15 @@
 package com.registrations.GhIE_ecard.services;
 
-import com.registrations.GhIE_ecard.DTO.IDCardRequestDTO;
 import com.registrations.GhIE_ecard.models.CardProcessingResult;
-import com.registrations.GhIE_ecard.models.Member;
+import com.registrations.GhIE_ecard.models.StudentMember;
 import com.registrations.GhIE_ecard.repositories.AdminRepository;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import static java.util.stream.Collectors.*;
-import com.registrations.GhIE_ecard.services.FastApiClientService;
 
-import javax.sound.midi.MetaMessage;
-import java.nio.channels.ScatteringByteChannel;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -43,20 +34,20 @@ public class CardDispatchService {
 
     // Method handles sending cards for single members
     public String processSingleCard(String memberId){
-       Member member = memberRepository.findByMemberId(memberId).orElseThrow(()
+       StudentMember studentMember = memberRepository.findByMemberId(memberId).orElseThrow(()
                -> new RuntimeException("Member not found with ID: " + memberId));
-       if(member.getEmailSent() == true){
+       if(studentMember.getEmailSent() == true){
            log.info("Card already sent for member: {}", memberId);
            return "ALREADY SENT";
 
        }
        try {
            // call fastapi on this single member and add to the thread
-          Boolean success = clientService.callFastApi(member).join();
+          Boolean success = clientService.callFastApi(studentMember).join();
           if (success) {
-              member.setEmailSent(true);
-              member.setEmailSentAt(LocalDateTime.now());
-              memberRepository.save(member);
+              studentMember.setEmailSent(true);
+              studentMember.setEmailSentAt(LocalDateTime.now());
+              memberRepository.save(studentMember);
               return "SUCCESS";
           }
 
@@ -70,14 +61,14 @@ public class CardDispatchService {
  // Method to handle sending cards for bulk members
     public CardProcessingResult processAllPendingCards() {
         // get list of pending members from database
-        List<Member> pendingMembers = memberRepository.findByEmailSentFalse();
+        List<StudentMember> pendingStudentMembers = memberRepository.findByEmailSentFalse();
 
         /* Implementing Multithreading to speed up card generation and automation Process */
 
         // Start a stream
         // call fastApi on each member to run in async to speed up
         List<CompletableFuture<Boolean>> futures =
-                (List<CompletableFuture<Boolean>>) pendingMembers.stream().map(
+                (List<CompletableFuture<Boolean>>) pendingStudentMembers.stream().map(
                 member -> clientService.callFastApi(member).thenApply(
                         success -> {
                             if (success){
@@ -97,7 +88,7 @@ public class CardDispatchService {
                 .filter(result -> result == true) // only keep the receipts that returned true
                 .count();
 
-        int failureCounts = pendingMembers.size() - successCounts;
+        int failureCounts = pendingStudentMembers.size() - successCounts;
 
         return new CardProcessingResult(successCounts, failureCounts);
     }

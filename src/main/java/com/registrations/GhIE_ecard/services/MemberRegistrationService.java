@@ -1,11 +1,8 @@
 package com.registrations.GhIE_ecard.services;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.*;
-import java.sql.Date;
-import com.registrations.GhIE_ecard.models.Member;
+
 import com.registrations.GhIE_ecard.enums.EnrollmentYear;
-import com.registrations.GhIE_ecard.repositories.MemberRepository;
 
 /**
  * Extract current DateTime using localDateTime

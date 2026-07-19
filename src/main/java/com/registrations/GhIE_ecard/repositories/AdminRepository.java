@@ -2,7 +2,6 @@ package com.registrations.GhIE_ecard.repositories;
 
 import com.registrations.GhIE_ecard.enums.Institution;
 import com.registrations.GhIE_ecard.models.Admin;
-import com.registrations.GhIE_ecard.models.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

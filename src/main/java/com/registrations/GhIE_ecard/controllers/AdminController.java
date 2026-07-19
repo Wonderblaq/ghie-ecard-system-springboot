@@ -1,12 +1,11 @@
 package com.registrations.GhIE_ecard.controllers;
 
-import java.lang.classfile.instruction.SwitchCase;
 import java.util.List;
 import java.util.Optional;
 
 import com.registrations.GhIE_ecard.models.Admin;
 import com.registrations.GhIE_ecard.models.CardProcessingResult;
-import com.registrations.GhIE_ecard.models.Member;
+import com.registrations.GhIE_ecard.models.StudentMember;
 import com.registrations.GhIE_ecard.repositories.AdminRepository;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import com.registrations.GhIE_ecard.services.CardDispatchService;
@@ -49,20 +48,20 @@ public class AdminController {
     // Get request for admin to view all registered members
 
     @GetMapping("/members")
-    public ResponseEntity<List<Member>> getAllMembers(
+    public ResponseEntity<List<StudentMember>> getAllMembers(
             // this annotation enables spring injects the -
             // fully loaded admin object/profile from jwt context
             @AuthenticationPrincipal Admin loggedAdmin
     ) {
-        List<Member> members = memberService.getMembersForLoggedInAdmin(loggedAdmin);
+        List<StudentMember> studentMembers = memberService.getMembersForLoggedInAdmin(loggedAdmin);
 
-        return ResponseEntity.ok(members);
+        return ResponseEntity.ok(studentMembers);
     }
 
     // Get request for admins to find specific members
     @GetMapping("/members/{id}")
-    public ResponseEntity<Optional<Member>> findMember(@PathVariable("id") Long id, @AuthenticationPrincipal Admin loggedAdmin) {
-        Optional<Member> memberToFind = Optional.ofNullable(memberService.getSingleMemberForLoggedInAdmin(id, loggedAdmin));
+    public ResponseEntity<Optional<StudentMember>> findMember(@PathVariable("id") Long id, @AuthenticationPrincipal Admin loggedAdmin) {
+        Optional<StudentMember> memberToFind = Optional.ofNullable(memberService.getSingleMemberForLoggedInAdmin(id, loggedAdmin));
         if (memberToFind.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "member not found!");
         }
@@ -74,12 +73,12 @@ public class AdminController {
     // Delete a selected member from the database, access granted to only 'SUPER_ADMIN'
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @DeleteMapping("/delete-members/{id}")
-    public ResponseEntity<Member> deleteMember(@PathVariable("id") Long id) {
-        Optional<Member> memberToDelete = memberRepository.findById(id);
+    public ResponseEntity<StudentMember> deleteMember(@PathVariable("id") Long id) {
+        Optional<StudentMember> memberToDelete = memberRepository.findById(id);
         if (memberToDelete.isPresent()) {
-            Member foundMember = memberToDelete.get();
+            StudentMember foundStudentMember = memberToDelete.get();
             memberRepository.deleteById(id);
-            return ResponseEntity.ok(foundMember);
+            return ResponseEntity.ok(foundStudentMember);
         }
         return ResponseEntity.notFound().build();
     }
@@ -105,18 +104,18 @@ public class AdminController {
         * Save updates in Database
         *  Show response of success and failure
         * */
-        Optional<Member> updatedMember = memberRepository.findById(id);
+        Optional<StudentMember> updatedMember = memberRepository.findById(id);
 
         if(updatedMember.isPresent()) {
-            Member foundMember = updatedMember.get();
+            StudentMember foundStudentMember = updatedMember.get();
             if(updates.newContact != null){
-                foundMember.setContact(updates.newContact);
+                foundStudentMember.setContact(updates.newContact);
             }
             if(updates.newEmail != null){
-                foundMember.setEmail(updates.newEmail);
+                foundStudentMember.setEmail(updates.newEmail);
             }
-            memberRepository.save(foundMember);
-            return ResponseEntity.ok(foundMember);
+            memberRepository.save(foundStudentMember);
+            return ResponseEntity.ok(foundStudentMember);
 
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("member not found");
@@ -125,9 +124,9 @@ public class AdminController {
     // View members yet to receive cards, role given to all admins
     @GetMapping("/members/pending-cards")
     public ResponseEntity<?> viewPendingCards(@AuthenticationPrincipal Admin loggedAdmin){
-        List<Member> pendingMembers = memberService.getMembersForLoggedInAdmin(loggedAdmin);
-        if (!pendingMembers.isEmpty()){
-            return ResponseEntity.ok(pendingMembers);
+        List<StudentMember> pendingStudentMembers = memberService.getMembersForLoggedInAdmin(loggedAdmin);
+        if (!pendingStudentMembers.isEmpty()){
+            return ResponseEntity.ok(pendingStudentMembers);
 
         }
         return ResponseEntity.ok().body("No Pending Members");

@@ -5,6 +5,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.registrations.GhIE_ecard.enums.Institution;
+
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -100,4 +102,7 @@ public class Admin implements UserDetails {
     public String getRole(){ return this.role; }
 
     public void setRole(String role) { this.role = role; }
+
+
+
 }
