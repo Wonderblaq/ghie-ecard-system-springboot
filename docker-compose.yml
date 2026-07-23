@@ -36,6 +36,10 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SECRET_KEY=${SECRET_KEY}
       - FASTAPI_URL=http://fastapi-service:8000
+    volumes:
+       # FORMAT : HOST_DIR : CONTAINER_DIR
+      - ./uploaded_docs:/app/uploads/supporting_docs/
+
 
   fastapi-service:
     build: ./ghie-card-service
@@ -46,4 +50,5 @@ services:
       - "8000:8000"
 
 volumes:
-  pgdata: # FIXED: Removed the trailing quote typo
+  pgdata:
+  uploaded_docs:

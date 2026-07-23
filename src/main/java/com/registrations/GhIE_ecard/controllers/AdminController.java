@@ -8,6 +8,7 @@ import com.registrations.GhIE_ecard.models.CardProcessingResult;
 import com.registrations.GhIE_ecard.models.StudentMember;
 import com.registrations.GhIE_ecard.repositories.AdminRepository;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
+import com.registrations.GhIE_ecard.repositories.ProfEngineerRepository;
 import com.registrations.GhIE_ecard.services.CardDispatchService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.PatchMapping;
 import com.registrations.GhIE_ecard.DTO.MemberUpdateDTO;
 import com.registrations.GhIE_ecard.services.MemberService;
+import com.registrations.GhIE_ecard.models.ProfessionalEngineer;
 /**
  * AdminController handles HTTP requests related to admin responsibilities.
  * It is marked as a REST controller to process web requests.
@@ -32,15 +34,18 @@ public class AdminController {
     public final AdminRepository adminRepository;
     private CardDispatchService cardDispatchService;
     public MemberService memberService;
+    public ProfEngineerRepository profEngineerRepository;
 
 
     public AdminController(MemberRepository memberRepository, AdminRepository adminRepository,
                            MemberService memberService,
-                           CardDispatchService cardDispatchService) {
+                           CardDispatchService cardDispatchService,
+                           ProfEngineerRepository profEngineerRepository) {
         this.memberRepository = memberRepository;
         this.adminRepository = adminRepository;
         this.cardDispatchService = cardDispatchService;
         this.memberService = memberService;
+        this.profEngineerRepository = profEngineerRepository;
     }
 
     // This is where methods for handling specific HTTP requests (GET, POST, etc.) would be added.
@@ -163,6 +168,14 @@ public class AdminController {
 
 
         }
+
+
+    }
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
+    @GetMapping("/professionals")
+    public ResponseEntity<?> viewAllProfessionals(@AuthenticationPrincipal Admin loggedAdmin){
+        List<ProfessionalEngineer>professionalEngineers = profEngineerRepository.findAll();
+        return ResponseEntity.ok(professionalEngineers);
 
 
     }

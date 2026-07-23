@@ -86,6 +86,8 @@ public class ProfessionalEngineer {
     @Column(name = "registered_at", updatable = false)
     private LocalDateTime registeredAt;
 
+    private String supportingFilePath;
+
     @PrePersist
     protected void onCreate() {
         this.registeredAt = LocalDateTime.now();
@@ -189,5 +191,12 @@ public class ProfessionalEngineer {
     public void setComments(String comments) { this.comments = comments; }
 
     public LocalDateTime getRegisteredAt() { return registeredAt; }
-} // fixed brace during compilation typing
+    public String getSupportingFilePath(String supportingFilePath){
+        return this.supportingFilePath;
+
+    }
+    public void setSupportingFilePath(String string){
+        this.supportingFilePath = supportingFilePath;
+    }
+}
 
