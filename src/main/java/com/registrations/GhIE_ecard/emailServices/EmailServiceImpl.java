@@ -1,15 +1,16 @@
 package com.registrations.GhIE_ecard.emailServices;
 
-import com.registrations.GhIE_ecard.emailServices.EmailDetails;
 import java.io.File;
-import java.util.Optional;
 
 import com.registrations.GhIE_ecard.models.StudentMember;
 import com.registrations.GhIE_ecard.repositories.*;
+import com.registrations.GhIE_ecard.services.CardDispatchService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -19,13 +20,13 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.context.Context;
 
+@Slf4j
 @Service
-public abstract class EmailServiceImpl implements EmailService {
-    public final SpringTemplateEngine templateEngine;
+public class EmailServiceImpl implements EmailService {
+    //Dependency injection
+    private final SpringTemplateEngine templateEngine;
     private final JavaMailSender javaMailSender;
-
     private final MemberRepository memberRepository;
-
 
     public EmailServiceImpl( SpringTemplateEngine templateEngine,
                              MemberRepository memberRepository,JavaMailSender javaMailSender){
@@ -34,13 +35,8 @@ public abstract class EmailServiceImpl implements EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    @Value("${spring.mail.username}")
+    @Value("${mail.sender}")
     private String sender;
-
-    Context context = new Context();
-
-
-
     // Send simple mail
     public String sendSimpleMail(EmailDetails details) {
 
@@ -55,38 +51,45 @@ public abstract class EmailServiceImpl implements EmailService {
             mailMessage.setSubject(details.getSubject());
 
             javaMailSender.send(mailMessage);
+            log.info("Using sender email: {}", sender);
 
             return "Mail Sent Successfully";
 
         } catch (Exception e) {
+            log.error("Using sender email: {}", sender);
 
             return "Error while sending mail";
         }
     }
-    public String sendRegistrationRejection(StudentMember member){
+
+    public Boolean sendRegistrationRejection(StudentMember member, String reason){
         String recipient = member.getEmail();
-
-
-
+        Context context = new Context();
+        // Fill the context with variables
+        context.setVariable("fullName", member.getFullName());
+        context.setVariable("reason", reason);
+        // process the template
+        String html = templateEngine.process("registration-rejection", context);
 
         try {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            // Instantiate a new MimeMessage object and wrap our mimeMessage object in a MimeMessage helper class
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-//            mailMessage.setFrom(sender);
-//            mailMessage.setTo(recipient);
-//            mailMessage.setText();
+            helper.setSubject("Action Required: Re-upload Your Passport Photo");
+            helper.setTo(recipient);
+            helper.setFrom(sender);
+            helper.setText(html, true); // set Text to True so it will be sent as html produced by ThymeLeaf
+            javaMailSender.send(mimeMessage);
 
-            javaMailSender.send(mailMessage);
-            return "Mail Sent succesfully";
+            return true;
 
         }
         catch (Exception e){
-            return "Error while sending mail";
+
+            log.error("Failed to send email to {}",recipient, e);
+            return false;
         }
-
-
-
-
 
     }
 

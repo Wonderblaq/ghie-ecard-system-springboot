@@ -1,34 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Registration Update</title>
 </head>
-<body>
-Dear [[${fullName}]],
 
-This is an official message from the <strong>GhIE Student E-Card Team</strong>.
+<body style="margin:0;padding:0;background:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
 
-During our verification process, we noticed that the passport photo submitted with your registration does not meet the required standards for generating your GhIE Student E-Card.
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f9;padding:40px 0;">
+    <tr>
+        <td align="center">
 
-Reason:
-[[${reason}]]
+            <table width="650" cellpadding="0" cellspacing="0"
+                   style="background:#ffffff;border-radius:12px;overflow:hidden;
+                   box-shadow:0 6px 18px rgba(0,0,0,0.08);">
 
-To help us generate a professional-looking ID card, please upload a new passport photo that meets the following requirements:
+                <!-- Header -->
+                <tr>
+                    <td align="center"
+                        style="background:#0B4F8C;padding:35px;color:white;">
 
-• Your face must be clearly visible and centered.
-• Use a plain, solid background (preferably white or light blue).
-• Avoid hats, sunglasses, or image filters.
-• Ensure the image is well lit, clear, and not blurry.
+                        <h1 style="margin:0;font-size:28px;">
+                            GhIE Student E-Card
+                        </h1>
 
-After submitting a new registration with the corrected passport photo, your application will be reviewed again and your digital ID card will be processed.
+                        <p style="margin-top:10px;font-size:15px;opacity:0.9;">
+                            Registration Verification Update
+                        </p>
 
-Thank you for your cooperation.
+                    </td>
+                </tr>
 
-Kind regards,
+                <!-- Body -->
+                <tr>
+                    <td style="padding:40px;">
 
-GhIE Student E-Card Team
-🌐 www.yeghie.com
+                        <p style="font-size:17px;">
+                            Dear
+                            <strong th:text="${fullName}">
+                                Student
+                            </strong>,
+                        </p>
+
+                        <p style="line-height:1.8;color:#444;">
+                            Thank you for registering for the
+                            <strong>GhIE Student Digital ID Card.</strong>
+
+                            During our verification process we noticed that
+                            your submitted passport photograph does not satisfy
+                            the requirements for ID card generation.
+                        </p>
+
+                        <table width="100%"
+                               style="margin:30px 0;
+                               border-left:5px solid #ff9800;
+                               background:#fff8e6;
+                               padding:20px;
+                               border-radius:6px;">
+
+                            <tr>
+                                <td>
+
+                                    <strong>
+                                        Reason for Rejection
+                                    </strong>
+
+                                    <p style="margin-top:12px;color:#555;"
+                                       th:text="${reason}">
+                                        Reason goes here...
+                                    </p>
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <h3 style="color:#0B4F8C;">
+                            Please upload a new passport photo that:
+                        </h3>
+
+                        <ul style="line-height:2;color:#555;">
+                            <li>Clearly shows your full face.</li>
+                            <li>Uses a plain white or light blue background.</li>
+                            <li>Is well illuminated and not blurry.</li>
+                            <li>Does not contain hats, sunglasses or image filters.</li>
+                            <li>Is recent and professionally taken.</li>
+                        </ul>
+
+                        <p style="margin-top:30px;color:#444;line-height:1.8;">
+                            Once a new registration containing a valid passport
+                            photograph is submitted, your application will be
+                            reviewed again and your digital ID card will be
+                            generated automatically.
+                        </p>
+
+                        <div style="margin:40px 0;
+                        text-align:center;">
+
+                            <a href="https://yeghie.com/"
+                               style="background:#0B4F8C;
+                               color:white;
+                               text-decoration:none;
+                               padding:14px 28px;
+                               border-radius:6px;
+                               font-weight:bold;">
+
+                                Visit GhIE Website
+
+                            </a>
+
+                        </div>
+
+                        <p style="margin-top:35px;">
+                            Thank you for your cooperation.
+                        </p>
+
+                        <p>
+
+                            Kind regards,
+
+                            <br><br>
+
+                            <strong>
+                                GhIE Student E-Card Team
+                            </strong>
+
+                        </p>
+
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+
+                    <td align="center"
+                        style="background:#f2f4f8;
+                        padding:25px;
+                        color:#777;
+                        font-size:13px;">
+
+                        © 2026 Ghana Institution of Engineering (GhIE)
+
+                        <br><br>
+
+                        🌐 www.yeghie.com
+
+                        <br>
+
+                        This is an automated email. Please do not reply directly.
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
 
 </body>
 </html>

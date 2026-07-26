@@ -3,6 +3,7 @@ package com.registrations.GhIE_ecard.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import com.registrations.GhIE_ecard.DTO.RejectMemberRequestDTO;
 import com.registrations.GhIE_ecard.models.Admin;
 import com.registrations.GhIE_ecard.models.CardProcessingResult;
 import com.registrations.GhIE_ecard.models.StudentMember;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import com.registrations.GhIE_ecard.DTO.MemberUpdateDTO;
 import com.registrations.GhIE_ecard.services.MemberService;
 import com.registrations.GhIE_ecard.models.ProfessionalEngineer;
+import com.registrations.GhIE_ecard.emailServices.*;
 /**
  * AdminController handles HTTP requests related to admin responsibilities.
  * It is marked as a REST controller to process web requests.
@@ -30,6 +32,7 @@ import com.registrations.GhIE_ecard.models.ProfessionalEngineer;
 public class AdminController {
 
     // Repository interface for accessing Admin data in the database.
+    public final EmailService emailService;
     public final MemberRepository memberRepository;
     public final AdminRepository adminRepository;
     private CardDispatchService cardDispatchService;
@@ -37,10 +40,11 @@ public class AdminController {
     public ProfEngineerRepository profEngineerRepository;
 
 
-    public AdminController(MemberRepository memberRepository, AdminRepository adminRepository,
+    public AdminController(EmailService emailService, MemberRepository memberRepository, AdminRepository adminRepository,
                            MemberService memberService,
                            CardDispatchService cardDispatchService,
                            ProfEngineerRepository profEngineerRepository) {
+        this.emailService = emailService;
         this.memberRepository = memberRepository;
         this.adminRepository = adminRepository;
         this.cardDispatchService = cardDispatchService;
@@ -167,6 +171,7 @@ public class AdminController {
                 return ResponseEntity.internalServerError().body("Failed to dispatch card to member: " + memberId);
 
 
+
         }
 
 
@@ -177,7 +182,48 @@ public class AdminController {
         List<ProfessionalEngineer>professionalEngineers = profEngineerRepository.findAll();
         return ResponseEntity.ok(professionalEngineers);
 
-
     }
+
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
+    @PostMapping("/reject-member")
+    public ResponseEntity<?> rejectMember(@AuthenticationPrincipal Admin loggedAdmin,
+                                          @RequestBody RejectMemberRequestDTO requestDTO) {
+
+        // Safely check if member exists
+        Optional<StudentMember> findMember = memberRepository.findByMemberId(requestDTO.getMemberId());
+        if (findMember.isEmpty()) {
+            return ResponseEntity.badRequest().body("Error: Member not found.");
+        }
+
+        //Safely check reason string
+        String reason = requestDTO.getReason();
+        if (reason == null || reason.isBlank()) {
+            return ResponseEntity.badRequest().body("Error: Rejection reason cannot be empty.");
+        }
+
+        StudentMember rejectedMember = findMember.get();
+
+        // Send email notification
+        Boolean emailSent = emailService.sendRegistrationRejection(rejectedMember, reason);
+
+        if (emailSent) {
+            // Actually delete the record from the database after email succeeds
+            memberRepository.delete(rejectedMember);
+
+            return ResponseEntity.ok("Rejection email successfully sent to " + rejectedMember.getEmail() + " and registration removed.");
+        }
+        return ResponseEntity.internalServerError().body("Failed to send rejection email. Member record was retained.");
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 }
