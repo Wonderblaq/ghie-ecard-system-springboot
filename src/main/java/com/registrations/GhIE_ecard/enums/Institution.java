@@ -20,7 +20,7 @@ public enum Institution {
     MUCG("Methodist University College"),
     CSUC("Christian Service University Co."),
     RMU("Regional Maritime University"),
-    AAMUSTED("AAMUSTED"),
+    AAMUSTED("USTED"),
 
 
     // Technical University Enums
@@ -32,6 +32,8 @@ public enum Institution {
     STU("Sunyani Technical University"),
     TaTU("Tamale Technical University"), // Renamed for clarity
     KsTU("Kumasi Technical University"),
+    BTU("Bolgatanga Technical University"),
+
 
     // Other Higher Schools Enums
 
