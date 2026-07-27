@@ -33,6 +33,7 @@ public enum Institution {
     TaTU("Tamale Technical University"), // Renamed for clarity
     KsTU("Kumasi Technical University"),
     BTU("Bolgatanga Technical University"),
+    DHLTU("Dr Hilla Liman Technical University"),
 
 
     // Other Higher Schools Enums
