@@ -21,6 +21,8 @@ public enum Institution {
     CSUC("Christian Service University Co."),
     RMU("Regional Maritime University"),
     AAMUSTED("USTED"),
+    AIT("Accra Institute of Technology"),
+
 
 
     // Technical University Enums
