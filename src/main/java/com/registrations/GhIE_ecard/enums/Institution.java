@@ -1,5 +1,6 @@
 package com.registrations.GhIE_ecard.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Institution {
@@ -55,9 +56,23 @@ public enum Institution {
 
     // getter method to get names
     @JsonValue
-    public String getDisplayName() {
-        return this.displayName;
+    public String getLabel() {
+        return displayName;
     }
 
-
+    @JsonCreator
+    public static Institution fromString(String text) {
+        if (text == null || text.trim().isEmpty()) {
+            return null;
+        }
+        for (Institution inst : Institution.values()) {
+            if (inst.name().equalsIgnoreCase(text.trim()) ||
+                    inst.displayName.equalsIgnoreCase(text.trim())) {
+                return inst;
+            }
+        }
+        throw new IllegalArgumentException("Unknown institution: " + text);
+    }
 }
+
+
