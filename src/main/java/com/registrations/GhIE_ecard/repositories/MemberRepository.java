@@ -30,7 +30,7 @@ public interface  MemberRepository extends JpaRepository<StudentMember, Long> {
             "LOWER(s.fullName) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
             "LOWER(s.email) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
             "LOWER(s.memberId) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
-            "LOWER(s.contact) LIKE LOWER(CONCAT('%', :query, '%'))")
+            "CAST(s.contact AS string) LIKE CONCAT('%', :query, '%')")
     List<StudentMember> searchMembers(@Param("query") String query);
 
 }
