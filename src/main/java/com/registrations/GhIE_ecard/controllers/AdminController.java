@@ -215,6 +215,23 @@ public class AdminController {
         return ResponseEntity.internalServerError().body("Failed to send rejection email. Member record was retained.");
     }
 
+    // Endpoint for querying members
+    @GetMapping("/search-members")
+    public ResponseEntity<List<StudentMember>> getAllMembers(
+            @RequestParam(name = "search", required = false) String search,
+            @AuthenticationPrincipal Admin loggedAdmin
+    ) {
+        List<StudentMember> studentMembers;
+
+        if (search != null && !search.isBlank()) {
+            studentMembers = memberService.searchMembersForAdmin(search.trim(), loggedAdmin);
+        } else {
+            studentMembers = memberService.getMembersForLoggedInAdmin(loggedAdmin);
+        }
+
+        return ResponseEntity.ok(studentMembers);
+    }
+
 
 
 

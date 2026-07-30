@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import com.registrations.GhIE_ecard.services.GenerateID;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import com.registrations.GhIE_ecard.services.MemberRegistrationService;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -99,6 +101,17 @@ public class MemberController {
     @GetMapping("/enrollment")
     public List<EnrollmentYear> getAllEnrollmentYears(){
         return Arrays.asList((EnrollmentYear.values()));
+    }
+
+    @GetMapping("/verify/{memberId}")
+    public ResponseEntity<StudentMember> verifyMemberCard(@PathVariable("memberId") String memberId) {
+        Optional<StudentMember> member = memberRepository.findByMemberId(memberId);
+
+        if (member.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid or unverified GhIE E-Card.");
+        }
+
+        return ResponseEntity.ok(member.get());
     }
 
 

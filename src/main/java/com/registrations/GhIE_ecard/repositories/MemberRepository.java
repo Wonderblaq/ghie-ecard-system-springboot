@@ -25,4 +25,12 @@ public interface  MemberRepository extends JpaRepository<StudentMember, Long> {
    // 💡 This @Query bypasses the automatic parser confusion!
    @Query("SELECT m FROM StudentMember m WHERE m.memberId = :memberId")
    Optional<StudentMember> findByMemberId(@Param("memberId") String memberId);
+    // Case-insensitive search across name, email, memberId, or contact
+    @Query("SELECT s FROM StudentMember s WHERE " +
+            "LOWER(s.fullName) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(s.email) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(s.memberId) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(s.contact) LIKE LOWER(CONCAT('%', :query, '%'))")
+    List<StudentMember> searchMembers(@Param("query") String query);
+
 }

@@ -8,9 +8,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
-This is a service class which would be used for decision making :
+This is a service class which would be used for decision-making :
 Checks whether Admin accessing system is Super or Campus Admin to assign their specific roles;
 
  */
@@ -61,6 +62,22 @@ public class MemberService {
 
         // Fallback security clause
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized role access.");
+    }
+    public List<StudentMember> searchMembersForAdmin(String query, Admin loggedAdmin) {
+        // 1. Fetch matching members from repo
+        List<StudentMember> searchResults = memberRepository.searchMembers(query);
+
+        // 2. If SUPER_ADMIN, return all results
+        if ("SUPER_ADMIN".equals(loggedAdmin.getRole())) {
+            return searchResults;
+        }
+
+        // If Campus Admin, filter results to match their institution
+        return searchResults.stream()
+                .filter(member -> {
+                    return member.getRegion().equals(loggedAdmin.getInstitution());
+                })
+                .collect(Collectors.toList());
     }
     //
 }
