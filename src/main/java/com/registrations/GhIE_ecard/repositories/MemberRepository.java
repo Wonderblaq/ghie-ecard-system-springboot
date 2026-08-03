@@ -28,7 +28,7 @@ public interface  MemberRepository extends JpaRepository<StudentMember, Long> {
     List<StudentMember> findByRegion(Regions region);
 
     // Spring Data automatically translates this into: WHERE region IN ('Greater Accra', 'Ashanti', etc)
-    List<StudentMember> findByRegionsIn(Set<Regions> regions);
+    List<StudentMember> findByRegionsIn(Set<Regions> region);
 
 
     // Casts the timestamp to a plain date so time elements (hours/mins/seconds) are ignored

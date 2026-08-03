@@ -51,7 +51,7 @@ public class AuthenticationService {
         // 4. Build custom JWT claims
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", admin.getRole());
-        claims.put("regions", regionList); // Multi-region support string array
+        claims.put("region", regionList); // Multi-region support string array
 
         // 5. Generate and return token
         return jwtService.generateToken(claims, admin.getUsername());
