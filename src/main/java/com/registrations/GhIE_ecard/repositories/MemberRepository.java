@@ -37,7 +37,7 @@ public interface  MemberRepository extends JpaRepository<StudentMember, Long> {
 
     // Multi-tenant version filtered by regions
     @Query("SELECT s FROM StudentMember s WHERE CAST(s.emailSentAt AS date) = :date AND s.region IN :regions")
-    List<StudentMember> findByEmailSentAtDateAndRegionIn(@Param("date") LocalDate date, @Param("regions") java.util.Collection<?> regions);
+    List<StudentMember> findByEmailSentAtDateAndRegionIn(@Param("date") LocalDate date, @Param("regions") java.util.Collection<?> region);
 
     // Query method to display student members based on their registration dates
     @Query("SELECT s FROM StudentMember s WHERE CAST(s.registrationDate AS date) = :date")
@@ -47,7 +47,7 @@ public interface  MemberRepository extends JpaRepository<StudentMember, Long> {
     @Query("SELECT s FROM StudentMember s WHERE CAST(s.registrationDate AS date) = :date AND s.region IN :regions")
     List<StudentMember> findByRegistrationDateAndRegionIn(
             @Param("date") LocalDate date,
-            @Param("regions") Set<Regions> regions
+            @Param("regions") Set<Regions> region
     );
 
 
