@@ -60,8 +60,8 @@ public class AdminController {
     // Get request for admin to view all registered members (Now handles pagination parameters gracefully)
     @GetMapping("/members")
     public ResponseEntity<List<StudentMember>> getAllMembers(
-            @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "size", required = false) Integer size,
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "50") int size,
             @AuthenticationPrincipal Admin loggedAdmin
     ) {
         List<StudentMember> studentMembers = memberService.getMembersForLoggedInAdmin(loggedAdmin);
