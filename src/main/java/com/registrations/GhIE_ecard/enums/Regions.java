@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Regions{
     // Region enums
+    ALL("ALL"), // Super Admins uses this as their Region Type
     Ahafo("Ahafo Region"),
     Ashanti("Ashanti Region"),
     Bono("Bono Region"),

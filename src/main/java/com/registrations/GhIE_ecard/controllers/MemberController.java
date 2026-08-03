@@ -103,16 +103,7 @@ public class MemberController {
         return Arrays.asList((EnrollmentYear.values()));
     }
 
-    @GetMapping("/verify/{memberId}")
-    public ResponseEntity<StudentMember> verifyMemberCard(@PathVariable("memberId") String memberId) {
-        Optional<StudentMember> member = memberRepository.findByMemberId(memberId);
 
-        if (member.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid or unverified GhIE E-Card.");
-        }
-
-        return ResponseEntity.ok(member.get());
-    }
 
 
 

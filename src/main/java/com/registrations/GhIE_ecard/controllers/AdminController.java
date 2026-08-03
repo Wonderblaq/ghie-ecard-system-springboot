@@ -1,5 +1,6 @@
 package com.registrations.GhIE_ecard.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import com.registrations.GhIE_ecard.repositories.AdminRepository;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import com.registrations.GhIE_ecard.repositories.ProfEngineerRepository;
 import com.registrations.GhIE_ecard.services.CardDispatchService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -68,6 +70,8 @@ public class AdminController {
     }
 
     // Get request for admins to find specific members
+    // 1. VIEW MEMBERS (Secretary CAN access - read-only across all regions)
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
     @GetMapping("/members/{id}")
     public ResponseEntity<Optional<StudentMember>> findMember(@PathVariable("id") Long id, @AuthenticationPrincipal Admin loggedAdmin) {
         Optional<StudentMember> memberToFind = Optional.ofNullable(memberService.getSingleMemberForLoggedInAdmin(id, loggedAdmin));
@@ -231,14 +235,40 @@ public class AdminController {
 
         return ResponseEntity.ok(studentMembers);
     }
+    @GetMapping("/verify/{memberId}")
+    public ResponseEntity<StudentMember> verifyMemberCard(@PathVariable("memberId") String memberId) {
+        Optional<StudentMember> member = memberRepository.findByMemberId(memberId);
 
+        if (member.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid or unverified GhIE E-Card.");
+        }
 
+        return ResponseEntity.ok(member.get());
+    }
+    /**
+     * Endpoint for filtering members by the date their email was sent.
+     * Example request: GET /admin/members/by-email-date?date=2026-08-03
+     */
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
+    @GetMapping("/members/by-email-date")
+    public ResponseEntity<List<StudentMember>> getMembersByEmailSentDate(
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @AuthenticationPrincipal Admin loggedAdmin) {
 
+        List<StudentMember> members = memberService.getMembersByEmailSentDate(date, loggedAdmin);
+        return ResponseEntity.ok(members);
+    }
 
+    // Endpoint for filtering members by their registrationDate
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
+    @GetMapping("/members/by-registration-date")
+    public ResponseEntity<List<StudentMember>> getMembersByRegistrationDate(
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @AuthenticationPrincipal Admin loggedAdmin) {
 
-
-
-
+        List<StudentMember> members = memberService.getMembersByRegistrationDate(date, loggedAdmin);
+        return ResponseEntity.ok(members);
+    }
 
 
 

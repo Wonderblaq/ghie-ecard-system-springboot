@@ -1,14 +1,15 @@
 package com.registrations.GhIE_ecard.models;
+import com.registrations.GhIE_ecard.enums.Regions;
 import jakarta.persistence.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.registrations.GhIE_ecard.enums.Institution;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -35,9 +36,19 @@ public class Admin implements UserDetails {
     /* Added a new column named 'institution' to enable role-based access.
    This ensures that campus coordinators can log in to the system
    but will only be able to view data specific to their institution. */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "institution")
-    private Institution institution;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "institution")
+//    private Institution institution;
+
+    // Tenancy change: Allows a single Admin to manage MULTIPLE regions
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "admin_regions",
+            joinColumns = @JoinColumn(name = "admin_id") // Matches primary key column of Admin table
+    )
+    @Enumerated(EnumType.STRING) // Saves Enum names like 'GREATER_ACCRA' instead of numbers (0, 1)
+    @Column(name = "region_name")
+    private Set<Regions> regions = new HashSet<>(); // Must be a Set<Regions>
 
 // USER DETAILS METHOD
     @Override
@@ -91,17 +102,33 @@ public class Admin implements UserDetails {
         this.email = email;
     }
 
-    public Institution getInstitution() {
-        return institution;
-    }
-
-    public void setInstitution(Institution institution) {
-        this.institution = institution;
-    }
-
     public String getRole(){ return this.role; }
 
     public void setRole(String role) { this.role = role; }
+
+    public Set<Regions> getRegions(){
+        return this.regions;
+    }
+
+    public void setRegions(Set<Regions> regions) {
+        this.regions = regions;
+    }
+
+    // Helper method to add a single region conveniently
+    public void addRegion(Regions regions){
+        if(this.regions == null){
+            this.regions = new HashSet<>();
+        }
+        this.regions.add(regions);
+
+    }
+
+    // Helper method to remove a single region conveniently
+    public void removeRegion(Regions regions){
+        if(this.regions != null){
+            this.regions.remove(regions);
+        }
+    }
 
 
 
