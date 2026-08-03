@@ -1,0 +1,113 @@
+package com.registrations.GhIE_ecard.controllers;
+
+// Import necessary Spring annotations for REST controllers
+import com.registrations.GhIE_ecard.enums.EnrollmentYear;
+import com.registrations.GhIE_ecard.enums.Institution;
+import com.registrations.GhIE_ecard.enums.Regions;
+import com.registrations.GhIE_ecard.models.StudentMember;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+// Import repositories and services needed by this controller
+import com.registrations.GhIE_ecard.services.GenerateID;
+import com.registrations.GhIE_ecard.repositories.MemberRepository;
+import com.registrations.GhIE_ecard.services.MemberRegistrationService;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+
+/**
+ * MemberController handles HTTP requests related to member registration.
+ * It is marked as a REST controller to process web requests.
+ */
+@RestController
+// Maps all requests starting with /registration to this controller
+@RequestMapping("/registration")
+@CrossOrigin(origins= "http://localhost:5173")
+public class MemberController {
+
+    // Autowired fields for dependency injection
+    /**
+     * Service used for generating unique IDs.
+     * @Autowired annotation injects the implementation of GenerateID.
+     */
+    @Autowired
+    private final GenerateID generateID;
+    private final MemberRegistrationService registrationService;
+
+    // Repository interface for accessing member data in the database.
+    private final MemberRepository memberRepository;
+
+
+    //Constructor for MemberController.
+    public MemberController(MemberRepository memberRepository, GenerateID generateID, MemberRegistrationService registrationService){
+        this.memberRepository = memberRepository;
+        this.generateID = generateID;
+
+        this.registrationService = registrationService;
+    }
+    // This is where methods for handling specific HTTP requests (GET, POST, etc.) would be added.
+
+    // Get all members, For Testing Only
+
+//    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerMember(@RequestBody StudentMember student) {
+        /* * Check for duplicate email,
+         * Generate a unique ID for the member
+         * Set Expiry and Registration Dates
+         * Save Registered Member
+        **/
+        boolean emailExists = memberRepository.existsByEmail(student.getEmail());
+        boolean contactExists = memberRepository.existsByContact(student.getContact());
+
+        if (emailExists || contactExists){
+            String message = emailExists ? "Email" : "Contact";
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(message + " has already been registered");
+        }
+        else {
+            student.setMemberId(generateID.generateMemberId());
+            student.setRegistrationDate(LocalDate.now());
+            student.setExpiryDate(registrationService.calculateExpiryDate(student.getEnrollmentYear()));
+            // Save the member
+            StudentMember savedStudentMember = memberRepository.save(student);
+            // Return the saved entity with HTTP 200 OK
+            return ResponseEntity.ok("Registered Successfully");
+
+        }
+
+
+    }
+    // Display Institutions
+    @GetMapping("/institutions")
+    public List<Institution> getAllInstitutions(){
+        return Arrays.asList(Institution.values());
+    }
+
+    // Display List of Regions
+    @GetMapping("/regions")
+    public List<Regions> getAllRegions(){
+        return Arrays.asList(Regions.values());
+    }
+
+    @GetMapping("/enrollment")
+    public List<EnrollmentYear> getAllEnrollmentYears(){
+        return Arrays.asList((EnrollmentYear.values()));
+    }
+
+
+
+
+
+
+
+
+}

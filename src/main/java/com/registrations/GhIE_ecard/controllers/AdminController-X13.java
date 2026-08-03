@@ -57,14 +57,15 @@ public class AdminController {
     // This is where methods for handling specific HTTP requests (GET, POST, etc.) would be added.
 
     // Get request for admin to view all registered members
-    // Get request for admin to view all registered members (Now handles pagination parameters gracefully)
+
     @GetMapping("/members")
     public ResponseEntity<List<StudentMember>> getAllMembers(
-            @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "size", required = false) Integer size,
+            // this annotation enables spring injects the -
+            // fully loaded admin object/profile from jwt context
             @AuthenticationPrincipal Admin loggedAdmin
     ) {
         List<StudentMember> studentMembers = memberService.getMembersForLoggedInAdmin(loggedAdmin);
+
         return ResponseEntity.ok(studentMembers);
     }
 
@@ -220,7 +221,7 @@ public class AdminController {
 
     // Endpoint for querying members
     @GetMapping("/search-members")
-    public ResponseEntity<List<StudentMember>> searchMembers(
+    public ResponseEntity<List<StudentMember>> getAllMembers(
             @RequestParam(name = "search", required = false) String search,
             @AuthenticationPrincipal Admin loggedAdmin
     ) {
@@ -268,6 +269,7 @@ public class AdminController {
         List<StudentMember> members = memberService.getMembersByRegistrationDate(date, loggedAdmin);
         return ResponseEntity.ok(members);
     }
+
 
 
 
