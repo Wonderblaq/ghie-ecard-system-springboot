@@ -42,7 +42,7 @@ public class MemberService {
             if(assignedRegions == null || assignedRegions.isEmpty()){
                 return Collections.emptyList();
             }
-            return memberRepository.findByRegionsIn(assignedRegions);
+            return memberRepository.findByRegionIn(assignedRegions);
         }
         // Fallback, if admin meets none of the roles specified, return an empty list
         return Collections.emptyList();
