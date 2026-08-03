@@ -59,11 +59,17 @@ public class AdminController {
     // Get request for admin to view all registered members
     // Get request for admin to view all registered members (Now handles pagination parameters gracefully)
     @GetMapping("/members")
-    public ResponseEntity<List<StudentMember>> getAllMembers(
+    public ResponseEntity<?> getAllMembers(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "size", required = false, defaultValue = "50") int size,
             @AuthenticationPrincipal Admin loggedAdmin
     ) {
+        if (loggedAdmin == null) {
+            System.out.println("DEBUG: loggedAdmin is NULL!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Admin user context not found in JWT");
+        }
+
+        System.out.println("DEBUG: Logged admin username: " + loggedAdmin.getUsername());
         List<StudentMember> studentMembers = memberService.getMembersForLoggedInAdmin(loggedAdmin);
         return ResponseEntity.ok(studentMembers);
     }
