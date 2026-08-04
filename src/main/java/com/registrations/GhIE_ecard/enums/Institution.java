@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Institution {
     // University Enums
-    ALL("ALL"), // Super Admins uses this as their Institution Type
+   //  ALL("ALL"), // Super Admins uses this as their Institution Type
     KNUST("KNUST"),
     UG("University of Ghana"),
     UMAT("UMaT"),
