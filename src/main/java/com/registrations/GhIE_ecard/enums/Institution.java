@@ -21,7 +21,7 @@ public enum Institution {
     MUCG("Methodist University College"),
     CSUC("Christian Service University Co."),
     RMU("Regional Maritime University"),
-    AAMUSTED("USTED"),
+    USTED("USTED"),
     AIT("Accra Institute of Technology"),
 
 
