@@ -20,6 +20,7 @@ public interface MemberRepository extends JpaRepository<StudentMember, Long> {
     List<StudentMember> findByEmailSentFalse();
     boolean existsByContact(Long contact);
 
+
     // FIX: Changed findByRegionsIn -> findByRegionIn
     List<StudentMember> findByRegionIn(Collection<Regions> regions);
 

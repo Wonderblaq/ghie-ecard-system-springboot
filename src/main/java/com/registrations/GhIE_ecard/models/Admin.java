@@ -1,7 +1,7 @@
 package com.registrations.GhIE_ecard.models;
+
 import com.registrations.GhIE_ecard.enums.Regions;
 import jakarta.persistence.*;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,55 +11,61 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "admins")
 public class Admin implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "admin_id")
     private Long adminId;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "role")
     private String role;
 
-
-    /* Added a new column named 'institution' to enable role-based access.
-   This ensures that campus coordinators can log in to the system
-   but will only be able to view data specific to their institution. */
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "institution")
-//    private Institution institution;
-
-    // Tenancy change: Allows a single Admin to manage MULTIPLE regions
+    // Multi-Region Tenancy Mapping
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "admin_regions",
-            joinColumns = @JoinColumn(name = "admin_id") // Matches primary key column of Admin table
+            joinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "admin_id")
     )
-    @Enumerated(EnumType.STRING) // Saves Enum names like 'GREATER_ACCRA' instead of numbers (0, 1)
+    @Enumerated(EnumType.STRING)
     @Column(name = "region_name")
-    private Set<Regions> regions = new HashSet<>(); // Must be a Set<Regions>
+    private Set<Regions> regions = new HashSet<>();
 
-// USER DETAILS METHOD
+    // Default Constructor required by JPA
+    public Admin() {
+    }
+
+    public Admin(Long adminId, String username, String email, String password, String role, Set<Regions> regions) {
+        this.adminId = adminId;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.regions = regions != null ? regions : new HashSet<>();
+    }
+
+    // USER DETAILS METHOD
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Implements ROLE BASED ACCESS FOR admins
-        // Ensure every Admin gets the "ROLE_" authority plus their role
+        if (this.role == null || this.role.isBlank()) {
+            return List.of();
+        }
         return List.of(new SimpleGrantedAuthority(this.role));
     }
 
     @Override
-    public @Nullable String getPassword() {
+    public String getPassword() {
         return password;
     }
 
@@ -68,45 +74,55 @@ public class Admin implements UserDetails {
         return username;
     }
 
-
-
     @Override
-    public boolean isAccountNonExpired() { // Account never expires for now
+    public boolean isAccountNonExpired() {
         return true;
     }
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @Override
-    public boolean isEnabled(){
-        return true; //Ensure account is always active
+    public boolean isEnabled() {
+        return true;
     }
 
     // Getters and Setters
-    public Long getAdminId(){
+    public Long getAdminId() {
         return this.adminId;
     }
-    public void setAdminId(Long adminId){
+
+    public void setAdminId(Long adminId) {
         this.adminId = adminId;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
-    public void setEmail(String email){
+
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getRole(){ return this.role; }
+    public String getRole() {
+        return this.role;
+    }
 
-    public void setRole(String role) { this.role = role; }
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-    public Set<Regions> getRegions(){
+    public Set<Regions> getRegions() {
+        if (this.regions == null) {
+            this.regions = new HashSet<>();
+        }
         return this.regions;
     }
 
@@ -115,21 +131,17 @@ public class Admin implements UserDetails {
     }
 
     // Helper method to add a single region conveniently
-    public void addRegion(Regions regions){
-        if(this.regions == null){
+    public void addRegion(Regions region) {
+        if (this.regions == null) {
             this.regions = new HashSet<>();
         }
-        this.regions.add(regions);
-
+        this.regions.add(region);
     }
 
     // Helper method to remove a single region conveniently
-    public void removeRegion(Regions regions){
-        if(this.regions != null){
-            this.regions.remove(regions);
+    public void removeRegion(Regions region) {
+        if (this.regions != null) {
+            this.regions.remove(region);
         }
     }
-
-
-
 }
