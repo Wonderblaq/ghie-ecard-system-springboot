@@ -58,6 +58,7 @@ public class AdminController {
 
     // Get request for admin to view all registered members
     // Get request for admin to view all registered members (Now handles pagination parameters gracefully)
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
     @GetMapping("/members")
     public ResponseEntity<?> getAllMembers(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
@@ -140,6 +141,7 @@ public class AdminController {
     }
 
     // View members yet to receive cards, role given to all admins
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
     @GetMapping("/members/pending-cards")
     public ResponseEntity<?> viewPendingCards(@AuthenticationPrincipal Admin loggedAdmin){
         List<StudentMember> pendingStudentMembers = memberService.getMembersForLoggedInAdmin(loggedAdmin);
@@ -225,6 +227,7 @@ public class AdminController {
     }
 
     // Endpoint for querying members
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
     @GetMapping("/search-members")
     public ResponseEntity<List<StudentMember>> searchMembers(
             @RequestParam(name = "search", required = false) String search,
@@ -240,16 +243,17 @@ public class AdminController {
 
         return ResponseEntity.ok(studentMembers);
     }
-    @GetMapping("/verify/{memberId}")
-    public ResponseEntity<StudentMember> verifyMemberCard(@PathVariable("memberId") String memberId) {
-        Optional<StudentMember> member = memberRepository.findByMemberId(memberId);
-
-        if (member.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid or unverified GhIE E-Card.");
-        }
-
-        return ResponseEntity.ok(member.get());
-    }
+//    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
+//    @GetMapping("/verify/{memberId}")
+//    public ResponseEntity<StudentMember> verifyMemberCard(@PathVariable("memberId") String memberId) {
+//        Optional<StudentMember> member = memberRepository.findByMemberId(memberId);
+//
+//        if (member.isEmpty()) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid or unverified GhIE E-Card.");
+//        }
+//
+//        return ResponseEntity.ok(member.get());
+//    }
     /**
      * Endpoint for filtering members by the date their email was sent.
      * Example request: GET /admin/members/by-email-date?date=2026-08-03
