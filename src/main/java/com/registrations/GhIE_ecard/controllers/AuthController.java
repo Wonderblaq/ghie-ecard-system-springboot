@@ -1,5 +1,6 @@
 package com.registrations.GhIE_ecard.controllers;
 import com.registrations.GhIE_ecard.DTO.LoginRequestDTO;
+import com.registrations.GhIE_ecard.DTO.LoginResponseDTO;
 import com.registrations.GhIE_ecard.models.Admin;
 import com.registrations.GhIE_ecard.models.AuthenticationResponse;
 import com.registrations.GhIE_ecard.services.AuthenticationService;
@@ -26,11 +27,13 @@ public class AuthController {
     @Autowired
     private final AuthenticationService authenticationService;
     private final AdminRepository adminRepository;
+    private final LoginRequestDTO loginRequestDTO;
 
 
-    public AuthController(AuthenticationService authenticationService, AdminRepository adminRepository){
+    public AuthController(AuthenticationService authenticationService, AdminRepository adminRepository, LoginRequestDTO loginRequestDTO){
         this.authenticationService = authenticationService;
         this.adminRepository = adminRepository;
+        this.loginRequestDTO = loginRequestDTO;
     }
 
     @GetMapping("/Admin-All")
@@ -41,12 +44,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginAdmin(@RequestBody LoginRequestDTO request){
-        String token = authenticationService.authenticateUser(request);
-
-        // Return the "VIP Pass" to Postman
-        return ResponseEntity.ok(new AuthenticationResponse(token));
-
-
+        LoginResponseDTO loginResponseDTO = authenticationService.authenticateUser(request);
+        return ResponseEntity.ok(loginResponseDTO);
 
     }
 
