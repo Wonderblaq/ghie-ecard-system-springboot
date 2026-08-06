@@ -7,6 +7,7 @@ public class  LoginRequestDTO {
     private String username;
     private String password;
     private String email;
+    private String role;
 
     public String getEmail() {
         return email;
@@ -28,5 +29,17 @@ public class  LoginRequestDTO {
     public void  setPassword(String password){
         this.password = password;
 
+    }
+
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
+    }
+    public LoginRequestDTO(String role, String username, String email){
+        this.email = email;
+        this.role = role;
+        this.username =username;
     }
 }

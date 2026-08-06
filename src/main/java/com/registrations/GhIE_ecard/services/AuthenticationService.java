@@ -6,6 +6,7 @@ import com.registrations.GhIE_ecard.repositories.AdminRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,13 +20,15 @@ public class AuthenticationService {
     private final AdminRepository adminRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final LoginRequestDTO loginRequestDTO;
 
     public AuthenticationService(AuthenticationManager authenticationManager,
                                  AdminRepository adminRepository,
-                                 JwtService jwtService) {
+                                 JwtService jwtService, LoginRequestDTO loginRequestDTO) {
         this.authenticationManager = authenticationManager;
         this.adminRepository = adminRepository;
         this.jwtService = jwtService;
+        this.loginRequestDTO = loginRequestDTO;
     }
 
     public String authenticateUser(LoginRequestDTO request) {
@@ -48,10 +51,19 @@ public class AuthenticationService {
                 ? admin.getRegions().stream().map(Enum::name).toList()
                 : List.of();
 
-        // 4. Build custom JWT claims
+        // 4. Build custom JWT claims and Get the roles of the loggedInAdmin
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", admin.getRole());
+        String userRole = userAuth.getAuthorities().stream()
+                .findFirst()
+                        .map(GrantedAuthority::getAuthority)
+                                .orElse("ADMIN");
+        // If Spring added "ROLE_" to the front (e.g. "ROLE_SUPER_ADMIN"), strip it off so it becomes "SUPER_ADMIN"
+        if (userRole.startsWith("ROLE_")){
+           userRole = userRole.replace("ROLE_","");
+        }
+        claims.put("ROLE",userRole);
         claims.put("region", regionList); // Multi-region support string array
+
 
         // 5. Generate and return token
         return jwtService.generateToken(claims, admin.getUsername());

@@ -11,6 +11,7 @@ public enum EnrollmentYear {
     Year_2025(2025),
     Year_2026(2026);
 
+
     public final Integer enrollmentYear;
 
     EnrollmentYear(Integer enrollmentYear) {
