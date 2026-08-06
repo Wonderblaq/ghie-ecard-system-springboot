@@ -1,53 +1,29 @@
 package com.registrations.GhIE_ecard.controllers;
+
 import com.registrations.GhIE_ecard.DTO.LoginRequestDTO;
 import com.registrations.GhIE_ecard.DTO.LoginResponseDTO;
-import com.registrations.GhIE_ecard.models.Admin;
-import com.registrations.GhIE_ecard.models.AuthenticationResponse;
 import com.registrations.GhIE_ecard.services.AuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.registrations.GhIE_ecard.repositories.AdminRepository;
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-
-
-
-/**
- * This is an Authentication controller
- * it takes a loginDTO entered by an admin
- * Runs the authenticationService class and methods
- * Verifies Admin trying to sign in
- * Admin can now use the Admin Controller once they are granted access
- */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    @Autowired
+
     private final AuthenticationService authenticationService;
-    private final AdminRepository adminRepository;
-    private final LoginRequestDTO loginRequestDTO;
 
-
-    public AuthController(AuthenticationService authenticationService, AdminRepository adminRepository, LoginRequestDTO loginRequestDTO){
+    // ONLY inject Spring Services/Components here—NEVER DTOs or Entities!
+    public AuthController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
-        this.adminRepository = adminRepository;
-        this.loginRequestDTO = loginRequestDTO;
-    }
-
-    @GetMapping("/Admin-All")
-    public List<Admin> getAdmins(){
-      return (List<Admin>)adminRepository.findAll(Sort.by(Sort.Direction.ASC));
-
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginAdmin(@RequestBody LoginRequestDTO request){
-        LoginResponseDTO loginResponseDTO = authenticationService.authenticateUser(request);
-        return ResponseEntity.ok(loginResponseDTO);
-
+    public ResponseEntity<LoginResponseDTO> loginAdmin(@RequestBody LoginRequestDTO request) {
+        // 'request' is automatically instantiated by Spring MVC from incoming JSON payload
+        LoginResponseDTO response = authenticationService.authenticateUser(request);
+        return ResponseEntity.ok(response);
     }
-
-
 }
