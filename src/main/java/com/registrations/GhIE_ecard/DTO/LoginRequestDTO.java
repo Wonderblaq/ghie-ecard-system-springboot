@@ -1,42 +1,14 @@
 package com.registrations.GhIE_ecard.DTO;
 
-import com.registrations.GhIE_ecard.enums.Regions;
-import org.apache.catalina.LifecycleState;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-
-public class  LoginRequestDTO {
+public class LoginRequestDTO {
     private String username;
     private String password;
-    private String email;
 
+    public LoginRequestDTO() {}
 
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
-
-
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-    public void  setPassword(String password){
-        this.password = password;
-
-    }
-
-
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 }
