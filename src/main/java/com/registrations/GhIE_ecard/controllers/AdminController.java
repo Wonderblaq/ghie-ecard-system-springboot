@@ -12,9 +12,14 @@ import com.registrations.GhIE_ecard.repositories.AdminRepository;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import com.registrations.GhIE_ecard.repositories.ProfEngineerRepository;
 import com.registrations.GhIE_ecard.services.CardDispatchService;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailAuthenticationException;
+import org.springframework.mail.MailException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +33,10 @@ import com.registrations.GhIE_ecard.emailServices.*;
  * AdminController handles HTTP requests related to admin responsibilities.
  * It is marked as a REST controller to process web requests.
  */
+@Slf4j
 @RestController
 @RequestMapping("/admin")
+
 // Maps all requests starting with /admin to this controller
 public class AdminController {
 
@@ -216,7 +223,6 @@ public class AdminController {
 
         // Send email notification
         Boolean emailSent = emailService.sendRegistrationRejection(rejectedMember, reason);
-
         if (emailSent) {
             // Actually delete the record from the database after email succeeds
             memberRepository.delete(rejectedMember);
@@ -225,6 +231,7 @@ public class AdminController {
         }
         return ResponseEntity.internalServerError().body("Failed to send rejection email. Member record was retained.");
     }
+
 
     // Endpoint for querying members
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
