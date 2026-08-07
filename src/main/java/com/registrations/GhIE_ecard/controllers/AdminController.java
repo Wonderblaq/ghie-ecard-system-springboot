@@ -230,6 +230,7 @@ public class AdminController {
             return ResponseEntity.ok("Rejection email successfully sent to " + rejectedMember.getEmail() + " and registration removed.");
         }
         return ResponseEntity.internalServerError().body("Failed to send rejection email. Member record was retained.");
+
     }
 
 
