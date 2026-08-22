@@ -38,6 +38,8 @@ services:
       - SPRING_MAIL_PASSWORD=${SMTP_KEY}
       - SECRET_KEY=${SECRET_KEY}
       - FASTAPI_URL=http://fastapi-service:8000
+      - SPRING_MAIL_HOST=${SPRING_MAIL_HOST}
+      - SPRING_MAIL_PORT=${SPRING_MAIL_PORT}
     volumes:
        # FORMAT : HOST_DIR : CONTAINER_DIR
       - ./uploaded_docs:/app/uploads/supporting_docs/
