@@ -26,19 +26,20 @@ public interface MemberRepository extends JpaRepository<StudentMember, Long> {
 
     // Casts the timestamp to a plain date so time elements (hours/mins/seconds) are ignored
     @Query("SELECT s FROM StudentMember s WHERE CAST(s.emailSentAt AS date) = :date")
-    List<StudentMember> findByEmailSentAtDate(@Param("date") LocalDate date);
+    List<StudentMember> findByEmailSentAtGreaterThanEqualOrderByEmailSentAtDesc(@Param("date") LocalDate date);
 
     // Multi-tenant version filtered by regions
     @Query("SELECT s FROM StudentMember s WHERE CAST(s.emailSentAt AS date) = :date AND s.region IN :regions")
-    List<StudentMember> findByEmailSentAtDateAndRegionIn(@Param("date") LocalDate date, @Param("regions") Collection<Regions> regions);
+    List<StudentMember> findByEmailSentAtGreaterThanEqualAndRegionInOrderByEmailSentAtDesc(@Param("date") LocalDate date,
+                                                                                           @Param("regions") Collection<Regions> regions);
 
     // Query method to display student members based on their registration dates
     @Query("SELECT s FROM StudentMember s WHERE CAST(s.registrationDate AS date) = :date")
-    List<StudentMember> findByRegistrationDate(@Param("date") LocalDate date);
+    List<StudentMember> findByRegistrationDateGreaterThanEqualOrderByRegistrationDateDesc(@Param("date") LocalDate date);
 
     // Multi-tenant version filtered by their assigned regions
     @Query("SELECT s FROM StudentMember s WHERE CAST(s.registrationDate AS date) = :date AND s.region IN :regions")
-    List<StudentMember> findByRegistrationDateAndRegionIn(
+    List<StudentMember> findByRegistrationDateGreaterThanEqualAndRegionInOrderByRegistrationDateDesc(
             @Param("date") LocalDate date,
             @Param("regions") Set<Regions> regions
     );

@@ -102,7 +102,7 @@ public class MemberService {
 
         // 1. Super Admins, GhIE Admins, and Secretary can fetch for any region nationwide
         if ("SUPER_ADMIN".equalsIgnoreCase(role) || "GhIE_ADMIN".equalsIgnoreCase(role) || "SECRETARY".equalsIgnoreCase(role)) {
-            return memberRepository.findByEmailSentAtDate(date);
+            return memberRepository.findByEmailSentAtGreaterThanEqualOrderByEmailSentAtDesc(date);
         }
 
         // 2. Regional Admins can only view records within their assigned regions
@@ -113,7 +113,7 @@ public class MemberService {
                 return List.of();
             }
 
-            return memberRepository.findByEmailSentAtDateAndRegionIn(date, assignedRegions);
+            return memberRepository.findByEmailSentAtGreaterThanEqualAndRegionInOrderByEmailSentAtDesc(date, assignedRegions);
         }
 
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized role access.");
@@ -124,7 +124,7 @@ public class MemberService {
 
         // 1. Super Admins, GhIE Admins, and Secretary can fetch across all regions
         if ("SUPER_ADMIN".equalsIgnoreCase(role) || "GhIE_ADMIN".equalsIgnoreCase(role) || "SECRETARY".equalsIgnoreCase(role)) {
-            return memberRepository.findByRegistrationDate(date);
+            return memberRepository.findByRegistrationDateGreaterThanEqualOrderByRegistrationDateDesc(date);
         }
 
         // 2. Regional Admins fetch only within their assigned regions
@@ -135,7 +135,7 @@ public class MemberService {
                 return List.of();
             }
 
-            return memberRepository.findByRegistrationDateAndRegionIn(date, assignedRegions);
+            return memberRepository.findByRegistrationDateGreaterThanEqualAndRegionInOrderByRegistrationDateDesc(date, assignedRegions);
         }
 
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized role access.");
