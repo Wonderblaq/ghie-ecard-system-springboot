@@ -271,9 +271,9 @@ public class AdminController {
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
     @GetMapping("/members/by-email-date")
     public ResponseEntity<List<StudentMember>> getMembersByEmailSentDate(
-            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime date,
             @AuthenticationPrincipal Admin loggedAdmin) {
-        LocalDateTime startDate = date.atStartOfDay();
+        LocalDate startDate = date.toLocalDate();
         List<StudentMember> members = memberService.getMembersByEmailSentDate(LocalDate.from(startDate), loggedAdmin);
         return ResponseEntity.ok(members);
     }
