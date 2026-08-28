@@ -35,13 +35,13 @@ public interface MemberRepository extends JpaRepository<StudentMember, Long> {
 
     // Query method to display student members registered from a given date onward
     //@Query("SELECT s FROM StudentMember s WHERE CAST(s.registrationDate AS date) >= :date ORDER BY s.registrationDate DESC")
-    List<StudentMember> findByRegistrationDateGreaterThanEqualOrderByRegistrationDateDesc(@Param("date") LocalDate date);
+    List<StudentMember> findByRegistrationDateGreaterThanEqualOrderByRegistrationDateDesc(LocalDate date);
 
     // Multi-tenant version filtered by their assigned regions
     //@Query("SELECT s FROM StudentMember s WHERE CAST(s.registrationDate AS date) >= :date AND s.region IN :regions ORDER BY s.registrationDate DESC")
     List<StudentMember> findByRegistrationDateGreaterThanEqualAndRegionInOrderByRegistrationDateDesc(
-            @Param("date") LocalDate date,
-            @Param("regions") Set<Regions> regions
+            LocalDate date,
+            Set<Regions> regions
     );
 
     //@Query("SELECT m FROM StudentMember m WHERE m.memberId = :memberId")
