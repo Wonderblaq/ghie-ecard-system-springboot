@@ -31,7 +31,7 @@ public class MemberService {
 
         // 1. SUPER_ADMIN, GhIE_ADMIN, and SECRETARY skip regional checks entirely and get ALL members
         if ("SUPER_ADMIN".equalsIgnoreCase(role) || "GhIE_ADMIN".equalsIgnoreCase(role) || "SECRETARY".equalsIgnoreCase(role)) {
-            return memberRepository.findByEmailSentFalseOrderByRegistrationDateDesc();
+            return memberRepository.findAllByOrderByRegistrationDateDesc();
         }
 
         // 2. REGIONAL_ADMIN must have valid assigned regions
