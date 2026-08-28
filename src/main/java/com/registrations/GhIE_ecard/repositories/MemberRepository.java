@@ -15,11 +15,13 @@ import java.util.Set;
 
 public interface MemberRepository extends JpaRepository<StudentMember, Long> {
 
-    List<StudentMember> findAll(Sort memberId);
+
+    List<StudentMember> findAllByOrderByRegistrationDateDesc();
     boolean existsByEmail(String email);
     List<StudentMember> findByEmailSentFalse();
     boolean existsByContact(Long contact);
-
+    // Keeps newly registered members who HAVEN'T received cards at the very top
+    List<StudentMember> findByEmailSentFalseOrderByRegistrationDateDesc();
 
     // FIX: Changed findByRegionsIn -> findByRegionIn
     List<StudentMember> findByRegionIn(Collection<Regions> regions);
