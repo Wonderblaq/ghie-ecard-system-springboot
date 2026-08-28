@@ -102,14 +102,12 @@ public class MemberService {
         String role = loggedAdmin.getRole();
 
         // Convert LocalDate to LocalDateTime at 00:00:00 for accurate database comparison
-        LocalDateTime startDate = date.atStartOfDay();
+        LocalDateTime startOfDay = date.atStartOfDay();
 
-        // 1. Super Admins, GhIE Admins, and Secretary can fetch for any region nationwide
         if ("SUPER_ADMIN".equalsIgnoreCase(role) || "GhIE_ADMIN".equalsIgnoreCase(role) || "SECRETARY".equalsIgnoreCase(role)) {
-            return memberRepository.findByEmailSentAtGreaterThanEqualOrderByEmailSentAtDesc(LocalDate.from(startDate));
+            return memberRepository.findByEmailSentAtGreaterThanEqualOrderByEmailSentAtDesc(startOfDay);
         }
 
-        // 2. Regional Admins can only view records within their assigned regions
         if ("REGIONAL_ADMIN".equalsIgnoreCase(role)) {
             Set<Regions> assignedRegions = loggedAdmin.getRegions();
 
@@ -117,7 +115,7 @@ public class MemberService {
                 return List.of();
             }
 
-            return memberRepository.findByEmailSentAtGreaterThanEqualAndRegionInOrderByEmailSentAtDesc(LocalDate.from(startDate), assignedRegions);
+            return memberRepository.findByEmailSentAtGreaterThanEqualAndRegionInOrderByEmailSentAtDesc(startOfDay, assignedRegions);
         }
 
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized role access.");
