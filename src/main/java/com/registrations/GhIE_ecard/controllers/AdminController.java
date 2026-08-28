@@ -273,8 +273,8 @@ public class AdminController {
     public ResponseEntity<List<StudentMember>> getMembersByEmailSentDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @AuthenticationPrincipal Admin loggedAdmin) {
-
-        List<StudentMember> members = memberService.getMembersByEmailSentDate(date, loggedAdmin);
+        LocalDateTime startDate = date.atStartOfDay();
+        List<StudentMember> members = memberService.getMembersByEmailSentDate(LocalDate.from(startDate), loggedAdmin);
         return ResponseEntity.ok(members);
     }
 
@@ -285,9 +285,9 @@ public class AdminController {
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @AuthenticationPrincipal Admin loggedAdmin) {
 
-        LocalDateTime startOfDate = date.atStartOfDay();
 
-        List<StudentMember> members = memberService.getMembersByRegistrationDate(LocalDate.from(startOfDate), loggedAdmin);
+
+        List<StudentMember> members = memberService.getMembersByRegistrationDate(date, loggedAdmin);
         return ResponseEntity.ok(members);
     }
 

@@ -38,7 +38,7 @@ public interface MemberRepository extends JpaRepository<StudentMember, Long> {
     List<StudentMember> findByRegistrationDateGreaterThanEqualOrderByRegistrationDateDesc(@Param("date") LocalDate date);
 
     // Multi-tenant version filtered by their assigned regions
-    @Query("SELECT s FROM StudentMember s WHERE CAST(s.registrationDate AS date) >= :date AND s.region IN :regions ORDER BY s.registrationDate DESC")
+    //@Query("SELECT s FROM StudentMember s WHERE CAST(s.registrationDate AS date) >= :date AND s.region IN :regions ORDER BY s.registrationDate DESC")
     List<StudentMember> findByRegistrationDateGreaterThanEqualAndRegionInOrderByRegistrationDateDesc(
             @Param("date") LocalDate date,
             @Param("regions") Set<Regions> regions
