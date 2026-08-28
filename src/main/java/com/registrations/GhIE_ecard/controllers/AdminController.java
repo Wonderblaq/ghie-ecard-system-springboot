@@ -1,6 +1,7 @@
 package com.registrations.GhIE_ecard.controllers;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,6 +71,7 @@ public class AdminController {
     public ResponseEntity<?> getAllMembers(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "size", required = false, defaultValue = "50") int size,
+
             @AuthenticationPrincipal Admin loggedAdmin
     ) {
         if (loggedAdmin == null) {
@@ -83,7 +85,7 @@ public class AdminController {
     }
 
     // Get request for admins to find specific members
-    // 1. VIEW MEMBERS (Secretary CAN access - read-only across all regions)
+    // VIEW MEMBERS (Secretary CAN access - read-only across all regions)
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
     @GetMapping("/members/{id}")
     public ResponseEntity<Optional<StudentMember>> findMember(@PathVariable("id") Long id, @AuthenticationPrincipal Admin loggedAdmin) {
@@ -283,7 +285,9 @@ public class AdminController {
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @AuthenticationPrincipal Admin loggedAdmin) {
 
-        List<StudentMember> members = memberService.getMembersByRegistrationDate(date, loggedAdmin);
+        LocalDateTime startOfDate = date.atStartOfDay();
+
+        List<StudentMember> members = memberService.getMembersByRegistrationDate(LocalDate.from(startOfDate), loggedAdmin);
         return ResponseEntity.ok(members);
     }
 
