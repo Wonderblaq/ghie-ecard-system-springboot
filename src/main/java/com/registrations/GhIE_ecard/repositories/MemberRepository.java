@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -28,12 +29,12 @@ public interface MemberRepository extends JpaRepository<StudentMember, Long> {
 
     // Casts the timestamp to a plain date so time elements (hours/mins/seconds) are ignored
    // @Query("SELECT s FROM StudentMember s WHERE CAST(s.emailSentAt AS date)  >= :date ORDER BY s.emailSentAt DESC")
-    List<StudentMember> findByEmailSentAtGreaterThanEqualOrderByEmailSentAtDesc(@Param("date") LocalDate date);
+    List<StudentMember> findByEmailSentAtGreaterThanEqualOrderByEmailSentAtDesc(LocalDateTime date);
 
     // Multi-tenant version filtered by regions
     //@Query("SELECT s FROM StudentMember s WHERE CAST(s.emailSentAt AS date) >= :date AND s.region IN :regions ORDER BY s.emailSentAt DESC")
-    List<StudentMember> findByEmailSentAtGreaterThanEqualAndRegionInOrderByEmailSentAtDesc(@Param("date") LocalDate date,
-                                                                                           @Param("regions") Collection<Regions> regions);
+    List<StudentMember> findByEmailSentAtGreaterThanEqualAndRegionInOrderByEmailSentAtDesc(LocalDateTime date,
+                                                                                           Collection<Regions> regions);
 
     // Query method to display student members registered from a given date onward
     //@Query("SELECT s FROM StudentMember s WHERE CAST(s.registrationDate AS date) >= :date ORDER BY s.registrationDate DESC")

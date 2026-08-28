@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -100,9 +101,12 @@ public class MemberService {
     public List<StudentMember> getMembersByEmailSentDate(LocalDate date, Admin loggedAdmin) {
         String role = loggedAdmin.getRole();
 
+        // Convert LocalDate to LocalDateTime at 00:00:00 for accurate database comparison
+        LocalDateTime startDate = date.atStartOfDay();
+
         // 1. Super Admins, GhIE Admins, and Secretary can fetch for any region nationwide
         if ("SUPER_ADMIN".equalsIgnoreCase(role) || "GhIE_ADMIN".equalsIgnoreCase(role) || "SECRETARY".equalsIgnoreCase(role)) {
-            return memberRepository.findByEmailSentAtGreaterThanEqualOrderByEmailSentAtDesc(date);
+            return memberRepository.findByEmailSentAtGreaterThanEqualOrderByEmailSentAtDesc(LocalDate.from(startDate));
         }
 
         // 2. Regional Admins can only view records within their assigned regions
@@ -113,7 +117,7 @@ public class MemberService {
                 return List.of();
             }
 
-            return memberRepository.findByEmailSentAtGreaterThanEqualAndRegionInOrderByEmailSentAtDesc(date, assignedRegions);
+            return memberRepository.findByEmailSentAtGreaterThanEqualAndRegionInOrderByEmailSentAtDesc(LocalDate.from(startDate), assignedRegions);
         }
 
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized role access.");
