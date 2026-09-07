@@ -41,7 +41,7 @@ public class SecurityConfig {
         //  specify exact origins.
         configuration.setAllowedOrigins(List.of("http://localhost:5173",
                 "https://yeghie.com",
-                "https://ghieecard.vercel.app"));
+                "https://www.yeghie.com"));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
