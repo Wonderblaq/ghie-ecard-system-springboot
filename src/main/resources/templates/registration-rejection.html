@@ -2,70 +2,122 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registration Update</title>
+    <!-- Web fonts (Gmail / Apple Mail load these; other clients fall back to Segoe UI / Arial) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body style="margin:0;padding:0;background:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+<body style="margin:0;padding:0;background:#0B3D75;font-family:'Inter','Segoe UI',Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;">
 
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f9;padding:40px 0;">
+<!-- Inbox preview text -->
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;font-size:1px;line-height:1px;color:#0B3D75;">
+    Action needed: your passport photograph could not be verified. Upload a new one to receive your GhIE digital ID card.
+</div>
+
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0B3D75"
+       style="background:#0B3D75;
+       background-image:radial-gradient(circle at 10% 8%,rgba(242,169,0,0.30) 0%,rgba(242,169,0,0) 38%),
+       radial-gradient(circle at 90% 92%,rgba(56,189,248,0.32) 0%,rgba(56,189,248,0) 42%),
+       linear-gradient(160deg,#051a36 0%,#0B4F8C 55%,#0d6aa8 100%);
+       padding:48px 12px;">
     <tr>
         <td align="center">
 
             <table width="650" cellpadding="0" cellspacing="0"
-                   style="background:#ffffff;border-radius:12px;overflow:hidden;
-                   box-shadow:0 6px 18px rgba(0,0,0,0.08);">
+                   style="width:100%;max-width:650px;background:#ffffff;
+                   background:rgba(255,255,255,0.97);border-radius:20px;overflow:hidden;
+                   border:1px solid rgba(255,255,255,0.65);
+                   box-shadow:0 30px 70px rgba(2,14,34,0.55),0 0 0 6px rgba(255,255,255,0.10);">
 
                 <!-- Header -->
                 <tr>
-                    <td align="center"
-                        style="background:#0B4F8C;padding:35px;color:white;">
+                    <td align="center" bgcolor="#0B3D75"
+                        style="background:#0B3D75;
+                        background-image:radial-gradient(circle at 12% 0%,rgba(242,169,0,0.38) 0%,rgba(242,169,0,0) 44%),
+                        radial-gradient(circle at 92% 100%,rgba(56,189,248,0.40) 0%,rgba(56,189,248,0) 48%),
+                        linear-gradient(135deg,#061c3a 0%,#0B4F8C 55%,#1272bd 100%);
+                        padding:20px 24px;color:#ffffff;border-top:5px solid #F2A900;">
 
-                        <h1 style="margin:0;font-size:28px;">
-                            GhIE Student E-Card
-                        </h1>
+                        <!-- Glass panel -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:rgba(255,255,255,0.12);
+                               border:1px solid rgba(255,255,255,0.32);
+                               border-radius:18px;
+                               box-shadow:inset 0 1px 0 rgba(255,255,255,0.45),0 14px 32px rgba(3,20,45,0.35);
+                               -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);">
+                            <tr>
+                                <td align="center" style="padding:24px 24px 22px;">
 
-                        <p style="margin-top:10px;font-size:15px;opacity:0.9;">
-                            Registration Verification Update
-                        </p>
+                                    <h1 style="margin:0;font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:27px;
+                                    line-height:1.25;font-weight:700;letter-spacing:0.2px;color:#ffffff;">
+                                        GhIE Student E-Card
+                                    </h1>
+
+                                    <p style="margin:10px 0 0;font-size:15px;color:#d6e6f7;letter-spacing:0.4px;">
+                                        Registration Verification Update
+                                    </p>
+
+                                    <!-- Status pill -->
+                                    <p style="display:inline-block;margin:14px 0 0;padding:6px 16px;
+                                    font-size:12.5px;font-weight:600;letter-spacing:0.3px;color:#fff3cf;
+                                    background:rgba(242,169,0,0.20);
+                                    border:1px solid rgba(242,169,0,0.60);border-radius:999px;">
+                                        Action required: new photo needed
+                                    </p>
+
+                                </td>
+                            </tr>
+                        </table>
 
                     </td>
                 </tr>
 
                 <!-- Body -->
                 <tr>
-                    <td style="padding:40px;">
+                    <td style="padding:44px 44px 38px;background:#ffffff;
+                    background-image:linear-gradient(180deg,#ffffff 0%,#f3f8fd 100%);">
 
-                        <p style="font-size:17px;">
+                        <p style="margin:0 0 18px;font-size:18px;color:#0a1f38;">
                             Dear
-                            <strong th:text="${fullName}">
+                            <strong th:text="${fullName}" style="font-weight:600;">
                                 Student
                             </strong>,
                         </p>
 
-                        <p style="line-height:1.8;color:#444;">
+                        <p style="margin:0;font-size:15px;line-height:1.8;color:#334155;">
                             Thank you for registering for the
-                            <strong>GhIE Student Digital ID Card.</strong>
+                            <strong style="color:#0B4F8C;">GhIE Student Digital ID Card.</strong>
 
                             During our verification process we noticed that
                             your submitted passport photograph does not satisfy
-                            the requirements for ID card generation.
+                            the requirements for ID card generation. Your registration has been
+                            saved, and no other details need to be changed.
                         </p>
 
-                        <table width="100%"
+                        <!-- Reason (glass amber) -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
                                style="margin:30px 0;
-                               border-left:5px solid #ff9800;
-                               background:#fff8e6;
-                               padding:20px;
-                               border-radius:6px;">
+                               background:#fff6dc;
+                               background-image:linear-gradient(135deg,rgba(255,248,225,0.98) 0%,rgba(255,235,178,0.85) 100%);
+                               border:1px solid rgba(242,169,0,0.50);
+                               border-left:5px solid #F2A900;
+                               border-radius:12px;
+                               box-shadow:inset 0 1px 0 rgba(255,255,255,0.9),0 8px 20px rgba(242,169,0,0.14);">
 
                             <tr>
-                                <td>
+                                <td style="padding:22px 26px;">
 
-                                    <strong>
+                                    <strong style="font-family:'Poppins','Segoe UI',Arial,sans-serif;
+                                    font-size:15px;color:#7a4e00;">
                                         Reason for Rejection
                                     </strong>
 
-                                    <p style="margin-top:12px;color:#555;"
+                                    <p style="margin:4px 0 0;font-size:12.5px;color:#a4741a;">
+                                        Identified during automated photo verification
+                                    </p>
+
+                                    <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#3b3b3b;font-weight:500;"
                                        th:text="${reason}">
                                         Reason goes here...
                                     </p>
@@ -75,55 +127,121 @@
 
                         </table>
 
-                        <h3 style="color:#0B4F8C;">
+                        <h3 style="margin:0 0 4px;font-family:'Poppins','Segoe UI',Arial,sans-serif;
+                        font-size:19px;color:#0B4F8C;">
                             Please upload a new passport photo that:
                         </h3>
 
-                        <ul style="line-height:2;color:#555;">
-                            <li>Clearly shows your full face.</li>
-                            <li>Uses a plain white or light blue background.</li>
-                            <li>Is well illuminated and not blurry.</li>
-                            <li>Does not contain hats, sunglasses or image filters.</li>
-                            <li>Is recent and professionally taken.</li>
+                        <p style="margin:0;font-size:13.5px;color:#64748b;">
+                            Check each point below before you submit.
+                        </p>
+
+                        <!-- Requirements (glass panel) -->
+                        <ul style="margin:14px 0 0;padding:18px 24px 18px 42px;line-height:1.75;font-size:14.5px;color:#0B4F8C;
+                        background:rgba(11,79,140,0.06);
+                        background-image:linear-gradient(135deg,rgba(11,79,140,0.06) 0%,rgba(22,103,176,0.12) 100%);
+                        border:1px solid rgba(11,79,140,0.20);border-radius:12px;
+                        box-shadow:inset 0 1px 0 rgba(255,255,255,0.9);">
+                            <li style="padding:5px 0;"><span style="color:#334155;"><strong style="color:#0a1f38;">Clearly shows your full face.</strong> Your whole face should be visible and unobstructed.</span></li>
+                            <li style="padding:5px 0;"><span style="color:#334155;"><strong style="color:#0a1f38;">Uses a plain white or light blue background.</strong> No patterns, shadows or other people.</span></li>
+                            <li style="padding:5px 0;"><span style="color:#334155;"><strong style="color:#0a1f38;">Is well illuminated and not blurry.</strong> Use even lighting and a steady, in-focus shot.</span></li>
+                            <li style="padding:5px 0;"><span style="color:#334155;"><strong style="color:#0a1f38;">Does not contain hats, sunglasses or image filters.</strong> The photo must be unedited.</span></li>
+                            <li style="padding:5px 0;"><span style="color:#334155;"><strong style="color:#0a1f38;">Is recent and professionally taken.</strong> It should look like you today.</span></li>
                         </ul>
 
-                        <p style="margin-top:30px;color:#444;line-height:1.8;">
+                        <p style="margin:30px 0 0;font-size:15px;color:#334155;line-height:1.8;">
                             Once a new registration containing a valid passport
                             photograph is submitted, your application will be
                             reviewed again and your digital ID card will be
                             generated automatically.
                         </p>
 
-                        <div style="margin:40px 0;
+                        <!-- What happens next -->
+                        <table width="100%" cellpadding="0" cellspacing="8" style="margin:18px -8px 0;width:calc(100% + 16px);">
+                            <tr>
+                                <td width="33%" valign="top"
+                                    style="padding:16px 14px;background:rgba(255,255,255,0.85);
+                                    border:1px solid rgba(11,79,140,0.18);border-radius:12px;
+                                    box-shadow:inset 0 1px 0 #ffffff,0 6px 16px rgba(11,79,140,0.08);">
+                                    <span style="display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;
+                                    border-radius:50%;background:#0B4F8C;color:#ffffff;font-size:13px;font-weight:700;">1</span>
+                                    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.55;color:#334155;">
+                                        <strong style="color:#0a1f38;">Submit again</strong><br>
+                                        Register with a valid passport photograph.
+                                    </p>
+                                </td>
+                                <td width="33%" valign="top"
+                                    style="padding:16px 14px;background:rgba(255,255,255,0.85);
+                                    border:1px solid rgba(11,79,140,0.18);border-radius:12px;
+                                    box-shadow:inset 0 1px 0 #ffffff,0 6px 16px rgba(11,79,140,0.08);">
+                                    <span style="display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;
+                                    border-radius:50%;background:#0B4F8C;color:#ffffff;font-size:13px;font-weight:700;">2</span>
+                                    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.55;color:#334155;">
+                                        <strong style="color:#0a1f38;">Review</strong><br>
+                                        Your application is checked again.
+                                    </p>
+                                </td>
+                                <td width="33%" valign="top"
+                                    style="padding:16px 14px;background:rgba(255,255,255,0.85);
+                                    border:1px solid rgba(11,79,140,0.18);border-radius:12px;
+                                    box-shadow:inset 0 1px 0 #ffffff,0 6px 16px rgba(11,79,140,0.08);">
+                                    <span style="display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;
+                                    border-radius:50%;background:#F2A900;color:#3b2a00;font-size:13px;font-weight:700;">3</span>
+                                    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.55;color:#334155;">
+                                        <strong style="color:#0a1f38;">ID card issued</strong><br>
+                                        Your digital ID card is generated automatically.
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div style="margin:38px 0 0;
                         text-align:center;">
 
                             <a href="https://yeghie.com/"
-                               style="background:#0B4F8C;
-                               color:white;
+                               style="display:inline-block;
+                               background:#0B4F8C;
+                               background-image:linear-gradient(135deg,#0d5da3 0%,#0B4F8C 50%,#083a6b 100%);
+                               color:#ffffff;
                                text-decoration:none;
-                               padding:14px 28px;
-                               border-radius:6px;
-                               font-weight:bold;">
+                               font-family:'Poppins','Segoe UI',Arial,sans-serif;
+                               font-size:15px;
+                               letter-spacing:0.3px;
+                               padding:16px 36px;
+                               border-radius:10px;
+                               border:1px solid rgba(255,255,255,0.35);
+                               box-shadow:inset 0 1px 0 rgba(255,255,255,0.35),0 10px 24px rgba(11,79,140,0.38);
+                               font-weight:600;">
 
                                 Visit GhIE Website
 
                             </a>
 
+                            <p style="margin:14px 0 0;font-size:12.5px;color:#64748b;">
+                                Button not working? Copy this link into your browser:
+                                <a href="https://yeghie.com/" style="color:#0B4F8C;font-weight:600;text-decoration:underline;">https://yeghie.com/</a>
+                            </p>
+
                         </div>
 
-                        <p style="margin-top:35px;">
+                        <p style="margin:36px 0 0;font-size:15px;color:#334155;
+                        border-top:1px solid #dbe6f3;padding-top:24px;">
                             Thank you for your cooperation.
                         </p>
 
-                        <p>
+                        <p style="margin:14px 0 0;font-size:15px;color:#334155;line-height:1.6;">
 
                             Kind regards,
 
                             <br><br>
 
-                            <strong>
+                            <strong style="font-family:'Poppins','Segoe UI',Arial,sans-serif;color:#0B4F8C;">
                                 GhIE Student E-Card Team
                             </strong>
+
+                            <br>
+
+                            <span style="font-size:13px;color:#64748b;">Ghana Institution of Engineering</span>
 
                         </p>
 
@@ -133,16 +251,28 @@
                 <!-- Footer -->
                 <tr>
 
-                    <td align="center"
-                        style="background:#f2f4f8;
-                        padding:25px;
-                        color:#777;
-                        font-size:13px;">
+                    <td align="center" bgcolor="#08264a"
+                        style="background:#08264a;
+                        background-image:linear-gradient(135deg,#051a36 0%,#0a2f5c 100%);
+                        padding:30px 30px 28px;
+                        color:#a9c0da;
+                        font-size:12.5px;
+                        line-height:1.9;
+                        border-top:3px solid #F2A900;">
 
-                        © 2026 Ghana Institution of Engineering (GhIE)
+                        <strong style="color:#ffffff;font-weight:600;">
+                            © 2026 Ghana Institution of Engineering (GhIE)
+                        </strong>
 
+                        <br>
 
-                        This is an automated email. Please do not reply directly.
+                        Need help? Call us on +233 (0)302 760 867
+
+                        <br>
+
+                        <span style="display:inline-block;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.14);color:#7f9bbb;">
+                            This is an automated email. Please do not reply directly.
+                        </span>
 
                     </td>
 

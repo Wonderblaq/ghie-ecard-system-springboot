@@ -39,6 +39,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         //  specify exact origins.
+        // Explicitly allow both www and non-www origins
         configuration.setAllowedOrigins(List.of("http://localhost:5173",
                 "https://yeghie.com",
                 "https://www.yeghie.com"));
