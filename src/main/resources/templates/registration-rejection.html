@@ -3,66 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
     <title>Registration Update</title>
     <!-- Web fonts (Gmail / Apple Mail load these; other clients fall back to Segoe UI / Arial) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { color-scheme: light; supported-color-schemes: light; }
+        @media only screen and (max-width: 520px) {
+            .outer { padding: 20px 8px !important; }
+            .px { padding-left: 22px !important; padding-right: 22px !important; }
+            .h1 { font-size: 23px !important; }
+            .btn { display: block !important; text-align: center !important; padding-left: 16px !important; padding-right: 16px !important; }
+        }
+    </style>
 </head>
 
-<body style="margin:0;padding:0;background:#0B3D75;font-family:'Inter','Segoe UI',Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;">
+<body style="margin:0;padding:0;font-family:'Inter','Segoe UI',Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;">
 
 <!-- Inbox preview text -->
-<div style="display:none;max-height:0;overflow:hidden;opacity:0;font-size:1px;line-height:1px;color:#0B3D75;">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;font-size:1px;line-height:1px;color:#ffffff;">
     Action needed: your passport photograph could not be verified. Upload a new one to receive your GhIE digital ID card.
 </div>
 
-<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0B3D75"
-       style="background:#0B3D75;
-       background-image:radial-gradient(circle at 10% 8%,rgba(242,169,0,0.30) 0%,rgba(242,169,0,0) 38%),
-       radial-gradient(circle at 90% 92%,rgba(56,189,248,0.32) 0%,rgba(56,189,248,0) 42%),
-       linear-gradient(160deg,#051a36 0%,#0B4F8C 55%,#0d6aa8 100%);
-       padding:48px 12px;">
+<table width="100%" cellpadding="0" cellspacing="0">
     <tr>
-        <td align="center">
+        <td align="center" class="outer" style="padding:32px 12px;">
 
-            <table width="650" cellpadding="0" cellspacing="0"
-                   style="width:100%;max-width:650px;background:#ffffff;
-                   background:rgba(255,255,255,0.97);border-radius:20px;overflow:hidden;
-                   border:1px solid rgba(255,255,255,0.65);
-                   box-shadow:0 30px 70px rgba(2,14,34,0.55),0 0 0 6px rgba(255,255,255,0.10);">
+            <table width="650" cellpadding="0" cellspacing="0" bgcolor="#ffffff"
+                   style="width:100%;max-width:650px;background-color:#ffffff;border-radius:20px;overflow:hidden;
+                   border:1px solid #c3d5e8;
+                   box-shadow:0 12px 32px #dbe5f0;">
 
                 <!-- Header -->
                 <tr>
-                    <td align="center" bgcolor="#0B3D75"
-                        style="background:#0B3D75;
-                        background-image:radial-gradient(circle at 12% 0%,rgba(242,169,0,0.38) 0%,rgba(242,169,0,0) 44%),
-                        radial-gradient(circle at 92% 100%,rgba(56,189,248,0.40) 0%,rgba(56,189,248,0) 48%),
-                        linear-gradient(135deg,#061c3a 0%,#0B4F8C 55%,#1272bd 100%);
-                        padding:20px 24px;color:#ffffff;border-top:5px solid #F2A900;">
+                    <td align="center" bgcolor="#0B4F8C" style="background-color:#0B4F8C;padding:20px 22px;color:#ffffff;">
 
                         <!-- Glass panel -->
-                        <table width="100%" cellpadding="0" cellspacing="0"
-                               style="background:rgba(255,255,255,0.12);
-                               border:1px solid rgba(255,255,255,0.32);
-                               border-radius:18px;
-                               box-shadow:inset 0 1px 0 rgba(255,255,255,0.45),0 14px 32px rgba(3,20,45,0.35);
-                               -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);">
+                        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1c68ad"
+                               style="background-color:#1c68ad;
+                               border:1px solid #5f96cc;
+                               border-radius:16px;
+                               box-shadow:inset 0 1px 0 #8fb8de,0 8px 20px #08396a;">
                             <tr>
-                                <td align="center" style="padding:24px 24px 22px;">
+                                <td align="center" style="padding:26px 20px 24px;">
 
-                                    <h1 style="margin:0;font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:27px;
+                                    <h1 class="h1" style="margin:0;font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:27px;
                                     line-height:1.25;font-weight:700;letter-spacing:0.2px;color:#ffffff;">
                                         GhIE Student E-Card
                                     </h1>
 
-                                    <p style="margin:10px 0 0;font-size:15px;color:#d6e6f7;letter-spacing:0.4px;">
+                                    <p style="margin:10px 0 0;font-size:15px;color:#e3eef9;letter-spacing:0.3px;">
                                         Registration Verification Update
                                     </p>
 
                                     <!-- Status pill -->
-                                    <p style="display:inline-block;margin:14px 0 0;padding:6px 16px;
-                                    font-size:12.5px;font-weight:600;letter-spacing:0.3px;color:#fff3cf;
-                                    background:rgba(242,169,0,0.20);
-                                    border:1px solid rgba(242,169,0,0.60);border-radius:999px;">
+                                    <p style="display:inline-block;margin:16px 0 0;padding:6px 16px;
+                                    font-size:12.5px;font-weight:600;letter-spacing:0.3px;color:#6b4300;
+                                    background-color:#fff1c7;
+                                    border:1px solid #f0c95a;border-radius:999px;
+                                    box-shadow:inset 0 1px 0 #ffffff;">
                                         Action required: new photo needed
                                     </p>
 
@@ -75,8 +75,7 @@
 
                 <!-- Body -->
                 <tr>
-                    <td style="padding:44px 44px 38px;background:#ffffff;
-                    background-image:linear-gradient(180deg,#ffffff 0%,#f3f8fd 100%);">
+                    <td class="px" bgcolor="#ffffff" style="padding:40px 44px 36px;background-color:#ffffff;">
 
                         <p style="margin:0 0 18px;font-size:18px;color:#0a1f38;">
                             Dear
@@ -95,29 +94,28 @@
                             saved, and no other details need to be changed.
                         </p>
 
-                        <!-- Reason (glass amber) -->
-                        <table width="100%" cellpadding="0" cellspacing="0"
-                               style="margin:30px 0;
-                               background:#fff6dc;
-                               background-image:linear-gradient(135deg,rgba(255,248,225,0.98) 0%,rgba(255,235,178,0.85) 100%);
-                               border:1px solid rgba(242,169,0,0.50);
+                        <!-- Reason (glossy amber) -->
+                        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#fff6dc"
+                               style="margin:28px 0;
+                               background-color:#fff6dc;
+                               border:1px solid #efd07a;
                                border-left:5px solid #F2A900;
                                border-radius:12px;
-                               box-shadow:inset 0 1px 0 rgba(255,255,255,0.9),0 8px 20px rgba(242,169,0,0.14);">
+                               box-shadow:inset 0 1px 0 #ffffff,0 6px 16px #f5e7bd;">
 
                             <tr>
-                                <td style="padding:22px 26px;">
+                                <td style="padding:20px 24px;">
 
                                     <strong style="font-family:'Poppins','Segoe UI',Arial,sans-serif;
-                                    font-size:15px;color:#7a4e00;">
+                                    font-size:15px;color:#6b4300;">
                                         Reason for Rejection
                                     </strong>
 
-                                    <p style="margin:4px 0 0;font-size:12.5px;color:#a4741a;">
+                                    <p style="margin:4px 0 0;font-size:12.5px;color:#8a6a1f;">
                                         Identified during automated photo verification
                                     </p>
 
-                                    <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#3b3b3b;font-weight:500;"
+                                    <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#2b2b2b;font-weight:600;"
                                        th:text="${reason}">
                                         Reason goes here...
                                     </p>
@@ -128,20 +126,19 @@
                         </table>
 
                         <h3 style="margin:0 0 4px;font-family:'Poppins','Segoe UI',Arial,sans-serif;
-                        font-size:19px;color:#0B4F8C;">
+                        font-size:19px;line-height:1.35;color:#0B4F8C;">
                             Please upload a new passport photo that:
                         </h3>
 
-                        <p style="margin:0;font-size:13.5px;color:#64748b;">
+                        <p style="margin:0;font-size:13.5px;color:#5b6b80;">
                             Check each point below before you submit.
                         </p>
 
-                        <!-- Requirements (glass panel) -->
-                        <ul style="margin:14px 0 0;padding:18px 24px 18px 42px;line-height:1.75;font-size:14.5px;color:#0B4F8C;
-                        background:rgba(11,79,140,0.06);
-                        background-image:linear-gradient(135deg,rgba(11,79,140,0.06) 0%,rgba(22,103,176,0.12) 100%);
-                        border:1px solid rgba(11,79,140,0.20);border-radius:12px;
-                        box-shadow:inset 0 1px 0 rgba(255,255,255,0.9);">
+                        <!-- Requirements (glossy glass panel) -->
+                        <ul style="margin:14px 0 0;padding:16px 20px 16px 38px;line-height:1.7;font-size:14.5px;color:#0B4F8C;
+                        background-color:#eaf2fb;
+                        border:1px solid #bcd3ea;border-radius:12px;
+                        box-shadow:inset 0 1px 0 #ffffff;">
                             <li style="padding:5px 0;"><span style="color:#334155;"><strong style="color:#0a1f38;">Clearly shows your full face.</strong> Your whole face should be visible and unobstructed.</span></li>
                             <li style="padding:5px 0;"><span style="color:#334155;"><strong style="color:#0a1f38;">Uses a plain white or light blue background.</strong> No patterns, shadows or other people.</span></li>
                             <li style="padding:5px 0;"><span style="color:#334155;"><strong style="color:#0a1f38;">Is well illuminated and not blurry.</strong> Use even lighting and a steady, in-focus shot.</span></li>
@@ -149,59 +146,76 @@
                             <li style="padding:5px 0;"><span style="color:#334155;"><strong style="color:#0a1f38;">Is recent and professionally taken.</strong> It should look like you today.</span></li>
                         </ul>
 
-                        <p style="margin:30px 0 0;font-size:15px;color:#334155;line-height:1.8;">
+                        <p style="margin:28px 0 0;font-size:15px;color:#334155;line-height:1.8;">
                             Once a new registration containing a valid passport
                             photograph is submitted, your application will be
                             reviewed again and your digital ID card will be
                             generated automatically.
                         </p>
 
-                        <!-- What happens next -->
-                        <table width="100%" cellpadding="0" cellspacing="8" style="margin:18px -8px 0;width:calc(100% + 16px);">
+                        <!-- What happens next (stacked rows, mobile-safe) -->
+                        <table width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0 0;">
                             <tr>
-                                <td width="33%" valign="top"
-                                    style="padding:16px 14px;background:rgba(255,255,255,0.85);
-                                    border:1px solid rgba(11,79,140,0.18);border-radius:12px;
-                                    box-shadow:inset 0 1px 0 #ffffff,0 6px 16px rgba(11,79,140,0.08);">
-                                    <span style="display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;
-                                    border-radius:50%;background:#0B4F8C;color:#ffffff;font-size:13px;font-weight:700;">1</span>
-                                    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.55;color:#334155;">
-                                        <strong style="color:#0a1f38;">Submit again</strong><br>
-                                        Register with a valid passport photograph.
-                                    </p>
+                                <td bgcolor="#f3f8fd"
+                                    style="padding:14px 16px;background-color:#f3f8fd;border:1px solid #bcd3ea;border-radius:12px;
+                                    box-shadow:inset 0 1px 0 #ffffff;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="40" valign="top">
+                                                <span style="display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;
+                                                border-radius:50%;background-color:#0B4F8C;color:#ffffff;font-size:13px;font-weight:700;">1</span>
+                                            </td>
+                                            <td valign="top" style="font-size:14px;line-height:1.55;color:#334155;">
+                                                <strong style="color:#0a1f38;">Submit again.</strong> Register with a valid passport photograph.
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
-                                <td width="33%" valign="top"
-                                    style="padding:16px 14px;background:rgba(255,255,255,0.85);
-                                    border:1px solid rgba(11,79,140,0.18);border-radius:12px;
-                                    box-shadow:inset 0 1px 0 #ffffff,0 6px 16px rgba(11,79,140,0.08);">
-                                    <span style="display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;
-                                    border-radius:50%;background:#0B4F8C;color:#ffffff;font-size:13px;font-weight:700;">2</span>
-                                    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.55;color:#334155;">
-                                        <strong style="color:#0a1f38;">Review</strong><br>
-                                        Your application is checked again.
-                                    </p>
+                            </tr>
+                            <tr><td height="8" style="font-size:0;line-height:0;">&nbsp;</td></tr>
+                            <tr>
+                                <td bgcolor="#f3f8fd"
+                                    style="padding:14px 16px;background-color:#f3f8fd;border:1px solid #bcd3ea;border-radius:12px;
+                                    box-shadow:inset 0 1px 0 #ffffff;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="40" valign="top">
+                                                <span style="display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;
+                                                border-radius:50%;background-color:#0B4F8C;color:#ffffff;font-size:13px;font-weight:700;">2</span>
+                                            </td>
+                                            <td valign="top" style="font-size:14px;line-height:1.55;color:#334155;">
+                                                <strong style="color:#0a1f38;">Review.</strong> Your application is checked again.
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
-                                <td width="33%" valign="top"
-                                    style="padding:16px 14px;background:rgba(255,255,255,0.85);
-                                    border:1px solid rgba(11,79,140,0.18);border-radius:12px;
-                                    box-shadow:inset 0 1px 0 #ffffff,0 6px 16px rgba(11,79,140,0.08);">
-                                    <span style="display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;
-                                    border-radius:50%;background:#F2A900;color:#3b2a00;font-size:13px;font-weight:700;">3</span>
-                                    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.55;color:#334155;">
-                                        <strong style="color:#0a1f38;">ID card issued</strong><br>
-                                        Your digital ID card is generated automatically.
-                                    </p>
+                            </tr>
+                            <tr><td height="8" style="font-size:0;line-height:0;">&nbsp;</td></tr>
+                            <tr>
+                                <td bgcolor="#f3f8fd"
+                                    style="padding:14px 16px;background-color:#f3f8fd;border:1px solid #bcd3ea;border-radius:12px;
+                                    box-shadow:inset 0 1px 0 #ffffff;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="40" valign="top">
+                                                <span style="display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;
+                                                border-radius:50%;background-color:#0B4F8C;color:#ffffff;font-size:13px;font-weight:700;">3</span>
+                                            </td>
+                                            <td valign="top" style="font-size:14px;line-height:1.55;color:#334155;">
+                                                <strong style="color:#0a1f38;">ID card issued.</strong> Your digital ID card is generated automatically.
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
                         </table>
 
-                        <div style="margin:38px 0 0;
+                        <div style="margin:36px 0 0;
                         text-align:center;">
 
-                            <a href="https://yeghie.com/"
+                            <a href="https://yeghie.com/" class="btn"
                                style="display:inline-block;
-                               background:#0B4F8C;
-                               background-image:linear-gradient(135deg,#0d5da3 0%,#0B4F8C 50%,#083a6b 100%);
+                               background-color:#0B4F8C;
                                color:#ffffff;
                                text-decoration:none;
                                font-family:'Poppins','Segoe UI',Arial,sans-serif;
@@ -209,23 +223,23 @@
                                letter-spacing:0.3px;
                                padding:16px 36px;
                                border-radius:10px;
-                               border:1px solid rgba(255,255,255,0.35);
-                               box-shadow:inset 0 1px 0 rgba(255,255,255,0.35),0 10px 24px rgba(11,79,140,0.38);
+                               border:1px solid #5f96cc;
+                               box-shadow:inset 0 1px 0 #6fa3d3,0 8px 20px #b9cfe6;
                                font-weight:600;">
 
                                 Visit GhIE Website
 
                             </a>
 
-                            <p style="margin:14px 0 0;font-size:12.5px;color:#64748b;">
+                            <p style="margin:14px 0 0;font-size:12.5px;line-height:1.6;color:#5b6b80;">
                                 Button not working? Copy this link into your browser:
                                 <a href="https://yeghie.com/" style="color:#0B4F8C;font-weight:600;text-decoration:underline;">https://yeghie.com/</a>
                             </p>
 
                         </div>
 
-                        <p style="margin:36px 0 0;font-size:15px;color:#334155;
-                        border-top:1px solid #dbe6f3;padding-top:24px;">
+                        <p style="margin:34px 0 0;font-size:15px;color:#334155;
+                        border-top:1px solid #d4e0ee;padding-top:22px;">
                             Thank you for your cooperation.
                         </p>
 
@@ -241,7 +255,7 @@
 
                             <br>
 
-                            <span style="font-size:13px;color:#64748b;">Ghana Institution of Engineering</span>
+                            <span style="font-size:13px;color:#5b6b80;">Ghana Institution of Engineering</span>
 
                         </p>
 
@@ -252,13 +266,12 @@
                 <tr>
 
                     <td align="center" bgcolor="#08264a"
-                        style="background:#08264a;
-                        background-image:linear-gradient(135deg,#051a36 0%,#0a2f5c 100%);
-                        padding:30px 30px 28px;
-                        color:#a9c0da;
+                        style="background-color:#08264a;
+                        padding:28px 26px 26px;
+                        color:#b4c8df;
                         font-size:12.5px;
                         line-height:1.9;
-                        border-top:3px solid #F2A900;">
+                        border-top:1px solid #1d4573;">
 
                         <strong style="color:#ffffff;font-weight:600;">
                             © 2026 Ghana Institution of Engineering (GhIE)
@@ -270,7 +283,7 @@
 
                         <br>
 
-                        <span style="display:inline-block;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.14);color:#7f9bbb;">
+                        <span style="display:inline-block;margin-top:12px;padding-top:12px;border-top:1px solid #1d4573;color:#8ea9c8;">
                             This is an automated email. Please do not reply directly.
                         </span>
 
