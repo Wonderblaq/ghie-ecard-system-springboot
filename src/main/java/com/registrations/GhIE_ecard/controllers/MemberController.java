@@ -1,6 +1,7 @@
 package com.registrations.GhIE_ecard.controllers;
 
 // Import necessary Spring annotations for REST controllers
+import com.registrations.GhIE_ecard.enums.Certification;
 import com.registrations.GhIE_ecard.enums.EnrollmentYear;
 import com.registrations.GhIE_ecard.enums.Institution;
 import com.registrations.GhIE_ecard.enums.Regions;
@@ -74,9 +75,13 @@ public class MemberController {
                     .body(message + " has already been registered");
         }
         else {
-            student.setMemberId(generateID.generateMemberId());
-            student.setRegistrationDate(LocalDate.now());
-            student.setExpiryDate(registrationService.calculateExpiryDate(student.getEnrollmentYear()));
+            student.setMemberId(
+                    generateID.generateMemberId());
+            student.setRegistrationDate(
+                    LocalDate.now());
+            student.setExpiryDate(
+                    registrationService.calculateExpiryDate(
+                            student.getEnrollmentYear(), student.getCertification()));
             // Save the member
             StudentMember savedStudentMember = memberRepository.save(student);
             // Return the saved entity with HTTP 200 OK
@@ -89,29 +94,45 @@ public class MemberController {
     // Display Institutions
     @GetMapping("/institutions")
     public List<Institution> getAllInstitutions(){
-        return Arrays.asList(Institution.values());
+        return
+                Arrays.asList(
+                        Institution.values());
     }
 
     // Display List of Regions
     @GetMapping("/regions")
     public List<Regions> getAllRegions(){
-        return Arrays.asList(Regions.values());
+        return
+                Arrays.asList(
+                        Regions.values());
     }
 
     @GetMapping("/enrollment")
     public List<EnrollmentYear> getAllEnrollmentYears(){
-        return Arrays.asList((EnrollmentYear.values()));
+        return
+                Arrays.asList(
+                        (EnrollmentYear.values()));
+    }
+
+    @GetMapping("/certification")
+    public List<Certification> getAllCertifications(){
+        return
+                Arrays.asList(
+                        (Certification.values()));
     }
 
     @GetMapping("/verify/{memberId}")
     public ResponseEntity<StudentMember> verifyMemberCard(@PathVariable("memberId") String memberId) {
-        Optional<StudentMember> member = memberRepository.findByMemberId(memberId);
+        Optional<StudentMember> member =
+                memberRepository.findByMemberId(memberId);
 
         if (member.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid or unverified GhIE E-Card.");
         }
 
+
         return ResponseEntity.ok(member.get());
+
     }
 
 

@@ -1,6 +1,7 @@
 package com.registrations.GhIE_ecard.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.registrations.GhIE_ecard.enums.Certification;
 import com.registrations.GhIE_ecard.enums.EnrollmentYear;
 import com.registrations.GhIE_ecard.enums.Institution;
 import com.registrations.GhIE_ecard.enums.Regions;
@@ -20,6 +21,9 @@ public class StudentMember {
 
     @Column(name = "fullName")
     private String fullName;
+
+    @Enumerated(EnumType.STRING)
+    private Certification certificateType;
 
     @Column(name = "memberId", unique = true)
     private String memberId;
@@ -133,6 +137,11 @@ public class StudentMember {
     }
     public void setExpiryDate(LocalDate expiryDate){
         this.expiryDate = expiryDate;
+    }
+
+    public Certification getCertification(){ return certificateType; }
+    public void setCertificateType(Certification certificateType){
+        this.certificateType = certificateType;
     }
 }
 
