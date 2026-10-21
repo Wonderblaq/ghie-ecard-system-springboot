@@ -11,12 +11,23 @@ public class RestClientConfig {
     @Value("${api.fastapi.base-url}")
     private String fastApiBaseUrl;
 
+    // Inject the new URL
+    @Value("${api.passport-ai.base-url}")
+    private String passportAiBaseUrl;
+
+    // Existing Card Client
     @Bean
     public RestClient fastApiConfig(){
         return RestClient.builder()
-                .baseUrl(fastApiBaseUrl)  // set where to fastapi port runs dynamically
+                .baseUrl(fastApiBaseUrl)
                 .build();
-
     }
 
+    // NEW Passport AI Client
+    @Bean
+    public RestClient passportAiClient(){
+        return RestClient.builder()
+                .baseUrl(passportAiBaseUrl)
+                .build();
+    }
 }

@@ -8,6 +8,7 @@ import com.registrations.GhIE_ecard.enums.Regions;
 import com.registrations.GhIE_ecard.models.StudentMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import com.registrations.GhIE_ecard.services.GenerateID;
 import com.registrations.GhIE_ecard.repositories.MemberRepository;
 import com.registrations.GhIE_ecard.services.MemberRegistrationService;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -91,6 +93,20 @@ public class MemberController {
 
 
     }
+
+    // --- NEW ENDPOINT: Passport Photo Validation ---
+    @PostMapping(value = "/validate-passport", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<byte[]> validatePassportPhoto(@RequestParam("file") MultipartFile file) {
+        // 1. Send the file to the service layer for AI processing
+        byte[] processedImageBytes = registrationService.validatePhoto(file);
+
+        // 2. Return the image bytes to the frontend so it can display the cropped preview
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(processedImageBytes);
+    }
+
+
     // Display Institutions
     @GetMapping("/institutions")
     public List<Institution> getAllInstitutions(){
