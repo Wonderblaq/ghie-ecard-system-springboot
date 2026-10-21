@@ -25,6 +25,7 @@ public class CardDispatchService {
     @Autowired
     private final FastApiClientService clientService;
 
+
     public CardDispatchService(RestClient restClient, AdminRepository adminRepository,
                                FastApiClientService clientService, MemberRepository memberRepository) {
         this.adminRepository = adminRepository;
