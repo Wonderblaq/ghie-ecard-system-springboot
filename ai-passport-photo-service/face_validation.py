@@ -17,7 +17,7 @@ MODEL_PATH = os.getenv(
 
 MAX_TILT_DEG = 2                      # max allowed head roll (degrees)
 EYE_FACE_RATIO_RANGE = (0.40, 0.52)   # eye gap / face width; outside => likely turned
-MIN_AREA_RATIO, MAX_AREA_RATIO = 0.20, 0.60    # face box area / image area
+MIN_AREA_RATIO, MAX_AREA_RATIO = 0.18, 0.60    # face box area / image area
 MIN_WIDTH_RATIO, MAX_WIDTH_RATIO = 0.40, 0.70  # face box width / image width
 MAX_DETECT_SIDE = 1600                # downscale bigger images before detection (speed)
 

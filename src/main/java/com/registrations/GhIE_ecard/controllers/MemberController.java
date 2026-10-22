@@ -1,6 +1,7 @@
 package com.registrations.GhIE_ecard.controllers;
 
 // Import necessary Spring annotations for REST controllers
+import com.fasterxml.jackson.databind.JsonNode;
 import com.registrations.GhIE_ecard.enums.Certification;
 import com.registrations.GhIE_ecard.enums.EnrollmentYear;
 import com.registrations.GhIE_ecard.enums.Institution;
@@ -96,14 +97,14 @@ public class MemberController {
 
     // --- NEW ENDPOINT: Passport Photo Validation ---
     @PostMapping(value = "/validate-passport", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> validatePassportPhoto(@RequestParam("file") MultipartFile file) {
-        // 1. Send the file to the service layer for AI processing
-        byte[] processedImageBytes = registrationService.validatePhoto(file);
+    public ResponseEntity<JsonNode> validatePassportPhoto(@RequestParam("file") MultipartFile file) {
 
-        // 2. Return the image bytes to the frontend so it can display the cropped preview
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(processedImageBytes);
+        // Pass the file to the service layer.
+        // If validation fails, the service throws a 400 exception and execution stops here.
+        JsonNode validationResult = registrationService.validatePassportPhoto(file);
+
+        // If execution reaches this line, validation passed. Return the success JSON.
+        return ResponseEntity.ok(validationResult);
     }
 
 
