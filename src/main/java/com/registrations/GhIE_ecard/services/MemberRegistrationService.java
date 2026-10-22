@@ -1,10 +1,11 @@
 package com.registrations.GhIE_ecard.services;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.registrations.GhIE_ecard.enums.Certification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.security.cert.Certificate;
 import java.time.*;
+import java.util.Map;
+
 import com.registrations.GhIE_ecard.enums.EnrollmentYear;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.client.RestClient;
@@ -32,34 +33,32 @@ public class MemberRegistrationService {
         this.passportAiClient = passportAiClient;
     }
 
-    // Changed return type from byte[] to JsonNode
-    public JsonNode validatePassportPhoto(MultipartFile file) {
-
+    public Map<String, Object> validatePassportPhoto(MultipartFile file) {
         MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
         bodyMap.add("file", file.getResource());
 
-        // 1. Fetch the response and parse it as JSON
-        JsonNode responseJson = passportAiClient.post()
+        // Fetch the response dynamically as a standard Java Map
+        Map<String, Object> responseMap = passportAiClient.post()
                 .uri("/validate-photo")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(bodyMap)
                 .retrieve()
-                .body(JsonNode.class);
+                .body(Map.class);
 
-        // 2. Intercept the logic: If "valid" is false, extract the message and throw a 400 Error
-        if (responseJson != null && responseJson.has("valid") && !responseJson.get("valid").asBoolean()) {
+        // Intercept logic using standard Map methods
+        if (responseMap != null && responseMap.containsKey("valid")) {
+            boolean isValid = (Boolean) responseMap.get("valid");
 
-            // Extract the specific message like "Face is too small. Move closer or crop tighter."
-            String errorMessage = responseJson.has("message")
-                    ? responseJson.get("message").asText()
-                    : "Photo validation failed.";
+            if (!isValid) {
+                String errorMessage = responseMap.containsKey("message")
+                        ? (String) responseMap.get("message")
+                        : "Photo validation failed.";
 
-            // This forces Spring Boot to return an HTTP 400 Bad Request to the frontend
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            }
         }
 
-        // 3. If valid is true, return the success JSON
-        return responseJson;
+        return responseMap;
     }
 
 

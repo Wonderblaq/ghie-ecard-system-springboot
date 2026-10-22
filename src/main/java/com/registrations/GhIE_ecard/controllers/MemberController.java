@@ -23,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -97,13 +98,9 @@ public class MemberController {
 
     // --- NEW ENDPOINT: Passport Photo Validation ---
     @PostMapping(value = "/validate-passport", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<JsonNode> validatePassportPhoto(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, Object>> validatePassportPhoto(@RequestParam("file") MultipartFile file) {
 
-        // Pass the file to the service layer.
-        // If validation fails, the service throws a 400 exception and execution stops here.
-        JsonNode validationResult = registrationService.validatePassportPhoto(file);
-
-        // If execution reaches this line, validation passed. Return the success JSON.
+        Map<String, Object> validationResult = registrationService.validatePassportPhoto(file);
         return ResponseEntity.ok(validationResult);
     }
 
