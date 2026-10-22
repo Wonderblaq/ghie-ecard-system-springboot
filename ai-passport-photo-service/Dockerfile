@@ -1,9 +1,10 @@
 FROM python:3.12-slim
 
-# Use libgl1 instead of libgl1-mesa-glx for newer Debian versions
+# Added libegl1 for MediaPipe C++ bindings
 RUN apt-get update && apt-get install -y \
     libgl1 \
     libglib2.0-0 \
+    libegl1 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
