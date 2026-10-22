@@ -1,10 +1,11 @@
 FROM python:3.12-slim
 
-# Added libegl1 for MediaPipe C++ bindings
+# Added libgles2 for the final MediaPipe graphics dependency
 RUN apt-get update && apt-get install -y \
     libgl1 \
     libglib2.0-0 \
     libegl1 \
+    libgles2 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
