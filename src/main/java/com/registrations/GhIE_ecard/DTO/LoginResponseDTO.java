@@ -1,4 +1,5 @@
 package com.registrations.GhIE_ecard.DTO;
+
 import java.util.List;
 
 public class LoginResponseDTO {
@@ -6,29 +7,53 @@ public class LoginResponseDTO {
     private String username;
     private String email;
     private String role;
-    private List<String> regions;
+    private List<String> assignedInstitutions;
 
-    public LoginResponseDTO(String token, String username, String email, String role, List<String> regions) {
+    // Default Constructor (Required by Jackson for JSON processing)
+    public LoginResponseDTO() {
+    }
+
+    public LoginResponseDTO(String token, String username, String email, String role, List<String> assignedInstitutions) {
         this.token = token;
         this.username = username;
         this.email = email;
         this.role = role;
-        this.regions = regions;
+        this.assignedInstitutions = assignedInstitutions;
     }
 
     // Getters and Setters
-    public String getToken() { return token; }
-    public void setToken(String token) { this.token = token; }
+    public String getToken() {
+        return token;
+    }
+    public void setToken(String token) {
+        this.token = token;
+    }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-    public List<String> getRegions() { return regions; }
-    public void setRegions(List<String> regions) { this.regions = regions; }
+    public List<String> getAssignedInstitutions() {
+        return assignedInstitutions;
+    }
+    public void setAssignedInstitutions(List<String> assignedInstitutions) {
+        this.assignedInstitutions = assignedInstitutions;
+    }
 }

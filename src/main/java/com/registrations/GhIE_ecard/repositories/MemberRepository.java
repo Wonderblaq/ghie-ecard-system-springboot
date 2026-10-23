@@ -1,6 +1,6 @@
 package com.registrations.GhIE_ecard.repositories;
 
-import com.registrations.GhIE_ecard.enums.Regions;
+import com.registrations.GhIE_ecard.enums.Institution;
 import com.registrations.GhIE_ecard.models.StudentMember;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,38 +16,35 @@ import java.util.Set;
 
 public interface MemberRepository extends JpaRepository<StudentMember, Long> {
 
-
     List<StudentMember> findAllByOrderByRegistrationDateDesc();
     boolean existsByEmail(String email);
     List<StudentMember> findByEmailSentFalse();
     boolean existsByContact(Long contact);
+
     // Keeps newly registered members who HAVEN'T received cards at the very top
     List<StudentMember> findByEmailSentFalseOrderByRegistrationDateDesc();
 
-    // FIX: Changed findByRegionsIn -> findByRegionIn
-    List<StudentMember> findByRegionIn(Collection<Regions> regions);
+    // Multi-tenant version filtered by assigned institutions
+    List<StudentMember> findByInstitutionIn(Collection<Institution> institutions);
 
     // Casts the timestamp to a plain date so time elements (hours/mins/seconds) are ignored
-   // @Query("SELECT s FROM StudentMember s WHERE CAST(s.emailSentAt AS date)  >= :date ORDER BY s.emailSentAt DESC")
     List<StudentMember> findByEmailSentAtGreaterThanEqualOrderByEmailSentAtDesc(LocalDateTime date);
 
-    // Multi-tenant version filtered by regions
-    //@Query("SELECT s FROM StudentMember s WHERE CAST(s.emailSentAt AS date) >= :date AND s.region IN :regions ORDER BY s.emailSentAt DESC")
-    List<StudentMember> findByEmailSentAtGreaterThanEqualAndRegionInOrderByEmailSentAtDesc(LocalDateTime date,
-                                                                                           Collection<Regions> regions);
-
-    // Query method to display student members registered from a given date onward
-    //@Query("SELECT s FROM StudentMember s WHERE CAST(s.registrationDate AS date) >= :date ORDER BY s.registrationDate DESC")
-    List<StudentMember> findByRegistrationDateGreaterThanEqualOrderByRegistrationDateDesc(LocalDate date);
-
-    // Multi-tenant version filtered by their assigned regions
-    //@Query("SELECT s FROM StudentMember s WHERE CAST(s.registrationDate AS date) >= :date AND s.region IN :regions ORDER BY s.registrationDate DESC")
-    List<StudentMember> findByRegistrationDateGreaterThanEqualAndRegionInOrderByRegistrationDateDesc(
-            LocalDate date,
-            Set<Regions> regions
+    // Multi-tenant version filtered by assigned institutions
+    List<StudentMember> findByEmailSentAtGreaterThanEqualAndInstitutionInOrderByEmailSentAtDesc(
+            LocalDateTime date,
+            Collection<Institution> institutions
     );
 
-    //@Query("SELECT m FROM StudentMember m WHERE m.memberId = :memberId")
+    // Query method to display student members registered from a given date onward
+    List<StudentMember> findByRegistrationDateGreaterThanEqualOrderByRegistrationDateDesc(LocalDate date);
+
+    // Multi-tenant version filtered by assigned institutions
+    List<StudentMember> findByRegistrationDateGreaterThanEqualAndInstitutionInOrderByRegistrationDateDesc(
+            LocalDate date,
+            Set<Institution> institutions
+    );
+
     Optional<StudentMember> findByMemberId(@Param("memberId") String memberId);
 
     // Case-insensitive search across name, email, memberId, or contact

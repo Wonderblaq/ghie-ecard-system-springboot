@@ -46,7 +46,7 @@ public class AuthenticationService {
             authenticationManager.authenticate(userAuth);
             log.info("Authentication succeeded for username: {}", request.getUsername());
         } catch (AuthenticationException e) {
-            log.warn("Authentication failed for username: {} - Bad Credentials", request.getUsername());
+            log.warn("Authentication failed for username: {}  Bad Credentials", request.getUsername());
             throw e; // Rethrow to preserve Spring Security exception handling
         }
 
@@ -57,19 +57,19 @@ public class AuthenticationService {
                     return new ResponseStatusException(HttpStatus.NOT_FOUND, "User profile not found.");
                 });
 
-        // 4. Extract assigned regions
-        List<String> regionList = admin.getRegions() != null
-                ? admin.getRegions().stream().map(Enum::name).toList()
+        // 4. Extract assigned institutions
+        List<String> institutionList = admin.getAssignedInstitutions() != null
+                ? admin.getAssignedInstitutions().stream().map(Enum::name).toList()
                 : List.of();
 
         String userRole = admin.getRole();
-        log.debug("User details loaded -> Username: {}, Role: {}, Regions Count: {}",
-                admin.getUsername(), userRole, regionList.size());
+        log.debug("User details loaded -> Username: {}, Role: {}, assigned Institution Count: {}",
+                admin.getUsername(), userRole, institutionList.size());
 
         // 5. Build custom JWT claims
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", userRole);
-        claims.put("region", regionList);
+        claims.put("institution", institutionList);
 
         // 6. Generate token
         String token = jwtService.generateToken(claims, admin.getUsername());
@@ -81,7 +81,7 @@ public class AuthenticationService {
                 admin.getUsername(),
                 admin.getEmail(),
                 userRole,
-                regionList
+                institutionList
         );
     }
 }

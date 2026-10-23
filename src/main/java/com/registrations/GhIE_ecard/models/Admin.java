@@ -1,6 +1,6 @@
 package com.registrations.GhIE_ecard.models;
 
-import com.registrations.GhIE_ecard.enums.Regions;
+import com.registrations.GhIE_ecard.enums.Institution;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,30 +32,30 @@ public class Admin implements UserDetails {
     @Column(name = "role")
     private String role;
 
-    // Multi-Region Tenancy Mapping
+    // Multi-Institution Mapping
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
-            name = "admin_regions",
+            name = "assigned_institutions",
             joinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "admin_id")
     )
     @Enumerated(EnumType.STRING)
-    @Column(name = "region_name")
-    private Set<Regions> regions = new HashSet<>();
+    @Column(name = "institution_name")
+    private Set<Institution> assignedInstitutions = new HashSet<>();
 
     // Default Constructor required by JPA
     public Admin() {
     }
 
-    public Admin(Long adminId, String username, String email, String password, String role, Set<Regions> regions) {
+    public Admin(Long adminId, String username, String email, String password, String role, Set<Institution> assignedInstitutions) {
         this.adminId = adminId;
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.regions = regions != null ? regions : new HashSet<>();
+        this.assignedInstitutions = assignedInstitutions != null ? assignedInstitutions : new HashSet<>();
     }
 
-    // USER DETAILS METHOD
+    // USER DETAILS METHODS
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == null || this.role.isBlank()) {
@@ -119,29 +119,29 @@ public class Admin implements UserDetails {
         this.role = role;
     }
 
-    public Set<Regions> getRegions() {
-        if (this.regions == null) {
-            this.regions = new HashSet<>();
+    public Set<Institution> getAssignedInstitutions() {
+        if (this.assignedInstitutions == null) {
+            this.assignedInstitutions = new HashSet<>();
         }
-        return this.regions;
+        return this.assignedInstitutions;
     }
 
-    public void setRegions(Set<Regions> regions) {
-        this.regions = regions;
+    public void setAssignedInstitutions(Set<Institution> assignedInstitutions) {
+        this.assignedInstitutions = assignedInstitutions;
     }
 
-    // Helper method to add a single region conveniently
-    public void addRegion(Regions region) {
-        if (this.regions == null) {
-            this.regions = new HashSet<>();
+    // Helper method to add a single institution conveniently
+    public void addInstitution(Institution institution) {
+        if (this.assignedInstitutions == null) {
+            this.assignedInstitutions = new HashSet<>();
         }
-        this.regions.add(region);
+        this.assignedInstitutions.add(institution);
     }
 
-    // Helper method to remove a single region conveniently
-    public void removeRegion(Regions region) {
-        if (this.regions != null) {
-            this.regions.remove(region);
+    // Helper method to remove a single institution conveniently
+    public void removeInstitution(Institution institution) {
+        if (this.assignedInstitutions != null) {
+            this.assignedInstitutions.remove(institution);
         }
     }
 }

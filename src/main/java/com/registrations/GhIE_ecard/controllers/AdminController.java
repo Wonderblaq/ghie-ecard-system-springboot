@@ -66,7 +66,7 @@ public class AdminController {
 
     // Get request for admin to view all registered members
     // Get request for admin to view all registered members (Now handles pagination parameters gracefully)
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN', 'SECRETARY')")
     @GetMapping("/members")
     public ResponseEntity<?> getAllMembers(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
@@ -75,7 +75,7 @@ public class AdminController {
             @AuthenticationPrincipal Admin loggedAdmin
     ) {
         if (loggedAdmin == null) {
-            System.out.println("DEBUG: loggedAdmin is NULL!");
+            log.debug("Logged admin username: {}", loggedAdmin.getUsername());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Admin user context not found in JWT");
         }
 
@@ -86,7 +86,7 @@ public class AdminController {
 
     // Get request for admins to find specific members
     // VIEW MEMBERS (Secretary CAN access - read-only across all regions)
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN', 'SECRETARY')")
     @GetMapping("/members/{id}")
     public ResponseEntity<Optional<StudentMember>> findMember(@PathVariable("id") Long id, @AuthenticationPrincipal Admin loggedAdmin) {
         Optional<StudentMember> memberToFind = Optional.ofNullable(memberService.getSingleMemberForLoggedInAdmin(id, loggedAdmin));
@@ -150,17 +150,13 @@ public class AdminController {
     }
 
     // View members yet to receive cards, role given to all admins
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN', 'SECRETARY')")
     @GetMapping("/members/pending-cards")
-    public ResponseEntity<?> viewPendingCards(@AuthenticationPrincipal Admin loggedAdmin){
+    public ResponseEntity<List<StudentMember>> viewPendingCards(@AuthenticationPrincipal Admin loggedAdmin){
         List<StudentMember> pendingStudentMembers = memberService.getMembersForLoggedInAdmin(loggedAdmin);
-        if (!pendingStudentMembers.isEmpty()){
-            return ResponseEntity.ok(pendingStudentMembers);
-
-        }
-        return ResponseEntity.ok().body("No Pending Members");
-
+        return ResponseEntity.ok(pendingStudentMembers);
     }
+
 
     // Allow only 'SUPER_ADMIN', to process and send cards for multiple members
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
