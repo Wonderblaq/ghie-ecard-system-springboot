@@ -44,7 +44,8 @@ public enum Institution {
     GCTU("GCTU"),
     REGENT("Regent University College"),
     WIUC("Wisconsin International University College"),
-    PUC("Pentecost University");
+    PUC("Pentecost University"),
+    ACU("Academic City  University");
 
     private final String displayName;
 

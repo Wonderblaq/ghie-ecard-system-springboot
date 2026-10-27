@@ -77,9 +77,9 @@ public class MemberRegistrationService {
         int programDurationYears;
         switch (certification){
             case HND ->
-                    programDurationYears = 2;
-            case Btech,Bsc ->
                     programDurationYears = 3;
+            case Btech,Bsc ->
+                    programDurationYears = 4;
             default ->
                     throw new IllegalArgumentException("Unsupported Certification type " + certification );
         }
