@@ -53,12 +53,14 @@ services:
       - .env
 
 
-    #  NEW MediaPipe Passport Photo Microservice
+  # NEW MediaPipe Passport Photo Microservice
   ai-passport-photo-service:
     build: ./ai-passport-photo-service
     container_name: passport-photo-service
+    ports:
+      - "8001:8001"  # Maps host port 8001 to container port 8001 for Postman / external testing
     expose:
-      - "8001"
+      - "8001"       # Internal Docker network port
     restart: always
 
 
