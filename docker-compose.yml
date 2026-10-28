@@ -54,10 +54,13 @@ services:
 
 
   # NEW MediaPipe Passport Photo Microservice
+
+
+
   ai-passport-photo-service:
-    build: ./ai-passport-photo-service
-    container_name: passport-photo-service
-    restart: always
+    build:
+      context: ./ai-passport-photo-service
+      dockerfile: Dockerfile
 
 
 
