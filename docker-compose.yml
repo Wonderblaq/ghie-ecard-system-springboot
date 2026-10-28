@@ -57,7 +57,11 @@ services:
   ai-passport-photo-service:
     build: ./ai-passport-photo-service
     container_name: passport-photo-service
+    expose:
+      - "8001"
     restart: always
+
+
 
 
 
