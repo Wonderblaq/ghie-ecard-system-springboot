@@ -54,9 +54,6 @@ services:
 
 
   # NEW MediaPipe Passport Photo Microservice
-
-
-
   ai-passport-photo-service:
     build:
       context: ./ai-passport-photo-service
