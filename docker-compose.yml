@@ -40,7 +40,7 @@ services:
       - FASTAPI_URL=http://fastapi-service:8000
       - SPRING_MAIL_HOST=${SPRING_MAIL_HOST}
       - SPRING_MAIL_PORT=${SPRING_MAIL_PORT}
-      - PASSPORT_PHOTO_SERVICE_URL=http://passport-photo-service:8001
+      - PASSPORT_PHOTO_SERVICE_URL=http://ai-passport-photo-service:8001
     volumes:
        # FORMAT : HOST_DIR : CONTAINER_DIR
       - ./uploaded_docs:/app/uploads/supporting_docs/
