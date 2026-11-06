@@ -28,20 +28,26 @@ public interface MemberRepository extends JpaRepository<StudentMember, Long> {
     List<StudentMember> findByInstitutionIn(Collection<Institution> institutions);
 
     // Casts the timestamp to a plain date so time elements (hours/mins/seconds) are ignored
-    List<StudentMember> findByEmailSentAtGreaterThanEqualOrderByEmailSentAtDesc(LocalDateTime date);
+    List<StudentMember> findByEmailSentAtBetweenOrderByEmailSentAtDesc(
+            LocalDateTime startDate,
+            LocalDateTime endDate);
 
     // Multi-tenant version filtered by assigned institutions
-    List<StudentMember> findByEmailSentAtGreaterThanEqualAndInstitutionInOrderByEmailSentAtDesc(
-            LocalDateTime date,
+    List<StudentMember> findByEmailSentAtBetweenAndInstitutionInOrderByEmailSentAtDesc(
+            LocalDateTime startDate,
+            LocalDateTime endDate,
             Collection<Institution> institutions
     );
 
-    // Query method to display student members registered from a given date onward
-    List<StudentMember> findByRegistrationDateGreaterThanEqualOrderByRegistrationDateDesc(LocalDate date);
+    // Query method to display student members registered between a date range
+    List<StudentMember> findByRegistrationDateBetweenOrderByRegistrationDateDesc(
+            LocalDate startDate,
+            LocalDate endDate);
 
     // Multi-tenant version filtered by assigned institutions
-    List<StudentMember> findByRegistrationDateGreaterThanEqualAndInstitutionInOrderByRegistrationDateDesc(
-            LocalDate date,
+    List<StudentMember> findByRegistrationDateBetweenAndInstitutionInOrderByRegistrationDateDesc(
+            LocalDate startDate,
+            LocalDate endDate,
             Set<Institution> institutions
     );
 

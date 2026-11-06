@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -98,16 +99,32 @@ public class MemberService {
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized role access.");
     }
 
-    public List<StudentMember> getMembersByEmailSentDate(LocalDate date, Admin loggedAdmin) {
-        String role = loggedAdmin.getRole();
-
-        // Convert LocalDate to LocalDateTime at 00:00:00 for accurate database comparison
-        LocalDateTime startOfDay = date.atStartOfDay();
-
-        if ("SUPER_ADMIN".equalsIgnoreCase(role) || "GhIE_ADMIN".equalsIgnoreCase(role) || "SECRETARY".equalsIgnoreCase(role)) {
-            return memberRepository.findByEmailSentAtGreaterThanEqualOrderByEmailSentAtDesc(startOfDay);
+    public List<StudentMember> getMembersByEmailSentDateRange(LocalDate startDate, LocalDate endDate, Admin loggedAdmin) {
+        if (loggedAdmin == null || loggedAdmin.getRole() == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User authentication required.");
         }
 
+        // 1. Input Validation
+        if (startDate == null || endDate == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Both start date and end date must be provided.");
+        }
+
+        if (endDate.isBefore(startDate)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "End date cannot be before start date.");
+        }
+
+        // 2. Convert LocalDate boundaries to full day timestamps (00:00:00 to 23:59:59.999999999)
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
+
+        String role = loggedAdmin.getRole();
+
+        // 3. Super Admins, GhIE Admins, and Secretary fetch across all institutions
+        if ("SUPER_ADMIN".equalsIgnoreCase(role) || "GhIE_ADMIN".equalsIgnoreCase(role) || "SECRETARY".equalsIgnoreCase(role)) {
+            return memberRepository.findByEmailSentAtBetweenOrderByEmailSentAtDesc(startDateTime, endDateTime);
+        }
+
+        // 4. Regional Admins fetch only within their assigned institutions
         if ("REGIONAL_ADMIN".equalsIgnoreCase(role)) {
             Set<Institution> assignedInstitutions = loggedAdmin.getAssignedInstitutions();
 
@@ -115,18 +132,37 @@ public class MemberService {
                 return List.of();
             }
 
-            return memberRepository.findByEmailSentAtGreaterThanEqualAndInstitutionInOrderByEmailSentAtDesc(startOfDay, assignedInstitutions);
+            return memberRepository.findByEmailSentAtBetweenAndInstitutionInOrderByEmailSentAtDesc(
+                    startDateTime,
+                    endDateTime,
+                    assignedInstitutions
+            );
         }
 
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized role access.");
     }
 
-    public List<StudentMember> getMembersByRegistrationDate(LocalDate date, Admin loggedAdmin) {
+
+
+    public List<StudentMember> getMembersByRegistrationDateRange(LocalDate startDate, LocalDate endDate, Admin loggedAdmin) {
+        if (loggedAdmin == null || loggedAdmin.getRole() == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User authentication required.");
+        }
+
+        // Input Validation
+        if (startDate == null || endDate == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Both start date and end date must be provided.");
+        }
+
+        if (endDate.isBefore(startDate)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "End date cannot be before start date.");
+        }
+
         String role = loggedAdmin.getRole();
 
         // 1. Super Admins, GhIE Admins, and Secretary can fetch across all institutions
         if ("SUPER_ADMIN".equalsIgnoreCase(role) || "GhIE_ADMIN".equalsIgnoreCase(role) || "SECRETARY".equalsIgnoreCase(role)) {
-            return memberRepository.findByRegistrationDateGreaterThanEqualOrderByRegistrationDateDesc(date);
+            return memberRepository.findByRegistrationDateBetweenOrderByRegistrationDateDesc(startDate, endDate);
         }
 
         // 2. Regional Admins fetch only within their assigned institutions
@@ -137,9 +173,15 @@ public class MemberService {
                 return List.of();
             }
 
-            return memberRepository.findByRegistrationDateGreaterThanEqualAndInstitutionInOrderByRegistrationDateDesc(date, assignedInstitutions);
+            return memberRepository.findByRegistrationDateBetweenAndInstitutionInOrderByRegistrationDateDesc(
+                    startDate,
+                    endDate,
+                    assignedInstitutions
+            );
         }
 
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized role access.");
     }
+
+
 }

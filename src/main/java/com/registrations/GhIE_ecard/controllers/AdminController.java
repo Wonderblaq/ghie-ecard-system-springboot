@@ -267,26 +267,28 @@ public class AdminController {
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
     @GetMapping("/members/by-email-date")
     public ResponseEntity<List<StudentMember>> getMembersByEmailSentDate(
-            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @AuthenticationPrincipal Admin loggedAdmin) {
 
-        List<StudentMember> members = memberService.getMembersByEmailSentDate(date, loggedAdmin);
+        List<StudentMember> members = memberService.getMembersByEmailSentDateRange(
+                startDate, endDate, loggedAdmin
+        );
         return ResponseEntity.ok(members);
     }
 
     // Endpoint for filtering members by their registrationDate
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN')")
+    // Endpoint for filtering members by registration date range
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'REGIONAL_ADMIN', 'GhIE_ADMIN', 'SECRETARY')")
     @GetMapping("/members/by-registration-date")
-    public ResponseEntity<List<StudentMember>> getMembersByRegistrationDate(
-            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+    public ResponseEntity<List<StudentMember>> getMembersByRegistrationDateRange(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @AuthenticationPrincipal Admin loggedAdmin) {
 
-
-
-        List<StudentMember> members = memberService.getMembersByRegistrationDate(date, loggedAdmin);
+        List<StudentMember> members = memberService.getMembersByRegistrationDateRange(startDate, endDate, loggedAdmin);
         return ResponseEntity.ok(members);
     }
-
 
 
 }
